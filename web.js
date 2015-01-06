@@ -1,6 +1,7 @@
 var bodyParser  = require("body-parser"),
     express     = require("express"),
-    logfmt      = require("logfmt");
+    logfmt      = require("logfmt"),
+    request     = require("request");
 
 var app = express();
 
