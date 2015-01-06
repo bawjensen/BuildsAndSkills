@@ -5,7 +5,7 @@ var bodyParser  = require("body-parser"),
 var app = express();
 
 // Server defaults to port 7500
-app.set('port', (process.env.PORT || 5000))
+app.set('port', (process.env.PORT || 5000));
 
 // Static serving files from specific folders
 app.use('/foundation',  express.static(__dirname + '/foundation'));
