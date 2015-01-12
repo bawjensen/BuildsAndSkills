@@ -4,7 +4,8 @@
   "description": "Website showing popular runes, masteries and builds for given champions",
   "main": "web.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony --use_strict --harmony_generators web.js"
   },
   "author": "bawjensen",
   "repository": {
@@ -18,5 +19,8 @@
     "jade": "^1.8.2",
     "logfmt": "^1.2.0",
     "request": "^2.51.0"
+  },
+  "engines": {
+    "node": "0.11.x"
   }
 }
