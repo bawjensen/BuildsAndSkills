@@ -1,4 +1,13 @@
-each champ in champs
+each champ, champId in champData
   div
-    = champ.name
-    img(src=champ.image)
+    //- = champId
+    img(src='/data/dragontail/4.21.4/img/champion/' + champ.name + '.png')
+
+    each masteryPage in champ.masteries
+      each mastery in masteryPage
+        div
+          img(src='/data/dragontail/4.21.4/img/mastery/' + mastery.masteryId + '.png')
+          = mastery.rank
+    //- = champ.masteries
+    //- = champ.runes
+  //- = champ

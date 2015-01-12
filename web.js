@@ -1,5 +1,6 @@
 var bodyParser  = require("body-parser"),
     express     = require("express"),
+    fs          = require("fs"),
     logfmt      = require("logfmt"),
     request     = require("request")
     querystring = require("querystring");
@@ -23,6 +24,23 @@ function promiseJsonGet(url) {
     return promiseGet(url).then(JSON.parse);
 }
 
+function promiseReadFile(filePath) {
+    return new Promise(function read(resolve, reject) {
+        fs.readFile(filePath, function handleResp(err, fileContents) {
+            if (!err) {
+                resolve(fileContents);
+            }
+            else {
+                reject(Error(err));
+            }
+        });
+    });
+}
+
+function promiseReadJsonFile(filePath) {
+    return promiseReadFile(filePath).then(JSON.parse);
+}
+
 var app = express();
 
 // Server defaults to port 7500
@@ -32,6 +50,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use('/css',         express.static(__dirname + '/css'));
 app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
+app.use('/data',        express.static(__dirname + '/data'));
 
 // Other stuff to use
 app.use(logfmt.requestLogger());
@@ -40,60 +59,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/', function(req, res) {
-    var url = 'https://na.api.pvp.net/api/lol/na/v2.5/league/challenger?';
-    var query  = {
-        type: 'RANKED_SOLO_5x5',
-        api_key: key
-    }
-
-    var queryUrl = url + querystring.stringify(query);
-
-    promiseJsonGet(queryUrl)
-        .then(function consolidateChallengerIds(json) {
-            challengerObjects = json.entries;
-
-            var challengerIds = [];
-
-            for (var key in challengerObjects) {
-                var id = challengerObjects[key].playerOrTeamId;
-
-                challengerIds.push(id);
-            }
-
-            return challengerIds;
-        })
-        .then(function getMatches(challengerIds) {
-            res.send(challengerIds);
+    promiseReadJsonFile('data/champData.json')
+        .then(function display(champData) {
+            console.log(champData)
+            res.render('index.jade', { champData: champData });
+        }).catch(function handleError(err) {
+            res.send(err.stack);
         });
-
-
-    // var url = 'https://na.api.pvp.net/api/lol/static-data/na/v1.2/champion?';
-    // var query = {
-    //     champData: 'image',
-    //     api_key: key
-    // };
-    // var queryUrl = url + querystring.stringify(query);
-    
-    // request.get(queryUrl, function handleResp(err, resp, body) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.send("No");
-    //     }
-    //     else {
-    //         var champs = JSON.parse(body).data;
-
-    //         dataBuffer = [];
-
-    //         for (champKey in champs) {
-    //             var champ = champs[champKey];
-
-    //             dataBuffer.push( { name: champ.name, image: 'http://ddragon.leagueoflegends.com/cdn/4.2.6/img/champion/' + champ.image.full } );
-    //         }
-
-    //         res.render('index.jade', { champs: dataBuffer });
-    //     }
-
-    // });
 });
 
 // Start up the server
