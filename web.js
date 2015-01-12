@@ -2,7 +2,7 @@ var bodyParser  = require("body-parser"),
     express     = require("express"),
     fs          = require("fs"),
     logfmt      = require("logfmt"),
-    request     = require("request")
+    request     = require("request"),
     querystring = require("querystring");
 
 var key = '19deda21-b9ca-40d3-af2c-5037a30b37b9';
