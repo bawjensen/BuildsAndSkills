@@ -51,44 +51,35 @@ app.use('/css',         express.static(__dirname + '/css'));
 app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
 app.use('/data',        express.static(__dirname + '/data'));
+app.use('/bootstrap',   express.static(__dirname + '/bootstrap'));
 
 // Other stuff to use
 app.use(logfmt.requestLogger());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// app.get('/', function(req, res) {
+//     promiseReadJsonFile('data/champData.json')
+//         .then(function display(champData) {
+//             res.render('index.jade', { champData: champData });
+//         })
+//         .catch(function handleError(err) {
+//             res.send(err.stack);
+//         })
+// });
 
-app.get('/', function(req, res) {
-    promiseReadJsonFile('data/champData.json')
-        .then(function readStaticData(dynamicChampData) {
-            return new Promise(function read(resolve, reject) {
-                promiseReadJsonFile('data/dragontail/4.21.4/data/en_US/champion.json')
-                    .then(function resolveWithBoth(staticChampData) {
-                        resolve({ staticChampData: staticChampData, dynamicChampData: dynamicChampData })
-                    });
-            });
+app.get('/:champId', function(req, res) {
+    var champId = req.params.champId;
+
+    promiseReadJsonFile('data/dragontail/4.21.4/data/en_US/rune.json')
+        .then(function readNext(staticRuneData) {
+            return promiseReadJsonFile('data/champData.json')
+                .then(function returnBoth(champData) {
+                    return { staticRuneData: staticRuneData, champData: champData };
+                });
         })
-        .then(function display(allChampData) {
-            var champData = allChampData.dynamicChampData;
-
-            var staticChampsObj = allChampData.staticChampData.data;
-
-            for (key in staticChampsObj) {
-                var staticChampObj = staticChampsObj[key];
-
-                var champNumberId = staticChampObj.key;
-                var champStringId = staticChampObj.id;
-
-                if (!(champNumberId in champData)) {
-                    console.log(champStringId + ' wasn\'t played');
-                    // res.send(champData);
-                }
-                else {
-                    champData[champNumberId].name = champStringId;
-                }
-            }
-
-            res.render('index.jade', { champData: champData });
+        .then(function display(allData) {
+            res.render('champion.jade', { champData: allData.champData[champId], staticRuneData: allData.staticRuneData });
         }).catch(function handleError(err) {
             res.send(err.stack);
         });

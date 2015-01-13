@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+
+    title 
+      //- block page-title
+      |  | RunesAndMasteries
+
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+
+
+    //- link(rel='shortcut icon' href='/images/favicon.ico')
+    link(rel='stylesheet', type='text/css', href='/bootstrap/dist/css/bootstrap.min.css')
+    //- link(rel='stylesheet', type='text/css', href='/static/webfont_icons/flaticon.css')
+
+    //- block skele-css
+
+    //- style.css is always last to load
+    link(rel='stylesheet', type='text/css', href='/css/style.css')
+
+
+    //- Make sure to defer all possible scripts, so they don't block page load but still load in order
+    script(defer type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js')
+    script(defer type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.18.0/es6-shim.min.js')
+    script(defer type='text/javascript', src='https://code.jquery.com/jquery-1.11.1.min.js')
+
+    //- block skele-script
+
+    //- script.js is always last to load
+    script(defer type='text/javascript', src='/js/script.js')
+
+  body
+    .container
+      block body

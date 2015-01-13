@@ -58,8 +58,34 @@ function promiseJsonGet(url) {
     return promiseGet(url).then(JSON.parse);
 }
 
-function getStaticData() {
+function promiseReadFile(filePath) {
+    return new Promise(function read(resolve, reject) {
+        fs.readFile(filePath, function handleResp(err, fileContents) {
+            if (!err) {
+                resolve(fileContents);
+            }
+            else {
+                reject(Error(err));
+            }
+        });
+    });
+}
 
+function promiseReadJsonFile(filePath) {
+    return promiseReadFile(filePath).then(JSON.parse);
+}
+
+function preprocessStaticData(staticData) {
+    var subData = staticData.data;
+
+    processed = {};
+
+    for (var key in subData) {
+        var entry = subData[key];
+        processed[entry.key] = entry;
+    }
+
+    return processed;
 }
 
 function getChallengerData() {
@@ -105,26 +131,42 @@ function getChallengerData() {
                     })
                 );
         })
-        .then(function extractMateries(histories) {
+        .then(function loadStaticData(histories) {
+            return promiseReadJsonFile('dragontail/4.21.4/data/en_US/champion.json')
+                .then(function returnBoth(staticData) {
+                    return { staticData: staticData, histories: histories };
+                });
+        })
+        .then(function extractRunesAndMasteries(dataObj) {
+            staticData = dataObj.staticData;
+            histories = dataObj.histories;
+
+            staticData = preprocessStaticData(staticData);
+
             champDataObj = {};
 
             histories.forEach(function handleEntry(historyEntry) {
                 historyEntry.matches.forEach(function handleEntry(matchEntry) {
                     var champId = matchEntry.participants[0].championId;
                     var masteries = matchEntry.participants[0].masteries;
+                    var summonerName = matchEntry.participantIdentities[0].player.summonerName;
                     var runes = matchEntry.participants[0].runes;
 
-                    if (champId in champDataObj) {
-                        champDataObj[champId].masteries.push(masteries);
-                        champDataObj[champId].runes.push(runes);
-                    }
-                    else {
+                    if (!(champId in champDataObj)) {
                         champDataObj[champId] = {};
-                        champDataObj[champId].masteries = [masteries];
-                        champDataObj[champId].runes = [runes];
+                        champDataObj[champId].matches = [];
+
+                        var staticChamp = staticData[champId];
+
+                        champDataObj[champId].name = staticChamp.name;
+                        champDataObj[champId].imgLink = 'data/dragontail/4.21.4/img/champion/' + staticChamp.image.full;
                     }
+
+                    champDataObj[champId].matches.push({ runes: runes, masteries: masteries, summonerName: summonerName });
                 });
             });
+
+            console.log(Object.keys(champDataObj)); // List all the champs that were played
 
             return champDataObj;
         })
