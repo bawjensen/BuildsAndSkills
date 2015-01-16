@@ -13,3 +13,12 @@ Order of events:
 + Easy to use
 + Fast
 + Everything visible on one screen
+
+### Data
+
++ Dynamic Data
+  + Gathered from API and store the past N games per champ
+  + Stored in MongoDB on MongoLab
++ Static Data
+  + Gathered from static source (ddragon) and preprocessed every patch
+  + Stored as JSON files
