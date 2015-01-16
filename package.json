@@ -18,6 +18,7 @@
     "express": "^4.10.7",
     "jade": "^1.8.2",
     "logfmt": "^1.2.0",
+    "mongodb": "^1.4.28",
     "querystring": "^0.2.0",
     "request": "^2.51.0"
   },

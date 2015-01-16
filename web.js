@@ -2,10 +2,13 @@ var bodyParser  = require("body-parser"),
     express     = require("express"),
     fs          = require("fs"),
     logfmt      = require("logfmt"),
+    MongoClient = require('mongodb').MongoClient,
     request     = require("request"),
     querystring = require("querystring");
 
-var key = '19deda21-b9ca-40d3-af2c-5037a30b37b9';
+// Global constants
+// var key = '19deda21-b9ca-40d3-af2c-5037a30b37b9';
+var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
 
 function promiseGet(url) {
     return new Promise(function get(resolve, reject) {
@@ -68,22 +71,42 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //         })
 // });
 
-app.get('/:champId', function(req, res) {
-    var champId = req.params.champId;
-
-    promiseReadJsonFile('data/dragontail/4.21.4/data/en_US/rune.json')
-        .then(function readNext(staticRuneData) {
-            return promiseReadJsonFile('data/champData.json')
-                .then(function returnBoth(champData) {
-                    return { staticRuneData: staticRuneData, champData: champData };
-                });
-        })
-        .then(function display(allData) {
-            res.render('champion.jade', { champData: allData.champData[champId], staticRuneData: allData.staticRuneData });
-        }).catch(function handleError(err) {
-            res.send(err.stack);
+app.route('/champ/:champId')
+    .all(function(req, res, next) {
+        MongoClient.connect(MONGO_URL, function callback(err, db) {
+            req.dbCollection = db.collection('champData');
+            next();
         });
-});
+    })
+    .get(function(req, res) {
+        var champId = req.params.champId;
+
+        req.dbCollection.find({ 'champId': champId }).toArray(function callback(err, data) {
+            if (err) {
+                console.log(err.stack);
+                res.send('no');
+            }
+            else {
+                console.log(data);
+                res.send('yes');
+            }
+        });
+
+
+
+        // promiseReadJsonFile('data/dragontail/4.21.4/data/en_US/rune.json')
+        //     .then(function readNext(staticRuneData) {
+        //         return promiseReadJsonFile('data/champData.json')
+        //             .then(function returnBoth(champData) {
+        //                 return { staticRuneData: staticRuneData, champData: champData };
+        //             });
+        //     })
+        //     .then(function display(allData) {
+        //         res.render('champion.jade', { champData: allData.champData[champId], staticRuneData: allData.staticRuneData });
+        //     }).catch(function handleError(err) {
+        //         res.send(err.stack);
+        //     });
+    });
 
 // Start up the server
 app.listen(app.get('port'), function() {
