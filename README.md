@@ -17,8 +17,12 @@ Order of events:
 ### Data
 
 + Dynamic Data
-  + Gathered from API and store the past N games per champ
-  + Stored in MongoDB on MongoLab
+  + What: Runes and Masteries 
+  + How much: Past N games per champ
+  + Where from: Gathered from API
+  + Where to: Stored in MongoDB on MongoLab
 + Static Data
-  + Gathered from static source (ddragon) and preprocessed every patch
-  + Stored as JSON files
+  + What: Everything about the game (descriptional data, champ names, rune effects, etc.)
+  + How much: All of it
+  + Where from: Gathered from static source (ddragon) and preprocessed every patch
+  + Where to: Stored server-side as JSON files
