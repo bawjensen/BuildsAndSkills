@@ -1,0 +1,18 @@
+extends skeleton_base
+
+block body
+  .row
+    .col-md-6
+      img(src=champData.imgLink)
+    .col-md-6
+      h1= champData.name
+
+  .row
+    each match in champData.matches
+      .row
+        h1= match.summonerName + '+'
+
+      .row.collapsible
+        each rune in match.runes
+          img(src='/data/dragontail/4.21.4/img/rune/' + staticRuneData.data[rune.runeId].image.full title=staticRuneData.data[rune.runeId].name + ': ' + staticRuneData.data[rune.runeId].description)
+          = 'x' + rune.rank

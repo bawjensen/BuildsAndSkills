@@ -88,7 +88,8 @@ app.route('/champ/:champId')
             }
             else {
                 console.log(data);
-                res.send('yes');
+                // res.send('yes');
+                res.render('champion_v2.jade', { champData: data });
             }
         });
 
