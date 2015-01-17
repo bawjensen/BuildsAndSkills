@@ -1,4 +1,7 @@
-# LoLRunes
+# LoL Runes and Masteries
+
+Created and designed by @bawjensen and @dshelts. 
+
 
 Order of events:
 
