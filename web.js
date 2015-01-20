@@ -7,7 +7,6 @@ var bodyParser  = require("body-parser"),
     querystring = require("querystring");
 
 // Global constants
-// var key = '19deda21-b9ca-40d3-af2c-5037a30b37b9';
 var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
 
 function promiseGet(url) {
@@ -71,7 +70,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //         })
 // });
 
-app.route('/champ/:champId')
+app.route('/champ/:champName')
     .all(function(req, res, next) {
         MongoClient.connect(MONGO_URL, function callback(err, db) {
             req.dbCollection = db.collection('champData');
@@ -79,17 +78,34 @@ app.route('/champ/:champId')
         });
     })
     .get(function(req, res) {
-        var champId = req.params.champId;
+        var champName = req.params.champName;
 
-        req.dbCollection.find({ 'champId': champId }).toArray(function callback(err, data) {
+        var staticData = {
+            runes: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/rune.json')),
+            masteries: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/mastery.json')),
+            items: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/item.json')),
+            champs: JSON.parse(fs.readFileSync('data/champData.json')),
+            summSpells: JSON.parse(fs.readFileSync('data/spellData.json'))
+        };
+
+        if (!isNaN(parseInt(champName))) {
+            champName = staticData.champs[parseInt(champName)].name;
+        }
+
+        console.log('champName: ' + champName);
+
+        req.dbCollection.find({ '_id': champName }).toArray(function callback(err, data) {
             if (err) {
                 console.log(err.stack);
                 res.send('no');
             }
+            else if (data.length == 0) {
+                console.log('No one played ' + champName);
+                res.send('no');
+            }
             else {
-                console.log(data);
                 // res.send('yes');
-                res.render('champion_v2.jade', { champData: data });
+                res.render('champion_v2.jade', { champData: { array: data, champName: champName }, staticData: staticData });
             }
         });
 
@@ -103,7 +119,7 @@ app.route('/champ/:champId')
         //             });
         //     })
         //     .then(function display(allData) {
-        //         res.render('champion.jade', { champData: allData.champData[champId], staticRuneData: allData.staticRuneData });
+        //         res.render('champion.jade', { champData: allData.champData[champName], staticRuneData: allData.staticRuneData });
         //     }).catch(function handleError(err) {
         //         res.send(err.stack);
         //     });

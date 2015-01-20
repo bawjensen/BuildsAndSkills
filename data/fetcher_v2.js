@@ -24,7 +24,7 @@ var bodyParser  = require("body-parser"),
     request     = require("request"),
     querystring = require("querystring");
 
-var KEY = '19deda21-b9ca-40d3-af2c-5037a30b37b9';
+var KEY = '81216707-de8d-4484-9d08-619de3821271';
 var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
 
 function promiseSave(data, filePath) {
@@ -47,7 +47,7 @@ function promiseGet(url) {
                 reject(Error(err));
             }
             else if (resp.statusCode != 200) {
-                reject(Error("Resp status code not 200: " + resp.statusCode));
+                reject(Error('Resp status code not 200: ' + resp.statusCode + '(' + url + ')'));
             }
             else {
                 resolve(body);
@@ -84,14 +84,24 @@ function preprocessStaticData(staticData) {
 
     for (var key in subData) {
         var entry = subData[key];
-        processed[entry.key] = entry;
+        processed[entry.key] = key;
     }
 
     return processed;
 }
 
-function getChallengerData() {
+function convertObjectForMongo(dataObj) {
+    var mongoArray = [];
 
+    for (var key in dataObj) {
+        dataObj[key]._id = key;
+        mongoArray.push(dataObj[key]);
+    }
+
+    return mongoArray;
+}
+
+function getChallengerData() {
     var baseUrl = 'https://na.api.pvp.net';
 
     var challengerQueryRoute    = '/api/lol/na/v2.5/league/challenger?';
@@ -140,30 +150,54 @@ function getChallengerData() {
                 });
         })
         .then(function extractRunesAndMasteries(dataObj) {
-            staticData = dataObj.staticData;
-            histories = dataObj.histories;
+            var staticData = dataObj.staticData;
+            var histories = dataObj.histories;
 
             staticData = preprocessStaticData(staticData);
 
             champDataObj = {};
-            matchDataObjs = [];
+            champsObj = {};
 
             histories.forEach(function handleEntry(historyEntry) {
                 historyEntry.matches.forEach(function handleEntry(matchEntry) {
-                    matchDataObjs.push({
-                        champId: matchEntry.participants[0].championId,
-                        masteries: matchEntry.participants[0].masteries,
-                        runes: matchEntry.participants[0].runes,
-                        summonerName: matchEntry.participantIdentities[0].player.summonerName
+                    var champName = staticData[champId];
+
+                    if (!(champName in champsObj))
+                        champsObj[champName] = [];
+
+                    // matchDataObjs.push({
+                    champsObj[champName].push ({
+                        champId:        matchEntry.participants[0].championId,
+                        summonerName:   matchEntry.participantIdentities[0].player.summonerName,
+                        status:         matchEntry.participants[0].stats.winner,
+                        runes:          matchEntry.participants[0].runes,
+                        masteries:      matchEntry.participants[0].masteries,
+                        lane:           matchEntry.participants[0].timeline.lane,
+                        kills:          matchEntry.participants[0].stats.kills,
+                        deaths:         matchEntry.participants[0].stats.deaths,
+                        assists:        matchEntry.participants[0].stats.assists,
+                        finalBuild:     [
+                                            matchEntry.participants[0].stats.item0,
+                                            matchEntry.participants[0].stats.item1,
+                                            matchEntry.participants[0].stats.item2,
+                                            matchEntry.participants[0].stats.item3,
+                                            matchEntry.participants[0].stats.item4,
+                                            matchEntry.participants[0].stats.item5,
+                                            matchEntry.participants[0].stats.item6
+                                        ],
+                        summonerSpells: [
+                                            matchEntry.participants[0].spell1Id,
+                                            matchEntry.participants[0].spell2Id
+                                        ]
                     });
                 });
             });
 
-            return matchDataObjs;
+            return champsObj;
         })
         .then(function saveMasteriesAndRunes(data) {
             MongoClient.connect(MONGO_URL, function callback(err, db) {
-                db.collection('champData').insert(data, function callback(err) {
+                db.collection('champData').insert(convertObjectForMongo(data), function callback(err) {
                     if (err) {
                         console.log(err);
                     }

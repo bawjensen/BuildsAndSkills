@@ -115,7 +115,7 @@ function getChallengerData() {
                 challengerIds.push(id);
             }
 
-            return challengerIds.slice(0, 2);
+            return challengerIds.slice(0, 10);
         })
         .then(function getMatches(challengerIds) {
 
