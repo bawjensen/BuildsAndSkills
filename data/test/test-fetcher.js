@@ -24,8 +24,15 @@ var bodyParser  = require("body-parser"),
     request     = require("request"),
     querystring = require("querystring");
 
-var KEY = '81216707-de8d-4484-9d08-619de3821271';
 var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
+
+var KEY = '81216707-de8d-4484-9d08-619de3821271';
+var KEY_QUERY = querystring.stringify({ api_key: KEY });
+
+var API_BASE_URL            = 'https://na.api.pvp.net';
+var MATCH_HISTORY_ROUTE     = '/api/lol/na/v2.2/matchhistory/';
+var LEAGUE_DATA_ROUTE       = '/api/lol/na/v2.5/league/by-summoner/';
+var MATCH_ROUTE             = '/api/lol/na/v2.2/match/';
 
 function promiseSave(data, filePath) {
     return new Promise(function save(resolve, reject) {
@@ -57,7 +64,7 @@ function promiseGet(url) {
     });
 }
 function promiseJsonGet(url) {
-    return promiseGet(url).then(JSON.parse);
+    return promiseGet(url).then(JSON.parse).catch(function handleError(err) { console.log(err.stack); });
 }
 
 function promiseReadFile(filePath) {
@@ -100,56 +107,94 @@ function convertObjectForMongo(dataObj) {
     return mongoArray;
 }
 
-function getDataFor(leagues, divisions) {
-    var baseUrl = 'https://na.api.pvp.net';
+function getLeagueFrom(leagueTier, seedPlayer) {
+    var queryUrl = API_BASE_URL + MATCH_HISTORY_ROUTE + seedPlayer + '?' + KEY_QUERY;
 
-    var challengerQueryRoute    = '/api/lol/na/v2.5/league/challenger?';
-    var matchHistoryRoute       = '/api/lol/na/v2.2/matchhistory/';
-    var leagueDataRoute         = '/api/lol/na/v2.5/league/by-summoner/';
-    var masteryRoute            = '/api/lol/static-data/na/v1.2/mastery/';
+    return new Promise(function getSomeone(resolve, reject) {
+        promiseJsonGet(queryUrl)
+            .then(function getMatchIds(matchHistoryObj) {
+                console.log('Got match history');
+                return matchHistoryObj.matches.map(function(match) {
+                    return match.matchId;
+                });
+            })
+            .then(function getMatches(matchIds) {
+                console.log('Got match ids');
+                matchIds = matchIds.slice(0, 1); // Debugging step - cut down number of calls
 
-    var challengerQuery  = {
-        type: 'RANKED_SOLO_5x5',
-        api_key: KEY
-    };
+                return Promise.all(
+                    matchIds.map(function(matchId) {
+                        return promiseJsonGet(API_BASE_URL + MATCH_ROUTE + matchId + '?' + KEY_QUERY);
+                    })
+                );
+            })
+            .then(function getLeagues(matches) {
+                console.log('Got matches');
+                var summonerIdObj = {};
 
+                matches.forEach(function(match) {
+                    match.participantIdentities.forEach(function(participantIdentity) {
+                        summonerIdObj[participantIdentity.player.summonerId] = true;
+                    });
+                });
+
+                var summonerIds = Object.keys(summonerIdObj);
+                var condensedSummonerIds = [];
+
+                for (var i = 0; i < summonerIds.length; i += 10) {
+                    condensedSummonerIds.push(summonerIds.slice(i, i+10));
+                }
+
+                condensedSummonerIds = condensedSummonerIds.slice(0, 1); // Debugging step - cut down number of calls
+
+                return Promise.all(
+                        condensedSummonerIds.map(function(summonerIdSubset) {
+                            return promiseJsonGet(API_BASE_URL + LEAGUE_DATA_ROUTE + summonerIdSubset.join() + '?' + KEY_QUERY);
+                        })
+                    )
+                    .then(function extractLeagues(leagueObjs) {
+                        // Use of every here is to short-circuit the loop when the culprit is found
+                        leagueObjs.every(function(leagueObj) {
+                            for (var summonerId in leagueObj) {
+                                if (leagueObj[summonerId][0].tier == leagueTier) {
+                                    resolve(leagueObj[summonerId][0]);
+                                    return false;
+                                }
+                            }
+                            return true;
+                        });
+                    })
+                    .catch(function handleError(err) {
+                        console.log(err.stack);
+                        process.exit(1);
+                    });
+            })
+            .catch(function handleError(err) {
+                console.log(err.stack);
+                process.exit(1);
+            });
+    });
+}
+
+function getDataFor(leagueTier, divisions) {
     var seedPlayers = [
         '51405', // C9 Sneaky
         '20132258' // Doublelift
     ];
 
-    var queryUrl = baseUrl + leagueDataRoute + seedPlayers.join() + '?' + querystring.stringify({ api_key: KEY });
+    getLeagueFrom(leagueTier, seedPlayers[0])
+        .then(function(leagueObj) {
+            console.log(JSON.stringify(leagueObj, null, 2));
 
-    promiseJsonGet(queryUrl)
-        .then(function grabAllFellowMembers(dataObj) {
-            var processedDataObj = {};
+            // for (var player in leagueObj.entries) {
+            //     player = leagueObj[player];
 
-            for (var player in seedPlayers) {
-                player = seedPlayers[player];
-                var playerLeague = dataObj[player][0];
-
-                if (leagues.indexOf(playerLeague.tier) == -1) continue;
-
-                var leagueName = playerLeague.name.toLowerCase().replace(/'/, '').replace(/ /g, '');
-
-                processedDataObj[leagueName] = {};
-
-                for (var fellowPlayer in playerLeague.entries) {
-                    fellowPlayer = playerLeague.entries[fellowPlayer];
-                    if (divisions.indexOf(fellowPlayer.division) == -1) continue;
-
-                    processedDataObj[leagueName][fellowPlayer.playerOrTeamId] = {
-                        id: fellowPlayer.playerOrTeamId,
-                        name: fellowPlayer.playerOrTeamName
-                    }
-                }
-            }
-
-            console.log(JSON.stringify(processedDataObj, null, 2));
+                
+            // }
         })
-        .catch(function(err) {
+        .catch(function handleError(err) {
             console.log(err.stack);
         });
 }
 
-getDataFor(['PLATINUM'], ['I']);
+getDataFor('DIAMOND', ['I', 'II']);
