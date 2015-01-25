@@ -130,7 +130,6 @@ function getChallengerData() {
             return challengerIds.slice(0, 2);
         })
         .then(function getMatches(challengerIds) {
-
             var matchHistoryQuery = {
                 api_key: KEY
             };
