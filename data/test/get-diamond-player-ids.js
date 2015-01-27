@@ -1,21 +1,3 @@
-/*
-
-NOTES:
-
-- Getting all challengers, then their match histories, then making a map of champ -> masteries array and map of champ -> runes array
-
-
---- IGNORE BELOW --- (the data already exists in data dump from ddragon [http://ddragon.leagueoflegends.com/cdn/dragontail-4.21.4.tgz])
-- Side data:
-    - Gotta create mastery -> relevant info obj
-        - Relevant info: Image, text, ranks, title
-    - Gotta create champ -> relevant info
-        - Relevant info: Image, title
---- IGNORE ABOVE ---
-
-*/
-
-
 var fs          = require("fs"),
     logfmt      = require("logfmt"),
     MongoClient = require('mongodb').MongoClient,
@@ -32,7 +14,7 @@ var MATCH_HISTORY_ROUTE     = '/api/lol/na/v2.2/matchhistory/';
 var LEAGUE_DATA_ROUTE       = '/api/lol/na/v2.5/league/by-summoner/';
 var MATCH_ROUTE             = '/api/lol/na/v2.2/match/';
 
-function promiseSave(data, filePath) {
+function promiseSave(filePath, data) {
     return new Promise(function save(resolve, reject) {
         fs.writeFile(filePath, data, function handleResp(err) {
             if (!err) {
@@ -129,39 +111,7 @@ function convertObjectForMongo(dataObj) {
 }
 
 function getAllPlayerIds() {
-    var baseLeagueUrl = API_BASE_URL + LEAGUE_DATA_ROUTE;
-
-    var validIds = [];
-    var allIds = [];
-
-    for (var i = 0; i < 200; i += 10) {
-        var ids = [
-            '' + i,
-            '' + (i + 1),
-            '' + (i + 2),
-            '' + (i + 3),
-            '' + (i + 4),
-            '' + (i + 5),
-            '' + (i + 6),
-            '' + (i + 7),
-            '' + (i + 8),
-            '' + (i + 9)
-        ];
-
-        allIds.push(ids);
-    }
-
-    Promise.all(
-        allIds.map(function(id) {
-            repetitiveJsonGet(baseLeagueUrl + ids.join() + '/entry?' + KEY_QUERY)
-                .then(function extractIds(data) {
-                    return Object.keys(data);
-                });
-        })
-    )
-    .then(function logIt(array) {
-        console.log(array)
-    });
+    promiseReadJsonFile('')
 }
 
 getAllPlayerIds();
