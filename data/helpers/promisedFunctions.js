@@ -1,4 +1,5 @@
-var fs      = require('fs'),
+var exec    = require('child_process').exec,
+    fs      = require('fs'),
     request = require('request');
 
 function promiseSave(filePath, data) {
@@ -10,6 +11,28 @@ function promiseSave(filePath, data) {
                 reject(Error(err));
         });
     });
+}
+
+function promisePipeFile(url, filePath) {
+    return new Promise(function save(resolve, reject) {
+        var outStream = fs.createWriteStream(filePath);
+        var pipe = request.get(url).pipe(outStream);
+        outStream.on('finish', resolve);
+    });
+}
+
+function promiseReadFile(filePath) {
+    return new Promise(function read(resolve, reject) {
+        fs.readFile(filePath, function handleResp(err, fileContents) {
+            if (!err)
+                resolve(fileContents);
+            else
+                reject(Error(err));
+        });
+    });
+}
+function promiseReadJsonFile(filePath) {
+    return promiseReadFile(filePath).then(JSON.parse);
 }
 
 
@@ -44,23 +67,19 @@ function promiseGet(url) {
         });
     });
 }
-
 function promiseJsonGet(url) {
     return promiseGet(url).then(JSON.parse);
 }
 
-function promiseReadFile(filePath) {
-    return new Promise(function read(resolve, reject) {
-        fs.readFile(filePath, function handleResp(err, fileContents) {
-            if (!err)
-                resolve(fileContents);
-            else
+function promiseExec(command, options) {
+    return new Promise(function execute(resolve, reject) {
+        exec(command, options, function callback(err, stdout, stderr) {
+            if (err)
                 reject(Error(err));
+            else
+                resolve();
         });
     });
-}
-function promiseReadJsonFile(filePath) {
-    return promiseReadFile(filePath).then(JSON.parse);
 }
 
 module.exports = {
@@ -70,4 +89,6 @@ module.exports = {
     read:               promiseReadFile,
     readJson:           promiseReadJsonFile,
     persistentGet:      persistentPromiseGet,
+    getPipe:            promisePipeFile,
+    exec:               promiseExec
 }

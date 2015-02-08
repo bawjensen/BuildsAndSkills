@@ -84,13 +84,9 @@ app.route('/:champId')
             runes: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/rune.json')),
             masteries: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/mastery.json')),
             items: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/item.json')),
-            champs: JSON.parse(fs.readFileSync('data/champData.json')),
-            summSpells: JSON.parse(fs.readFileSync('data/spellData.json'))
+            champs: JSON.parse(fs.readFileSync('data/data-compiled/champData.json')),
+            summSpells: JSON.parse(fs.readFileSync('data/data-compiled/spellData.json'))
         };
-
-        // if (!isNaN(parseInt(champName))) {
-            // champName = staticData.champs[parseInt(champName)].name;
-        // }
 
         req.dbCollection.findOne({ '_id': champId }, function callback(err, data) {
             if (err) {
