@@ -101,7 +101,7 @@ app.route('/:champId')
                 // res.send('yes');
                 console.log(data.games);
                 console.log(data);
-                res.render('champion_v2.jade', { gamesData: data.games, champId: champId, staticData: staticData });
+                res.render('champion.jade', { gamesData: data.games, champId: champId, staticData: staticData });
             }
         });
 
