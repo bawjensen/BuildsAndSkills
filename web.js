@@ -81,9 +81,9 @@ app.route('/:champId')
         var champId = req.params.champId;
 
         var staticData = {
-            runes: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/rune.json')),
-            masteries: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/mastery.json')),
-            items: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/item.json')),
+            runes: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/rune.json')),
+            masteries: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/mastery.json')),
+            items: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/item.json')),
             champs: JSON.parse(fs.readFileSync('data/data-compiled/champData.json')),
             summSpells: JSON.parse(fs.readFileSync('data/data-compiled/spellData.json'))
         };
@@ -107,7 +107,7 @@ app.route('/:champId')
 
 
 
-        // promiseReadJsonFile('data/dragontail/4.21.4/data/en_US/rune.json')
+        // promiseReadJsonFile('data/dragontail/current/data/en_US/rune.json')
         //     .then(function readNext(staticRuneData) {
         //         return promiseReadJsonFile('data/champData.json')
         //             .then(function returnBoth(champData) {
