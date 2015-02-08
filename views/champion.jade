@@ -1,18 +1,40 @@
 extends skeleton_base
 
+block page-title
+  = staticData.champs[champId].id
+
 block body
   .row
-    .col-md-6
-      img(src=champData.imgLink)
-    .col-md-6
-      h1= champData.name
+    .col-xs-4
+      img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
+    .col-xs-4= staticData.champs[champId].id
+    .col-xs-4= staticData.champs[champId].title
 
-  .row
-    each match in champData.matches
-      .row
-        h1= match.summonerName + '+'
+  each match in gamesData
+    .row
+      .col-xs-2= match.summonerName
 
-      .row.collapsible
+      .col-xs-1
+        = match.lane
+
+      .col-xs-1
+        = match.winner ? 'Won' : 'Lost'
+        
+      .col-xs-1
+        = match.kills + ' / ' + match.deaths + ' / ' + match.assists
+
+      .col-xs-2
+        each item in match.finalBuild
+          .row= staticData.items.data[item].name
+
+      .col-xs-2
         each rune in match.runes
-          img(src='/data/dragontail/4.21.4/img/rune/' + staticRuneData.data[rune.runeId].image.full title=staticRuneData.data[rune.runeId].name + ': ' + staticRuneData.data[rune.runeId].description)
-          = 'x' + rune.rank
+          .row= staticData.runes.data[rune.runeId].name + ' x' + rune.rank
+
+      .col-xs-2
+        each mastery in match.masteries
+          .row= staticData.masteries.data[mastery.masteryId].name + ' x' + mastery.rank
+
+      .col-xs-1
+        each spell in match.summonerSpells
+          .row= staticData.summSpells[spell].name
