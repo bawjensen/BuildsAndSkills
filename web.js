@@ -70,7 +70,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //         })
 // });
 
-app.route('/champ/:champName')
+app.route('/:champId')
     .all(function(req, res, next) {
         MongoClient.connect(MONGO_URL, function callback(err, db) {
             req.dbCollection = db.collection('champData');
@@ -78,7 +78,7 @@ app.route('/champ/:champName')
         });
     })
     .get(function(req, res) {
-        var champName = req.params.champName;
+        var champId = req.params.champId;
 
         var staticData = {
             runes: JSON.parse(fs.readFileSync('data/dragontail/4.21.4/data/en_US/rune.json')),
@@ -88,24 +88,24 @@ app.route('/champ/:champName')
             summSpells: JSON.parse(fs.readFileSync('data/spellData.json'))
         };
 
-        if (!isNaN(parseInt(champName))) {
-            champName = staticData.champs[parseInt(champName)].name;
-        }
+        // if (!isNaN(parseInt(champName))) {
+            // champName = staticData.champs[parseInt(champName)].name;
+        // }
 
-        console.log('champName: ' + champName);
-
-        req.dbCollection.find({ '_id': champName }).toArray(function callback(err, data) {
+        req.dbCollection.findOne({ '_id': champId }, function callback(err, data) {
             if (err) {
                 console.log(err.stack);
                 res.send('no');
             }
             else if (data.length == 0) {
-                console.log('No one played ' + champName);
+                console.log('No one played ' + champId);
                 res.send('no');
             }
             else {
                 // res.send('yes');
-                res.render('champion_v2.jade', { champData: { array: data, champName: champName }, staticData: staticData });
+                console.log(data.games);
+                console.log(data);
+                res.render('champion_v2.jade', { gamesData: data.games, champId: champId, staticData: staticData });
             }
         });
 

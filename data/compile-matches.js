@@ -13,7 +13,7 @@ function compileMatches() {
         .then(function fetchMatches(players) {
             var baseRoute = BASE_URL + MATCH_HISTORY_ROUTE;
             return Promise.all(
-                players.slice(0, 10).map(function(id) {
+                players.map(function(id) {
                     return promise.persistentGet(baseRoute + id + '?' + KEY_QUERY);
                 })
             );

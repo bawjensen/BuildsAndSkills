@@ -1,16 +1,16 @@
 extends skeleton_base
 
 block page-title
-  = staticData.champs[champData.champId].id
+  = staticData.champs[champId].id
 
 block body
   .row
     .col-xs-4
-      img(src='/data/dragontail/4.21.4/img/champion/' + staticData.champs[champData.champId].image.full)
-    .col-xs-4= staticData.champs[champData.champId].id
-    .col-xs-4= staticData.champs[champData.champId].title
+      img(src='/data/dragontail/4.21.4/img/champion/' + staticData.champs[champId].image.full)
+    .col-xs-4= staticData.champs[champId].id
+    .col-xs-4= staticData.champs[champId].title
 
-  each match in champData.array
+  each match in gamesData
     .row
       .col-xs-2= match.summonerName
 

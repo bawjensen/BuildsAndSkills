@@ -17,7 +17,9 @@ function persistentCallback(url, resolve, reject, err, resp, body) {
     if (err)
         reject(Error(err));
     else if (resp.statusCode == 429 || resp.statusCode == 503)
-        request.get(url, persistentCallback.bind(null, url, resolve, reject));
+        setTimeout(function() {
+            request.get(url, persistentCallback.bind(null, url, resolve, reject));
+        }, 100);
     else if (resp.statusCode != 200)
         reject(Error('Resp status code not 200: ' + resp.statusCode + '(' + url + ')'));
     else

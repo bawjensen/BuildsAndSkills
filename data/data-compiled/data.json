@@ -1,0 +1,1142 @@
+{
+  "1": [
+    {
+      "champId": 1,
+      "summonerName": "Annie Bot",
+      "winner": false,
+      "runes": [
+        {
+          "runeId": 5273,
+          "rank": 9
+        },
+        {
+          "runeId": 5296,
+          "rank": 9
+        },
+        {
+          "runeId": 5320,
+          "rank": 9
+        },
+        {
+          "runeId": 5365,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4111,
+          "rank": 1
+        },
+        {
+          "masteryId": 4113,
+          "rank": 4
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4123,
+          "rank": 3
+        },
+        {
+          "masteryId": 4131,
+          "rank": 1
+        },
+        {
+          "masteryId": 4133,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4143,
+          "rank": 2
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4311,
+          "rank": 1
+        },
+        {
+          "masteryId": 4312,
+          "rank": 3
+        },
+        {
+          "masteryId": 4313,
+          "rank": 1
+        },
+        {
+          "masteryId": 4322,
+          "rank": 3
+        },
+        {
+          "masteryId": 4332,
+          "rank": 1
+        }
+      ],
+      "lane": "MIDDLE",
+      "kills": 2,
+      "deaths": 7,
+      "assists": 9,
+      "finalBuild": [
+        0,
+        3165,
+        3273,
+        3116,
+        1056,
+        3191,
+        3341
+      ],
+      "summonerSpells": [
+        14,
+        4
+      ]
+    }
+  ],
+  "7": [
+    {
+      "champId": 7,
+      "summonerName": "P0Z",
+      "winner": true,
+      "runes": [
+        {
+          "runeId": 5289,
+          "rank": 9
+        },
+        {
+          "runeId": 5316,
+          "rank": 9
+        },
+        {
+          "runeId": 5357,
+          "rank": 3
+        },
+        {
+          "runeId": 5402,
+          "rank": 9
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4113,
+          "rank": 3
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4123,
+          "rank": 3
+        },
+        {
+          "masteryId": 4124,
+          "rank": 1
+        },
+        {
+          "masteryId": 4133,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4143,
+          "rank": 3
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4154,
+          "rank": 1
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4312,
+          "rank": 3
+        },
+        {
+          "masteryId": 4313,
+          "rank": 1
+        },
+        {
+          "masteryId": 4322,
+          "rank": 3
+        },
+        {
+          "masteryId": 4324,
+          "rank": 1
+        },
+        {
+          "masteryId": 4334,
+          "rank": 1
+        }
+      ],
+      "lane": "MIDDLE",
+      "kills": 7,
+      "deaths": 4,
+      "assists": 11,
+      "finalBuild": [
+        1033,
+        3165,
+        3001,
+        3089,
+        1056,
+        3020,
+        3341
+      ],
+      "summonerSpells": [
+        4,
+        14
+      ]
+    }
+  ],
+  "37": [
+    {
+      "champId": 37,
+      "summonerName": "Dio DeSol",
+      "winner": true,
+      "runes": [
+        {
+          "runeId": 5273,
+          "rank": 9
+        },
+        {
+          "runeId": 5290,
+          "rank": 3
+        },
+        {
+          "runeId": 5295,
+          "rank": 6
+        },
+        {
+          "runeId": 5317,
+          "rank": 9
+        },
+        {
+          "runeId": 5357,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4213,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        },
+        {
+          "masteryId": 4312,
+          "rank": 3
+        },
+        {
+          "masteryId": 4313,
+          "rank": 2
+        },
+        {
+          "masteryId": 4322,
+          "rank": 3
+        },
+        {
+          "masteryId": 4324,
+          "rank": 1
+        },
+        {
+          "masteryId": 4331,
+          "rank": 3
+        },
+        {
+          "masteryId": 4332,
+          "rank": 1
+        },
+        {
+          "masteryId": 4334,
+          "rank": 1
+        },
+        {
+          "masteryId": 4341,
+          "rank": 1
+        },
+        {
+          "masteryId": 4342,
+          "rank": 1
+        },
+        {
+          "masteryId": 4352,
+          "rank": 1
+        },
+        {
+          "masteryId": 4353,
+          "rank": 3
+        },
+        {
+          "masteryId": 4362,
+          "rank": 1
+        }
+      ],
+      "lane": "BOTTOM",
+      "kills": 1,
+      "deaths": 6,
+      "assists": 17,
+      "finalBuild": [
+        3222,
+        3092,
+        2049,
+        3117,
+        3105,
+        0,
+        3364
+      ],
+      "summonerSpells": [
+        4,
+        3
+      ]
+    }
+  ],
+  "39": [
+    {
+      "champId": 39,
+      "summonerName": "CST Cris ",
+      "winner": true,
+      "runes": [
+        {
+          "runeId": 5245,
+          "rank": 9
+        },
+        {
+          "runeId": 5289,
+          "rank": 9
+        },
+        {
+          "runeId": 5315,
+          "rank": 5
+        },
+        {
+          "runeId": 5317,
+          "rank": 4
+        },
+        {
+          "runeId": 5337,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4111,
+          "rank": 1
+        },
+        {
+          "masteryId": 4112,
+          "rank": 3
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4121,
+          "rank": 1
+        },
+        {
+          "masteryId": 4122,
+          "rank": 3
+        },
+        {
+          "masteryId": 4124,
+          "rank": 1
+        },
+        {
+          "masteryId": 4131,
+          "rank": 1
+        },
+        {
+          "masteryId": 4132,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4141,
+          "rank": 1
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4212,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        }
+      ],
+      "lane": "TOP",
+      "kills": 5,
+      "deaths": 6,
+      "assists": 12,
+      "finalBuild": [
+        3143,
+        1057,
+        3156,
+        3078,
+        1055,
+        3111,
+        3341
+      ],
+      "summonerSpells": [
+        4,
+        12
+      ]
+    }
+  ],
+  "40": [
+    {
+      "champId": 40,
+      "summonerName": "METAL CHOCOB0",
+      "winner": false,
+      "runes": [
+        {
+          "runeId": 5273,
+          "rank": 9
+        },
+        {
+          "runeId": 5289,
+          "rank": 9
+        },
+        {
+          "runeId": 5317,
+          "rank": 9
+        },
+        {
+          "runeId": 5357,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4212,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        },
+        {
+          "masteryId": 4311,
+          "rank": 1
+        },
+        {
+          "masteryId": 4312,
+          "rank": 3
+        },
+        {
+          "masteryId": 4313,
+          "rank": 3
+        },
+        {
+          "masteryId": 4322,
+          "rank": 3
+        },
+        {
+          "masteryId": 4324,
+          "rank": 1
+        },
+        {
+          "masteryId": 4331,
+          "rank": 3
+        },
+        {
+          "masteryId": 4334,
+          "rank": 1
+        },
+        {
+          "masteryId": 4341,
+          "rank": 1
+        },
+        {
+          "masteryId": 4342,
+          "rank": 1
+        },
+        {
+          "masteryId": 4353,
+          "rank": 3
+        },
+        {
+          "masteryId": 4362,
+          "rank": 1
+        }
+      ],
+      "lane": "BOTTOM",
+      "kills": 1,
+      "deaths": 6,
+      "assists": 12,
+      "finalBuild": [
+        2049,
+        3222,
+        3092,
+        3273,
+        1028,
+        0,
+        3364
+      ],
+      "summonerSpells": [
+        14,
+        4
+      ]
+    }
+  ],
+  "64": [
+    {
+      "champId": 64,
+      "summonerName": "CST Impaled",
+      "winner": true,
+      "runes": [
+        {
+          "runeId": 5245,
+          "rank": 9
+        },
+        {
+          "runeId": 5289,
+          "rank": 3
+        },
+        {
+          "runeId": 5295,
+          "rank": 6
+        },
+        {
+          "runeId": 5317,
+          "rank": 9
+        },
+        {
+          "runeId": 5335,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4111,
+          "rank": 1
+        },
+        {
+          "masteryId": 4112,
+          "rank": 4
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4121,
+          "rank": 1
+        },
+        {
+          "masteryId": 4122,
+          "rank": 3
+        },
+        {
+          "masteryId": 4131,
+          "rank": 1
+        },
+        {
+          "masteryId": 4132,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4141,
+          "rank": 1
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4214,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        }
+      ],
+      "lane": "JUNGLE",
+      "kills": 12,
+      "deaths": 4,
+      "assists": 13,
+      "finalBuild": [
+        2045,
+        3707,
+        3143,
+        3270,
+        3155,
+        3083,
+        3341
+      ],
+      "summonerSpells": [
+        11,
+        4
+      ]
+    }
+  ],
+  "68": [
+    {
+      "champId": 68,
+      "summonerName": "Lourlo",
+      "winner": false,
+      "runes": [
+        {
+          "runeId": 5273,
+          "rank": 9
+        },
+        {
+          "runeId": 5297,
+          "rank": 6
+        },
+        {
+          "runeId": 5303,
+          "rank": 3
+        },
+        {
+          "runeId": 5317,
+          "rank": 9
+        },
+        {
+          "runeId": 5357,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4111,
+          "rank": 1
+        },
+        {
+          "masteryId": 4113,
+          "rank": 3
+        },
+        {
+          "masteryId": 4121,
+          "rank": 1
+        },
+        {
+          "masteryId": 4123,
+          "rank": 3
+        },
+        {
+          "masteryId": 4133,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4143,
+          "rank": 3
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4154,
+          "rank": 1
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4212,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        }
+      ],
+      "lane": "TOP",
+      "kills": 7,
+      "deaths": 8,
+      "assists": 8,
+      "finalBuild": [
+        0,
+        3151,
+        3255,
+        3135,
+        3157,
+        1028,
+        3341
+      ],
+      "summonerSpells": [
+        12,
+        4
+      ]
+    }
+  ],
+  "119": [
+    {
+      "champId": 119,
+      "summonerName": "Bulgarian Legend",
+      "winner": true,
+      "runes": [
+        {
+          "runeId": 5245,
+          "rank": 9
+        },
+        {
+          "runeId": 5277,
+          "rank": 3
+        },
+        {
+          "runeId": 5290,
+          "rank": 2
+        },
+        {
+          "runeId": 5302,
+          "rank": 4
+        },
+        {
+          "runeId": 5307,
+          "rank": 1
+        },
+        {
+          "runeId": 5317,
+          "rank": 8
+        },
+        {
+          "runeId": 5337,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4112,
+          "rank": 4
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4122,
+          "rank": 3
+        },
+        {
+          "masteryId": 4124,
+          "rank": 1
+        },
+        {
+          "masteryId": 4132,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4142,
+          "rank": 2
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4151,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4212,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        }
+      ],
+      "lane": "BOTTOM",
+      "kills": 7,
+      "deaths": 2,
+      "assists": 9,
+      "finalBuild": [
+        3006,
+        3139,
+        3072,
+        1055,
+        3031,
+        3046,
+        3342
+      ],
+      "summonerSpells": [
+        4,
+        7
+      ]
+    }
+  ],
+  "121": [
+    {
+      "champId": 121,
+      "summonerName": "D D A B O N G",
+      "winner": false,
+      "runes": [
+        {
+          "runeId": 5245,
+          "rank": 8
+        },
+        {
+          "runeId": 5251,
+          "rank": 1
+        },
+        {
+          "runeId": 5289,
+          "rank": 9
+        },
+        {
+          "runeId": 5317,
+          "rank": 9
+        },
+        {
+          "runeId": 5335,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4111,
+          "rank": 1
+        },
+        {
+          "masteryId": 4113,
+          "rank": 4
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4122,
+          "rank": 3
+        },
+        {
+          "masteryId": 4131,
+          "rank": 1
+        },
+        {
+          "masteryId": 4132,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4141,
+          "rank": 1
+        },
+        {
+          "masteryId": 4142,
+          "rank": 1
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4214,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        }
+      ],
+      "lane": "JUNGLE",
+      "kills": 4,
+      "deaths": 7,
+      "assists": 5,
+      "finalBuild": [
+        3035,
+        3083,
+        0,
+        3111,
+        3723,
+        3155,
+        3341
+      ],
+      "summonerSpells": [
+        11,
+        4
+      ]
+    }
+  ],
+  "429": [
+    {
+      "champId": 429,
+      "summonerName": "Jinpachi",
+      "winner": false,
+      "runes": [
+        {
+          "runeId": 5245,
+          "rank": 9
+        },
+        {
+          "runeId": 5289,
+          "rank": 9
+        },
+        {
+          "runeId": 5317,
+          "rank": 9
+        },
+        {
+          "runeId": 5337,
+          "rank": 3
+        }
+      ],
+      "masteries": [
+        {
+          "masteryId": 4112,
+          "rank": 3
+        },
+        {
+          "masteryId": 4114,
+          "rank": 1
+        },
+        {
+          "masteryId": 4121,
+          "rank": 1
+        },
+        {
+          "masteryId": 4122,
+          "rank": 3
+        },
+        {
+          "masteryId": 4124,
+          "rank": 1
+        },
+        {
+          "masteryId": 4131,
+          "rank": 1
+        },
+        {
+          "masteryId": 4132,
+          "rank": 1
+        },
+        {
+          "masteryId": 4134,
+          "rank": 3
+        },
+        {
+          "masteryId": 4141,
+          "rank": 1
+        },
+        {
+          "masteryId": 4144,
+          "rank": 1
+        },
+        {
+          "masteryId": 4151,
+          "rank": 1
+        },
+        {
+          "masteryId": 4152,
+          "rank": 3
+        },
+        {
+          "masteryId": 4162,
+          "rank": 1
+        },
+        {
+          "masteryId": 4211,
+          "rank": 2
+        },
+        {
+          "masteryId": 4212,
+          "rank": 2
+        },
+        {
+          "masteryId": 4221,
+          "rank": 1
+        },
+        {
+          "masteryId": 4222,
+          "rank": 3
+        },
+        {
+          "masteryId": 4232,
+          "rank": 1
+        }
+      ],
+      "lane": "BOTTOM",
+      "kills": 8,
+      "deaths": 4,
+      "assists": 5,
+      "finalBuild": [
+        3035,
+        3085,
+        1055,
+        3102,
+        3072,
+        3006,
+        3342
+      ],
+      "summonerSpells": [
+        4,
+        7
+      ]
+    }
+  ]
+}
