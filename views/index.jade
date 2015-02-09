@@ -6,7 +6,7 @@ block page-title
 block body
   .row
     each champObj in champData
-      .champDiv.col-xs-4.col-md-1
+      .champDiv.col-xs-4.col-sm-2.col-md-1
         - var champStatic = staticData.champs[champObj._id]
         - var champName = champStatic.id
         a(href=champName)
