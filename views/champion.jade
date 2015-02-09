@@ -11,7 +11,7 @@ block body
     .col-xs-4= staticData.champs[champId].title
 
   each match in gamesData
-    .row
+    .matchRow.row
       .col-xs-1= match.summonerName
 
       .col-xs-1= match.date
@@ -26,14 +26,24 @@ block body
         = match.kills + ' / ' + match.deaths + ' / ' + match.assists
 
       .col-xs-2
-        each item in match.finalBuild
-          //- .row= staticData.items.data[item].name
-          .row= staticData.items.data[item] ? staticData.items.data[item].name : item
+        - var trans = ['', 'Q', 'W', 'E', 'R'];
+        each skillSlot in match.skillOrder
+          = trans[skillSlot]
 
-      .col-xs-2
+      //- .col-xs-1
+      //-   each item in match.finalBuild
+      //-     .row= staticData.items.data[item] ? staticData.items.data[item].name : item
+
+      .col-xs-1
+        each buy in match.buyOrder
+          .row
+            each amount, itemId in buy
+              img.itemBuyOrder(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
+              = ' x' + amount
+
+      .col-xs-1
         each rune in match.runes
-          //- .row= staticData.runes.data[rune.runeId].name + ' x' + rune.rank
-          .row= staticData.runes.data[rune.runeId] ? staticData.runes.data[rune.runeId].name + ' x' + rune.rank : rune.runeId
+          .row= rune.rank + ' ' + staticData.runes[rune.runeId].shortName
 
       .col-xs-2
         each mastery in match.masteries
@@ -41,4 +51,4 @@ block body
 
       .col-xs-1
         each spell in match.summonerSpells
-          .row= staticData.summSpells[spell].name
+          img.summSpell(src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)

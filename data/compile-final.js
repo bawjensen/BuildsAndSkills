@@ -6,7 +6,64 @@ var BASE_URL    = 'https://na.api.pvp.net';
 var API_KEY     = '81216707-de8d-4484-9d08-619de3821271';
 var KEY_QUERY = querystring.stringify({ api_key: API_KEY });
 
-var MATCH_ROUTE = '/api/lol/na/v2.2/match/'
+var MATCH_ROUTE = '/api/lol/na/v2.2/match/';
+
+function groupPurchases(buys) {
+    var grouped = [];
+    var i = 0;
+
+    while (i < buys.length) {
+        var subGroup = {};
+        var starterTime = buys[i].time;
+
+        while ((i < buys.length) && (buys[i].time - starterTime) < 30000) { // 30 time window of buying
+            var itemId = buys[i].id;
+
+            if (!(itemId in subGroup))
+                subGroup[itemId] = 0;
+
+            subGroup[itemId]++;
+            i++;
+        }
+
+        grouped.push(subGroup);
+        i++;
+    }
+
+    // console.log(buys);
+    // console.log(grouped);
+    // console.log();
+
+    return grouped;
+}
+
+function parseSkillsAndBuysFromTimeline(matchEntry) {
+    matchEntry.timeline.frames.forEach(function handleFrame(frame, i) {
+        if (!frame.events) return;
+
+        frame.events.forEach(function handleEvent(evt) {
+            if (evt.eventType === 'SKILL_LEVEL_UP') {
+                var id = evt.participantId - 1; // Adjust the index by 1
+                var participant = matchEntry.participants[id];
+
+                if (!(participant.skills))
+                    participant.skills = [];
+
+                participant.skills.push(evt.skillSlot);
+            }
+            else if (evt.eventType === 'ITEM_PURCHASED') {
+                var id = evt.participantId - 1; // Adjust the index by 1
+                var participant = matchEntry.participants[id];
+
+                if (!(participant.buys))
+                    participant.buys = [];
+
+
+                participant.buys.push({ time: evt.timestamp, id: evt.itemId });
+            }
+        });
+    });
+}
 
 function compileData() {
     var limit = Infinity;
@@ -29,13 +86,21 @@ function compileData() {
 
             matchesArray.forEach(function handleMatch(matchEntry) {
                 var matchDate = new Date(matchEntry.matchCreation);
-                var dateString = matchDate.toDateString();
+                var dateString = (matchDate.getMonth() + 1) + '/' + matchDate.getUTCDate() + '/' + matchDate.getUTCFullYear();
+
+                parseSkillsAndBuysFromTimeline(matchEntry);
 
                 matchEntry.participants.forEach(function handleParticipant(participant, i) {
                     var champId = participant.championId;
 
+                    if (participant.participantId != i+1) {
+                        throw new Error('Issue: The participant index (' + i + ') doesn\'t match the id (' + participant.participantId + ')');
+                    }
+
                     if (!(champId in champsObj))
                         champsObj[champId] = [];
+
+                    var buyOrder = groupPurchases(participant.buys);
 
                     // matchDataObjs.push({
                     champsObj[champId].push ({
@@ -61,7 +126,9 @@ function compileData() {
                                             participant.spell1Id,
                                             participant.spell2Id
                                         ],
-                        date:           dateString
+                        date:           dateString,
+                        skillOrder:     participant.skills,
+                        buyOrder:       buyOrder
                     });
                 });
             });

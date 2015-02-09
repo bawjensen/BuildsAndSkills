@@ -80,7 +80,8 @@ function loadChampNameTranslator() {
 
 function loadStaticData() {
     return {
-        runes: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/rune.json')),
+        // runes: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/rune.json')),
+        runes: JSON.parse(fs.readFileSync('data/data-compiled/runeData.json')),
         masteries: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/mastery.json')),
         items: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/item.json')),
         champs: JSON.parse(fs.readFileSync('data/data-compiled/champData.json')),

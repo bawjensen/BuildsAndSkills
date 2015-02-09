@@ -31,5 +31,39 @@ function convertSummonerSpells() {
     fs.writeFile('data-compiled/spellData.json', JSON.stringify(newObj));
 }
 
+function convertRuneData() {
+    var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/rune.json')).data;
+
+    for (var runeId in data) {
+        var runeObj = data[runeId];
+
+        if (runeObj.name.match(/^Greater/)) {
+            runeObj.shortName = runeObj.name.replace(/^Greater (Mark|Seal|Quintessence|Glyph) of /, '');
+
+            if (runeObj.name.match(/Quintessence/)) {
+                runeObj.shortName += ' Quints';
+            }
+            else if (runeObj.name.match(/Glyph/)) {
+                runeObj.shortName += ' Glyphs';
+            }
+            else if (runeObj.name.match(/Mark/)) {
+                runeObj.shortName += ' Marks';
+            }
+            else if (runeObj.name.match(/Seal/)) {
+                runeObj.shortName += ' Seals';
+            }
+
+            runeObj.shortName = runeObj.shortName.replace(/Ability Power/, 'AP');
+            runeObj.shortName = runeObj.shortName.replace(/Attack Damage/, 'AD');
+            runeObj.shortName = runeObj.shortName.replace(/Penetration/, 'Pen');
+            runeObj.shortName = runeObj.shortName.replace(/Regeneration/, 'Regen'); 
+            runeObj.shortName = runeObj.shortName.replace(/Cooldown Reduction/, 'CDR');
+        }
+    }
+
+    fs.writeFile('data-compiled/runeData.json', JSON.stringify(data));
+}
+
 convertChamps();
 convertSummonerSpells();
+convertRuneData();
