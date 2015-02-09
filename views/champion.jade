@@ -12,7 +12,9 @@ block body
 
   each match in gamesData
     .row
-      .col-xs-2= match.summonerName
+      .col-xs-1= match.summonerName
+
+      .col-xs-1= match.date
 
       .col-xs-1
         = match.lane
@@ -25,11 +27,13 @@ block body
 
       .col-xs-2
         each item in match.finalBuild
-          .row= staticData.items.data[item].name
+          //- .row= staticData.items.data[item].name
+          .row= staticData.items.data[item] ? staticData.items.data[item].name : item
 
       .col-xs-2
         each rune in match.runes
-          .row= staticData.runes.data[rune.runeId].name + ' x' + rune.rank
+          //- .row= staticData.runes.data[rune.runeId].name + ' x' + rune.rank
+          .row= staticData.runes.data[rune.runeId] ? staticData.runes.data[rune.runeId].name + ' x' + rune.rank : rune.runeId
 
       .col-xs-2
         each mastery in match.masteries

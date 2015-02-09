@@ -9,12 +9,18 @@ var KEY_QUERY = querystring.stringify({ api_key: API_KEY });
 var MATCH_ROUTE = '/api/lol/na/v2.2/match/'
 
 function compileData() {
+    var limit = Infinity;
+    if (process.argv[2]) {
+        limit = parseInt(process.argv[2]);
+        console.log('Limiting to ' + limit + ' matches');
+    }
+
     promise.readJson('data-compiled/matches.json')
         .then(function fetchMatches(matches) {
             var includeTimelineQuery = querystring.stringify({ includeTimeline: true })
             return Promise.all(
-                matches.slice(0, 1).map(function(matchId) {
-                    return promise.getJson(BASE_URL + MATCH_ROUTE + matchId + '?' + includeTimelineQuery + '&' + KEY_QUERY);
+                matches.slice(0, limit).map(function(matchId) {
+                    return promise.persistentGet(BASE_URL + MATCH_ROUTE + matchId + '?' + includeTimelineQuery + '&' + KEY_QUERY);
                 })
             );
         })
@@ -22,6 +28,9 @@ function compileData() {
             champsObj = {};
 
             matchesArray.forEach(function handleMatch(matchEntry) {
+                var matchDate = new Date(matchEntry.matchCreation);
+                var dateString = matchDate.toDateString();
+
                 matchEntry.participants.forEach(function handleParticipant(participant, i) {
                     var champId = participant.championId;
 
@@ -51,7 +60,8 @@ function compileData() {
                         summonerSpells: [
                                             participant.spell1Id,
                                             participant.spell2Id
-                                        ]
+                                        ],
+                        date:           dateString
                     });
                 });
             });

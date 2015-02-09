@@ -8,7 +8,7 @@ function sendDataToDatabase() {
         .then(function extractData(data) {
             return Object.keys(data).map(function(key) {
                 var value = data[key];
-                return { _id: key, games: value };
+                return { _id: parseInt(key), games: value, numGames: value.length };
             });
         })
         .then(function connectToDatabase(mongoData) {

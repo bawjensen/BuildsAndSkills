@@ -1,19 +1,26 @@
 var fs = require('fs');
 
 function convertChamps() {
-    var data = JSON.parse(fs.readFileSync('dragontail/4.21.4/data/en_US/champion.json')).data;
+    var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/champion.json')).data;
 
-    var newObj = {};
+    var convertedObj = {};
+    var translatorObj1 = {};
+    var translatorObj2 = {};
 
     for (var champName in data) {
-        newObj[parseInt(data[champName].key)] = data[champName];
+        var champId = parseInt(data[champName].key);
+        convertedObj[champId] = data[champName];
+        translatorObj1[champName.toLowerCase()] = champId;
+        translatorObj2[champId] = champName;
     }
 
-    fs.writeFile('data-compiled/champData.json', JSON.stringify(newObj));
+    fs.writeFile('data-compiled/champData.json', JSON.stringify(convertedObj));
+    fs.writeFile('data-compiled/champNames.json', JSON.stringify(translatorObj1));
+    fs.writeFile('data-compiled/champIds.json', JSON.stringify(translatorObj2));
 }
 
 function convertSummonerSpells() {
-    var data = JSON.parse(fs.readFileSync('dragontail/4.21.4/data/en_US/summoner.json')).data;
+    var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/summoner.json')).data;
 
     var newObj = {};
 

@@ -17,9 +17,6 @@ function compilePlayers() {
             for (var i in entries) {
                 var entry = entries[i];
 
-                // players[entry.playerOrTeamId] = {
-                //     id: entry.playerOrTeamId
-                // }
                 players[entry.playerOrTeamId] = true;
             }
 
