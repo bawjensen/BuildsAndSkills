@@ -1,6 +1,6 @@
 {
-  "name": "lolrunes",
-  "version": "1.0.0",
+  "name": "buildsandskills",
+  "version": "0.1.0",
   "description": "Website showing popular runes, masteries and builds for given champions",
   "main": "web.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "bawjensen",
   "repository": {
     "type": "git",
-    "url": "git@github.com:bawjensen/LoLRunes.git"
+    "url": "git@github.com:bawjensen/BuildsAndSkills.git"
   },
   "license": "ISC",
   "dependencies": {
