@@ -139,17 +139,20 @@ img.summ-spell {
 
   @mastery-img-width: 36px;
   @tree-spacing: 4px;
-  @mastery-detail-width: (@mastery-img-width * 4 * 3) + (@tree-spacing * 2 * 3);
+  @mastery-detail-padding: 10px;
+  @mastery-detail-width: (@mastery-img-width * 4 * 3) + (@tree-spacing * 2 * 3) + (@mastery-detail-padding * 2);
   .mastery-detail {
+    display: none;
+
     position: absolute;
     right: 0;
     z-index: 1;
-
-    display: none;
+    padding: @mastery-detail-padding;
 
     width: @mastery-detail-width;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 10px 2px #888888;
 
     .mastery-tree {
       .cf;
@@ -170,13 +173,17 @@ img.summ-spell {
             height: @mastery-img-width;
 
             &.inactive {
-              opacity: 0.5;
+              opacity: 0.375;
             }
           }
 
           .mastery-rank {
             position: absolute;
             z-index: 2;
+
+            bottom: 0;
+            right: 5px;
+            font-size: 20px;
 
             cursor: default;
 

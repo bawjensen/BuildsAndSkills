@@ -61,6 +61,8 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Penetration/, 'Pen');
             runeObj.shortName = runeObj.shortName.replace(/Regeneration/, 'Regen'); 
             runeObj.shortName = runeObj.shortName.replace(/Cooldown Reduction/, 'CDR');
+            runeObj.shortName = runeObj.shortName.replace(/Critical Chance/, 'Crit Chance');
+            runeObj.shortName = runeObj.shortName.replace(/Magic Resist/, 'MR');
         }
     }
 
