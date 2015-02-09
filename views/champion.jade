@@ -10,6 +10,11 @@ block body
     .col-md-4= staticData.champs[champId].id
     .col-md-4= staticData.champs[champId].title
 
+  .row
+    .col-md-12.text-center
+      a.display-all-items(href='#') Click to display all items (not just important ones)
+
+
   each match in gamesData
     .match-row.row
 
