@@ -1,4 +1,5 @@
-var request     = require('request'),
+var fs          = require('fs'),
+    request     = require('request'),
     promise     = require('./helpers/promisedFunctions'),
     querystring = require('querystring');
 
@@ -7,6 +8,41 @@ var API_KEY     = '81216707-de8d-4484-9d08-619de3821271';
 var KEY_QUERY = querystring.stringify({ api_key: API_KEY });
 
 var MATCH_ROUTE = '/api/lol/na/v2.2/match/';
+
+function convertToObject(runesOrMasteries) {
+    var newObj = {};
+
+    for (var i in runesOrMasteries) {
+        var runeOrMastery = runesOrMasteries[i];
+
+        var key;
+        if (runeOrMastery.runeId) {
+            key = 'runeId';
+        }
+        else {
+            key = 'masteryId';
+        }
+        newObj[runeOrMastery[key]] = runeOrMastery.rank;
+    }
+
+    return newObj;
+}
+
+function extractMasterySummary(masteries) {
+    var masteryTreeMapper = JSON.parse(fs.readFileSync('data-compiled/masteryTreeData.json'));
+
+    var trees = {
+        'Offense': 0,
+        'Defense': 0,
+        'Utility': 0
+    };
+
+    masteries.forEach(function(mastery) {
+        trees[masteryTreeMapper[mastery.masteryId]] += mastery.rank;
+    });
+
+    return trees;
+}
 
 function groupPurchases(buys) {
     var grouped = [];
@@ -84,6 +120,10 @@ function compileData() {
         .then(function extractData(matchesArray) {
             champsObj = {};
 
+            matchesArray.sort(function compare(a, b) {
+                return a.matchCreation < b.matchCreation;
+            });
+
             matchesArray.forEach(function handleMatch(matchEntry) {
                 var matchDate = new Date(matchEntry.matchCreation);
                 var dateString = (matchDate.getMonth() + 1) + '/' + matchDate.getUTCDate() + '/' + matchDate.getUTCFullYear();
@@ -101,14 +141,19 @@ function compileData() {
                         champsObj[champId] = [];
 
                     var buyOrder = groupPurchases(participant.buys);
+                    var runes = convertToObject(participant.runes);
+                    var masteries = convertToObject(participant.masteries);
+
+                    var masterySummary = extractMasterySummary(participant.masteries);
 
                     // matchDataObjs.push({
                     champsObj[champId].push ({
                         champId:        participant.championId,
                         summonerName:   matchEntry.participantIdentities[i].player.summonerName,
                         winner:         participant.stats.winner,
-                        runes:          participant.runes,
-                        masteries:      participant.masteries,
+                        runes:          runes,
+                        masteries:      masteries,
+                        masterySummary: masterySummary,
                         lane:           participant.timeline.lane,
                         kills:          participant.stats.kills,
                         deaths:         participant.stats.deaths,

@@ -1,3 +1,17 @@
+.cf {
+  &::before,
+  &::after {
+    content: " ";
+    display: table;
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+// ------------------------------------------------------------------------
+
 .champDiv {
   height: 100px;
 
@@ -19,16 +33,151 @@
   }
 }
 
-.matchRow {
-  & > div {
-    img.itemBuyOrder {
-      width: 24px;
-      height: auto;
+// =================================== General Styling ===================================
+
+.match-row {
+  border: 1px solid gray;
+}
+
+// =================================== Rune Styling ======================================
+
+.rune-info {
+  .rune-img {
+    width: 24px;
+    height: auto;
+  }
+}
+
+// =================================== Summoners Styling =================================
+
+img.summ-spell {
+  width: 36px;
+  height: auto;
+}
+
+// =================================== Purchase Styling ==================================
+
+.purchase-group {
+  .cf;
+  padding: 2px;
+  margin: 3px;
+  float: left;
+
+  min-height: 30px; // 24 height + 4 padding + 2 border
+
+  background-color: #E8E8E8;
+  border: 1px solid gray;
+
+  .item-buy {
+    float: left;
+
+    &.blacklisted {
+      display: none;
     }
 
-    img.summSpell {
-      width: 36px;
+    img.item-buy-icon {
+      width: 24px;
       height: auto;
+
     }
+  }
+}
+
+// =================================== Skill Styling =====================================
+
+@skill-slot-size: 15px;
+.skill-info {
+  .level-column {
+    float: left;
+
+    .skill-slot {
+      height: @skill-slot-size;
+      width: @skill-slot-size;
+
+      border: 1px solid rgba(0, 0, 0, 0.15);
+
+      margin: 2px;
+      font-size: 12px;
+
+      text-align: center;
+      line-height: @skill-slot-size - 1;
+
+      &.active {
+        background-color: #6BCBE7;
+      }
+      &.inactive {
+        background-color: white;
+      }
+    }
+  }
+}
+
+
+
+// =================================== Mastery Styling ===================================
+
+.mastery-info {
+
+  .mastery-summary {
+    cursor: default;
+  }
+
+  @mastery-img-width: 36px;
+  @tree-spacing: 4px;
+  @mastery-detail-width: (@mastery-img-width * 4 * 3) + (@tree-spacing * 2 * 3);
+  .mastery-detail {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+
+    display: none;
+
+    width: @mastery-detail-width;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .mastery-tree {
+      .cf;
+      float: left;
+      margin: 0 @tree-spacing;
+
+      .mastery-tier {
+        .cf;
+        // float: left;
+        .mastery-slot {
+          // .cf;
+          float: left;
+          position: relative;
+
+          .placeholder-mastery,
+          .mastery-img {
+            width: @mastery-img-width;
+            height: @mastery-img-width;
+
+            &.inactive {
+              opacity: 0.5;
+            }
+          }
+
+          .mastery-rank {
+            position: absolute;
+            z-index: 2;
+
+            cursor: default;
+
+            color: white;
+            text-shadow:
+             -1px -1px 0 #000,  
+              1px -1px 0 #000,
+              -1px 1px 0 #000,
+               1px 1px 0 #000;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover > .mastery-detail {
+    display: block;
   }
 }

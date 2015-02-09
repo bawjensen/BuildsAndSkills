@@ -5,50 +5,79 @@ block page-title
 
 block body
   .row
-    .col-xs-4
+    .col-md-4
       img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
-    .col-xs-4= staticData.champs[champId].id
-    .col-xs-4= staticData.champs[champId].title
+    .col-md-4= staticData.champs[champId].id
+    .col-md-4= staticData.champs[champId].title
 
   each match in gamesData
-    .matchRow.row
-      .col-xs-1= match.summonerName
+    .match-row.row
 
-      .col-xs-1= match.date
+      .col-md-1
+        div= match.summonerName
+        div= match.date
+        div= match.lane
+        div= match.winner ? 'Won' : 'Lost'
+        div= match.kills + ' / ' + match.deaths + ' / ' + match.assists
 
-      .col-xs-1
-        = match.lane
+      .skill-info.col-md-4
+        //- - var trans = ['', 'Q', 'W', 'E', 'R'];
+        each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+          .level-column
+            each skill in [1, 2, 3, 4]
+              - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
+              .skill-slot(class=_class)
+                .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 
-      .col-xs-1
-        = match.winner ? 'Won' : 'Lost'
-        
-      .col-xs-1
-        = match.kills + ' / ' + match.deaths + ' / ' + match.assists
 
-      .col-xs-2
-        - var trans = ['', 'Q', 'W', 'E', 'R'];
-        each skillSlot in match.skillOrder
-          = trans[skillSlot]
-
-      //- .col-xs-1
+      //- .col-md-1
       //-   each item in match.finalBuild
       //-     .row= staticData.items.data[item] ? staticData.items.data[item].name : item
 
-      .col-xs-1
+      .buy-info.col-md-4
         each buy in match.buyOrder
-          .row
+          .purchase-group
             each amount, itemId in buy
-              img.itemBuyOrder(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
-              = ' x' + amount
+              - var _class = itemBlacklist[itemId] ? 'blacklisted' : '';
+              div.item-buy(class=_class)
+                img.item-buy-icon(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
+                = ' x' + amount
 
-      .col-xs-1
-        each rune in match.runes
-          .row= rune.rank + ' ' + staticData.runes[rune.runeId].shortName
+      .rune-info.col-md-2
+        each rank, id in match.runes
+          .row
+            img.rune-img(src='/data/dragontail/current/img/rune/' + staticData.runes[id].image.full)
+            = rank + ' ' + staticData.runes[id].shortName
 
-      .col-xs-2
-        each mastery in match.masteries
-          .row= staticData.masteries.data[mastery.masteryId].name + ' x' + mastery.rank
+      .mastery-info.col-md-1
+        .mastery-summary
+          = match.masterySummary['Offense'] + '/' + match.masterySummary['Defense'] + '/' + match.masterySummary['Utility']
 
-      .col-xs-1
+        .mastery-detail
+          each treeName in ['Offense', 'Defense', 'Utility']
+            .mastery-tree
+              - var subTree = staticData.masteries.tree[treeName];
+
+              each tier in ['0', '1', '2', '3', '4', '5']
+                .mastery-tier
+                  - var masteryTier = subTree[tier];
+
+                  each column in ['0', '1', '2', '3']
+                    .mastery-slot
+                      - var slot = masteryTier[column];
+
+                      if (!slot)
+                        .placeholder-mastery
+
+                      else
+                        - var _class = match.masteries[slot.masteryId] ? 'active' : 'inactive' ;
+                        if (match.masteries[slot.masteryId])
+                          .mastery-rank
+                            = match.masteries[slot.masteryId]
+
+
+                        img.mastery-img(class=_class src='/data/dragontail/current/img/mastery/' + staticData.masteries.data[slot.masteryId].image.full)
+
+      //- .col-md-1
         each spell in match.summonerSpells
-          img.summSpell(src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)
+          img.summ-spell(src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)

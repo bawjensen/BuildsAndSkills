@@ -1,4 +1,7 @@
-var fs = require('fs');
+var fs      = require('fs'),
+    promise = require('./helpers/promisedFunctions');
+
+var API_KEY = '81216707-de8d-4484-9d08-619de3821271';
 
 function convertChamps() {
     var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/champion.json')).data;
@@ -64,6 +67,32 @@ function convertRuneData() {
     fs.writeFile('data-compiled/runeData.json', JSON.stringify(data));
 }
 
+function fetchMasteryData() {
+    var masteryIds = Object.keys(JSON.parse(fs.readFileSync('dragontail/current/data/en_US/mastery.json')).data);
+
+    Promise.all(
+        masteryIds.map(function mapToFetch(id) {
+            return promise.persistentGet('https://na.api.pvp.net/api/lol/static-data/na/v1.2/mastery/' + id + '?masteryData=masteryTree&api_key=' + API_KEY)
+        })
+    )
+    .then(function mapIdToTree(masteryArray) {
+        var map = {};
+
+        masteryArray.forEach(function(masteryEntry) {
+            map[masteryEntry.id] = masteryEntry.masteryTree;
+        });
+
+        return map;
+    })
+    .then(function save(map) {
+        fs.writeFile('data-compiled/masteryTreeData.json', JSON.stringify(map));
+    })
+    .catch(function(err) {
+        console.log(err.stack);
+    });
+}
+
 convertChamps();
 convertSummonerSpells();
 convertRuneData();
+fetchMasteryData();

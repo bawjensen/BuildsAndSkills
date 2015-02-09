@@ -10,6 +10,14 @@ var bodyParser  = require("body-parser"),
 var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
 var CHAMP_ROUTE = '/:champName';
 
+var PURCHASE_BLACKLIST = {
+    '2010': true, // Support Biscuit
+    '2044': true, // Stealth (Green) Ward
+    '2043': true, // Vision (Pink) Ward
+    '2004': true, // Mana Potion
+    '2003': true, // Health Potion
+}
+
 function promiseGet(url) {
     return new Promise(function get(resolve, reject) {
         request.get(url, function handleResp(err, resp, body) {
@@ -140,7 +148,7 @@ mainRouter
                 // res.send('yes');
                 // console.log(data);
                 // console.log(staticData)
-                res.render('champion.jade', { gamesData: data.games, champId: champId, staticData: staticData });
+                res.render('champion.jade', { gamesData: data.games, champId: champId, staticData: staticData, itemBlacklist: PURCHASE_BLACKLIST });
             }
         });
     });
