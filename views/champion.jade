@@ -55,25 +55,31 @@ block body
                   - var masteryTier = subTree[tier];
 
                   each column in ['0', '1', '2', '3']
-                    .mastery-slot
-                      - var slot = masteryTier[column];
+                    - var slot = masteryTier[column];
+                    if (slot)
+                      - var masteryData = staticData.masteries.data[slot.masteryId];
+                      - var tooltip = '<b>' + masteryData.name + '</b><br><br>' + masteryData.description[0];
+                    else
+                      - var tooltip = '';
 
-                      if (!slot)
-                        .placeholder-mastery
-
-                      else
+                    .mastery-slot(data-toggle='tooltip' title=tooltip)
+                      if (slot)
                         - var _class = match.masteries[slot.masteryId] ? 'active' : 'inactive' ;
+                        - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
+
+                        img.mastery-img(class=_class src='/data/dragontail/current/img/mastery/' + staticData.masteries.data[slot.masteryId].image.full)
+
                         if (match.masteries[slot.masteryId])
                           .mastery-rank
                             = match.masteries[slot.masteryId]
 
-
-                        img.mastery-img(class=_class src='/data/dragontail/current/img/mastery/' + staticData.masteries.data[slot.masteryId].image.full)
+                      else
+                        .placeholder-mastery
 
 
       //- .col-md-1
-      //-   each item in match.finalBuild
-      //-     .row= staticData.items.data[item] ? staticData.items.data[item].name : item
+        each item in match.finalBuild
+          .row= staticData.items.data[item] ? staticData.items.data[item].name : item
 
       .buy-info.col-md-4
         each buy in match.buyOrder

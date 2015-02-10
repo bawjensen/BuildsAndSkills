@@ -16,4 +16,6 @@ $(function() {
 
         window.location.href = $input.val();
     });
+
+    $('[data-toggle="tooltip"]').tooltip({ html: true });
 });
