@@ -20,6 +20,10 @@ block body
     - var _class = match.winner ? 'win' : 'loss';
     .match-row.row(class=_class)
 
+      - var _class = match.winner ? 'win' : 'loss';
+      .win-status-info(class=_class)
+
+
       .summary-info.col-md-1
         div= match.summonerName
         - var date = new Date(match.date)
@@ -38,11 +42,16 @@ block body
           .level-column
             each skill in [1, 2, 3, 4]
               - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
-              .skill-slot(class=_class)
+              - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champName].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champName].spells[skill-1].description : '';
+              .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
                 .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 
       .mastery-info.col-md-1
         .mastery-summary
+          | Masteries:
+          br
+          | (hover for details)
+          br
           = match.masterySummary['Offense'] + '/' + match.masterySummary['Defense'] + '/' + match.masterySummary['Utility']
 
         .mastery-detail
@@ -86,15 +95,17 @@ block body
           .purchase-group
             each amount, itemId in buy
               - var _class = itemBlacklist[itemId] ? 'blacklisted' : '';
-              div.item-buy(class=_class)
+              - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
+              div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
                 img.item-buy-icon(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
                 = ' x' + amount
 
       .rune-info.col-md-2
         each rank, id in match.runes
-          .row
+          - var tooltip = staticData.runes[id].description + ' x ' + rank;
+          .row(data-toggle='tooltip' title=tooltip)
             img.rune-img(src='/data/dragontail/current/img/rune/' + staticData.runes[id].image.full)
-            = rank + ' ' + staticData.runes[id].shortName
+            = ' ' + rank + ' ' + staticData.runes[id].shortName
 
       //- .col-md-1
         each spell in match.summonerSpells

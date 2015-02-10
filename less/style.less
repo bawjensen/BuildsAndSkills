@@ -28,7 +28,10 @@
 @rune-total-size: 180px;
 
 
-@buy-total-size: 1120px - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size);
+@win-status-size: 10px;
+
+
+@buy-total-size: 1120px - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @win-status-size);
 
 // =================================== General Styling ===================================
 
@@ -169,6 +172,22 @@ nav {
   text-align: center;
 }
 
+// =================================== Win Status Styling ================================
+
+.win-status-info {
+  float: left;
+
+  width: @win-status-size;
+  height: 100px;
+
+  &.win {
+    background-color: green;
+  }
+  &.loss {
+    background-color: red;
+  }
+}
+
 // =================================== Skill Styling =====================================
 
 .skill-info {
@@ -195,6 +214,7 @@ nav {
 
       &.active {
         background-color: #6BCBE7;
+        cursor: default;
       }
       &.inactive {
         background-color: white;
@@ -249,10 +269,6 @@ nav {
         .cf;
         // float: left;
         .mastery-slot {
-          .tooltip-inner {
-            width: 300px;
-          }
-
           // .cf;
           float: left;
           position: relative;
@@ -317,6 +333,10 @@ nav {
 
     .item-buy {
       float: left;
+
+      .tooltip-inner {
+        text-align: left;
+      }
 
       &.blacklisted {
         display: none;
