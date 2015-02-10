@@ -10,54 +10,13 @@ var bodyParser  = require("body-parser"),
 var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
 var CHAMP_ROUTE = '/:champName';
 
-var PURCHASE_BLACKLIST = {
-    '2010': true, // Support Biscuit
-    '2044': true, // Stealth (Green) Ward
-    '2043': true, // Vision (Pink) Ward
-    '2004': true, // Mana Potion
-    '2003': true, // Health Potion
-}
-
-function promiseGet(url) {
-    return new Promise(function get(resolve, reject) {
-        request.get(url, function handleResp(err, resp, body) {
-            if (!err) {
-                resolve(body);
-            }
-            else {
-                reject(Error(err));
-            }
-        });
-    });
-}
-
-function promiseJsonGet(url) {
-    return promiseGet(url).then(JSON.parse);
-}
-
-function promiseReadFile(filePath) {
-    return new Promise(function read(resolve, reject) {
-        fs.readFile(filePath, function handleResp(err, fileContents) {
-            if (!err) {
-                resolve(fileContents);
-            }
-            else {
-                reject(Error(err));
-            }
-        });
-    });
-}
-
-function promiseReadJsonFile(filePath) {
-    return promiseReadFile(filePath).then(JSON.parse);
-}
-
 var app = express();
 
 // Server defaults to port 7500
 app.set('port', (process.env.PORT || 5000));
 
 // Static serving files from specific folders
+app.use('/favicon.ico', express.static(__dirname + '/favicon.ico'));
 app.use('/css',         express.static(__dirname + '/css'));
 app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
@@ -69,23 +28,12 @@ app.use(logfmt.requestLogger());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.get('/', function(req, res) {
-//     promiseReadJsonFile('data/champData.json')
-//         .then(function display(champData) {
-//             res.render('index.jade', { champData: champData });
-//         })
-//         .catch(function handleError(err) {
-//             res.send(err.stack);
-//         })
-// });
-
 function loadChampIdTranslator() {
     return JSON.parse(fs.readFileSync('data/data-compiled/champIds.json'));
 }
 function loadChampNameTranslator() {
     return JSON.parse(fs.readFileSync('data/data-compiled/champNames.json'));
 }
-
 function loadStaticData() {
     return {
         // runes: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/rune.json')),
@@ -96,26 +44,33 @@ function loadStaticData() {
         summSpells: JSON.parse(fs.readFileSync('data/data-compiled/spellData.json'))
     };
 }
+function loadFrontPageData() {
+    var data = JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/champion.json')).data;
+    var dataArray = Object.keys(data).map(function(key) { return data[key]; });
+
+    dataArray.sort(function(a, b) { return (a.name < b.name) ? -1 : 1; });
+
+    return dataArray;
+}
+
 
 var mainRouter = express.Router();
 
-
 mainRouter
-    .all('/', function(req, res, next) {
-        MongoClient.connect(MONGO_URL, function callback(err, db) {
-            req.dbCollection = db.collection('champData');
-            next();
-        });
-    })
-    .get('/', function(req, res) {
-        req.dbCollection.find({}, { numGames: 1 }).toArray(function(err, data) {
-            res.render('index.jade', { staticData: loadStaticData(), champData: data });
-        });
+    .all('*', function(req, res, next) {
+        console.log('Loading site-wide data');
+        res.locals.championNames = loadFrontPageData().map(function(entry) { return entry.id; });
+        next();
     })
 
+    .get('/', function(req, res) {
+        console.log('Loading front page data and rendering');
+        res.render('index.jade', { data: loadFrontPageData() });
+    })
 
     .use(CHAMP_ROUTE, function(req, res, next) {
         var champName = req.params.champName;
+        console.log('Checking redirect for ' + champName);
         if (!isNaN(champName)) {
             res.redirect(loadChampIdTranslator()[champName]);
         }
@@ -135,20 +90,20 @@ mainRouter
 
         var staticData = loadStaticData();
 
-        req.dbCollection.findOne({ '_id': champId }, function callback(err, data) {
+        req.dbCollection.find({ champId: champId }).sort({ date: -1 }).limit(10).toArray(function callback(err, games) {
             if (err) {
                 console.log(err.stack);
                 res.send('no');
             }
-            else if (data === null) {
+            else if (games === null) {
                 console.log('No one played ' + champName + ' - ' + champId);
                 res.send('no');
             }
             else {
                 // res.send('yes');
-                // console.log(data);
+                // console.log(games);
                 // console.log(staticData)
-                res.render('champion.jade', { gamesData: data.games, champId: champId, staticData: staticData, itemBlacklist: PURCHASE_BLACKLIST });
+                res.render('champion.jade', { gamesData: games, champId: champId, staticData: staticData });
             }
         });
     });

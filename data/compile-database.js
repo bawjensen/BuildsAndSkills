@@ -5,12 +5,12 @@ var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/herok
 
 function sendDataToDatabase() {
     promise.readJson('data-compiled/data.json')
-        .then(function extractData(data) {
-            return Object.keys(data).map(function(key) {
-                var value = data[key];
-                return { _id: parseInt(key), games: value, numGames: value.length };
-            });
-        })
+        // .then(function extractData(data) {
+        //     return Object.keys(data).map(function(key) {
+        //         var value = data[key];
+        //         return { _id: parseInt(key), games: value, numGames: value.length };
+        //     });
+        // })
         .then(function connectToDatabase(mongoData) {
             return new Promise(function(resolve, reject) {
                 MongoClient.connect(MONGO_URL, function callback(err, db) {

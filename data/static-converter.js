@@ -63,6 +63,7 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Cooldown Reduction/, 'CDR');
             runeObj.shortName = runeObj.shortName.replace(/Critical Chance/, 'Crit Chance');
             runeObj.shortName = runeObj.shortName.replace(/Magic Resist/, 'MR');
+            runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'M. Regen');
         }
     }
 

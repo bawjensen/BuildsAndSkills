@@ -2,6 +2,11 @@ var exec    = require('child_process').exec,
     fs      = require('fs'),
     request = require('request');
 
+function promiseCatchAndQuit(err) {
+    console.log(err.stack);
+    process.exit(1);
+}
+
 function promiseSave(filePath, data) {
     return new Promise(function save(resolve, reject) {
         fs.writeFile(filePath, data, function handleResp(err) {
@@ -35,26 +40,6 @@ function promiseReadJsonFile(filePath) {
     return promiseReadFile(filePath).then(JSON.parse);
 }
 
-
-function persistentCallback(url, resolve, reject, err, resp, body) {
-    if (err)
-        reject(Error(err));
-    else if (resp.statusCode == 429 || resp.statusCode == 503)
-        setTimeout(function() {
-            request.get(url, persistentCallback.bind(null, url, resolve, reject));
-        }, 100);
-    else if (resp.statusCode != 200)
-        reject(Error('Resp status code not 200: ' + resp.statusCode + '(' + url + ')'));
-    else
-        resolve(body);
-}
-function persistentPromiseGet(url) {
-    return new Promise(function get(resolve, reject) {
-        request.get(url, persistentCallback.bind(null, url, resolve, reject));
-    })
-    .then(JSON.parse);
-}
-
 function promiseGet(url) {
     return new Promise(function get(resolve, reject) {
         request.get(url, function handleResp(err, resp, body) {
@@ -71,6 +56,29 @@ function promiseJsonGet(url) {
     return promiseGet(url).then(JSON.parse);
 }
 
+function persistentCallback(url, resolve, reject, err, resp, body) {
+    if (err) {
+        console.log('Issue with: ' + url);
+        reject(Error(err));
+    }
+    else if (resp.statusCode === 429 || resp.statusCode === 503 || resp.statusCode === 504) {
+        setTimeout(function() {
+            request.get(url, persistentCallback.bind(null, url, resolve, reject));
+        }, 100);
+    }
+    else if (resp.statusCode != 200)
+        reject(Error('Resp status code not 200: ' + resp.statusCode + '(' + url + ')'));
+    else
+        resolve(body);
+}
+function persistentPromiseGet(url) {
+    return new Promise(function get(resolve, reject) {
+            request.get(url, persistentCallback.bind(null, url, resolve, reject));
+        })
+        .then(JSON.parse)
+        .catch(promiseCatchAndQuit);
+}
+
 function promiseExec(command, options) {
     return new Promise(function execute(resolve, reject) {
         exec(command, options, function callback(err, stdout, stderr) {
@@ -82,6 +90,12 @@ function promiseExec(command, options) {
     });
 }
 
+function promiseWait(milliseconds, data) {
+    return new Promise(function wait(resolve, reject) {
+        setTimeout(resolve, milliseconds, data);
+    });
+}
+
 module.exports = {
     save:               promiseSave,
     get:                promiseGet,
@@ -90,5 +104,6 @@ module.exports = {
     readJson:           promiseReadJsonFile,
     persistentGet:      persistentPromiseGet,
     getPipe:            promisePipeFile,
-    exec:               promiseExec
+    exec:               promiseExec,
+    wait:               promiseWait
 }

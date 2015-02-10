@@ -1,3 +1,5 @@
+// =================================== Less Variables and Mixins =========================
+
 .cf {
   &::before,
   &::after {
@@ -10,25 +12,58 @@
   }
 }
 
-// ------------------------------------------------------------------------
+// =================================== General Styling ===================================
 
-.champDiv {
-  height: 100px;
+body {
+  background-color: black;
 
-  a {
-    display: block;
+  color: white;
+}
 
-    img {
-      display: block;
+#content {
+  background-image: linear-gradient(
+      to right,
+      #141430,
+      #14143C,
+      #141430
+    );
+}
 
-      width: 48px;
-      height: auto;
+@nav-height: 50px;
+@nav-margin: 10px;
+@nav-space: @nav-height + @nav-margin;
 
-      margin: 0 auto;
+nav {
+  height: @nav-height;
+  margin-bottom: @nav-margin;
+
+  background-image: linear-gradient(
+      to right,
+      #202040,
+      #202058,
+      #202040
+    );
+
+  .navbar-header a {
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.95;
     }
+  }
 
-    .champLabel {
-      text-align: center;
+  input[type=search] {
+    border: 2px solid gray;
+    border-radius: 2px;
+    margin-top: 10px;
+
+    &:focus {
+      border: 2px solid #37AEC3;
+      outline: none;
+
+      color: black;
     }
   }
 }
@@ -47,20 +82,60 @@
   }
 }
 
+// =================================== Front-Page Styling ================================
 
-// =================================== General Styling ===================================
+#content {
+  margin-top: @nav-space;
+}
+
+.champDiv {
+  height: 105px;
+  width: 105px;
+  float: left;
+
+  a {
+    display: block;
+    color: rgba(255, 255, 255, 0.85);
+
+    img {
+      display: block;
+
+      width: 60px;
+      height: auto;
+
+      margin: 0 auto;
+    }
+
+    .champLabel {
+      text-align: center;
+    }
+  }
+}
+
+
+// =================================== General Champ Page Styling ========================
 
 .match-row {
   border: 1px solid gray;
+
+  border-left: 10px solid black;
+
+  &.win {
+    border-left-color: green;
+  }
+  &.loss {
+    border-left-color: red;
+  }
 }
 
-// =================================== Rune Styling ======================================
+#champ-title {
+  font-size: 40px;
+}
 
-.rune-info {
-  .rune-img {
-    width: 24px;
-    height: auto;
-  }
+// =================================== Summary Styling ===================================
+
+.summary-info {
+  
 }
 
 // =================================== Summoners Styling =================================
@@ -80,7 +155,7 @@ img.summ-spell {
 
   min-height: 30px; // 24 height + 4 padding + 2 border
 
-  background-color: #E8E8E8;
+  background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid gray;
 
   .item-buy {
@@ -100,7 +175,7 @@ img.summ-spell {
 
 // =================================== Skill Styling =====================================
 
-@skill-slot-size: 15px;
+@skill-slot-size: 14px;
 .skill-info {
   .level-column {
     float: left;
@@ -127,7 +202,14 @@ img.summ-spell {
   }
 }
 
+// =================================== Rune Styling ======================================
 
+.rune-info {
+  .rune-img {
+    width: 24px;
+    height: auto;
+  }
+}
 
 // =================================== Mastery Styling ===================================
 
@@ -137,10 +219,16 @@ img.summ-spell {
     cursor: default;
   }
 
+  // Width calculations
   @mastery-img-width: 36px;
   @tree-spacing: 4px;
   @mastery-detail-padding: 10px;
-  @mastery-detail-width: (@mastery-img-width * 4 * 3) + (@tree-spacing * 2 * 3) + (@mastery-detail-padding * 2);
+  @mastery-slot-padding: 2px;
+  @mastery-detail-width: (@mastery-img-width * 4 * 3) +
+                        (@tree-spacing * 2 * 3) +
+                        (@mastery-detail-padding * 2) +
+                        (@mastery-slot-padding * 4 * 3 * 2);
+
   .mastery-detail {
     display: none;
 
@@ -151,8 +239,8 @@ img.summ-spell {
 
     width: @mastery-detail-width;
 
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 10px 2px #888888;
+    background-color: rgba(0, 0, 0, 0.95);
+    box-shadow: 0 0 10px 2px black;
 
     .mastery-tree {
       .cf;
@@ -166,6 +254,7 @@ img.summ-spell {
           // .cf;
           float: left;
           position: relative;
+          padding: @mastery-slot-padding;
 
           .placeholder-mastery,
           .mastery-img {

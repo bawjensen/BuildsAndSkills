@@ -1,32 +1,39 @@
 extends skeleton_base
 
 block page-title
-  = staticData.champs[champId].id
+  = staticData.champs[champId].name
 
 block body
   .row
     .col-md-4
       img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
-    .col-md-4= staticData.champs[champId].id
-    .col-md-4= staticData.champs[champId].title
+    .col-md-8#champ-title
+      = staticData.champs[champId].name + ', ' + staticData.champs[champId].title
 
   .row
     .col-md-12.text-center
       a.display-all-items(href='#') Click to display all items (not just important ones)
 
+  - var itemBlacklist = { '2010': true, '2044': true, '2043': true, '2004': true, '2003': true };
 
   each match in gamesData
-    .match-row.row
-
-      .col-md-1
+    - var _class = match.winner ? 'win' : 'loss';
+    .match-row.row(class=_class)
+      .summary-info.col-md-1
         div= match.summonerName
-        div= match.date
+        - var date = new Date(match.date)
+        div= (date.getMonth() + 1) + '/' + date.getUTCDate() + '/' + date.getUTCFullYear()
         div= match.lane
         div= match.winner ? 'Won' : 'Lost'
         div= match.kills + ' / ' + match.deaths + ' / ' + match.assists
 
       .skill-info.col-md-4
         //- - var trans = ['', 'Q', 'W', 'E', 'R'];
+        .level-column
+          each skillLabel in ['Q', 'W', 'E', 'R']
+            .skill-slot
+              .level-value= skillLabel
+
         each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
           .level-column
             each skill in [1, 2, 3, 4]
