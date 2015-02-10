@@ -7,8 +7,6 @@ block body
   .row
     each champObj in data
       .champDiv
-        //- - var champStatic = staticData.champs[champObj.key]
-        //- - var champName = 
         a(href=champObj.id)
           img(src='/data/dragontail/current/img/champion/' + champObj.image.full)
           .champLabel= champObj.name

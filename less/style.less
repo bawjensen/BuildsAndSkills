@@ -13,7 +13,7 @@
 }
 
 
-@mastery-total-size: 50px;
+@mastery-total-size: 100px;
 
 
 @summary-total-size: 130px;
@@ -109,9 +109,15 @@ nav {
 }
 
 .champDiv {
-  height: 105px;
-  width: 105px;
-  padding-top: 15px;
+  height: 85px;
+  width: 85px;
+
+  margin: 10px;
+  margin-right: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+
+  padding-right: 10px;
+  padding-top: 10px;
   float: left;
 
   a {
@@ -211,6 +217,7 @@ nav {
 
   .mastery-summary {
     cursor: default;
+    text-align: center;
   }
 
   // Width calculations
@@ -227,7 +234,7 @@ nav {
     display: none;
 
     position: absolute;
-    right: -@mastery-detail-width / 2;
+    right: -@mastery-detail-width / 2 + @mastery-total-size / 2;
     z-index: 1;
     padding: @mastery-detail-padding;
 
