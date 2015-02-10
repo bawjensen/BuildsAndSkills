@@ -1,7 +1,7 @@
 var fs      = require('fs'),
     promise = require('./helpers/promisedFunctions');
 
-var API_KEY = '81216707-de8d-4484-9d08-619de3821271';
+var API_KEY = process.env.RIOT_KEY;
 
 function convertChamps() {
     var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/champion.json')).data;

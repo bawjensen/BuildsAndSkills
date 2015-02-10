@@ -24,7 +24,7 @@ var fs          = require("fs"),
 
 var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
 
-var KEY = '81216707-de8d-4484-9d08-619de3821271';
+var KEY = process.env.RIOT_KEY;
 var KEY_QUERY = querystring.stringify({ api_key: KEY });
 
 var API_BASE_URL            = 'https://na.api.pvp.net';

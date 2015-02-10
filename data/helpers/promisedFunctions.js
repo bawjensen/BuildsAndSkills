@@ -79,6 +79,33 @@ function persistentPromiseGet(url) {
         .catch(promiseCatchAndQuit);
 }
 
+function promiseRateLimitedGet(list, promiseMapper, matchHandler, limitNumber, limitTime) {
+    var listSize = list.length;
+
+    var groupedList = [];
+    var i = 0;
+    while (i < list.length) {
+        groupedList.push(list.slice(i, i+limitNumber));
+        i += limitNumber;
+    }
+
+    return groupedList.reduce(function chainPromiseAlls(chainSoFar, matchesGroup, i) {
+        return chainSoFar.then(function() {
+            return Promise.all(matchesGroup.map(promiseMapper))
+                .then(function assignData(matchesArray) {
+                    matchesArray.forEach(matchHandler); // This is where the magic happens - data extracted *outside* of promises
+                })
+                .then(function() {
+                    var numFinished = (i + 1) * 10;
+                    console.log('Finished ' + numFinished + ', napping before the next set');
+                    
+                    var promiseBuffer = (numFinished < listSize) ? promiseWait(limitTime * 0.75) : Promise.resolve();
+                    return promiseBuffer;
+                })
+            });
+        }, Promise.resolve());
+}
+
 function promiseExec(command, options) {
     return new Promise(function execute(resolve, reject) {
         exec(command, options, function callback(err, stdout, stderr) {
@@ -105,5 +132,6 @@ module.exports = {
     persistentGet:      persistentPromiseGet,
     getPipe:            promisePipeFile,
     exec:               promiseExec,
-    wait:               promiseWait
+    wait:               promiseWait,
+    rateLimitGet:       promiseRateLimitedGet
 }

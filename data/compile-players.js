@@ -2,7 +2,7 @@ var promise         = require('./helpers/promisedFunctions'),
     querystring     = require('querystring');
 
 var BASE_URL    = 'https://na.api.pvp.net';
-var API_KEY     = '81216707-de8d-4484-9d08-619de3821271';
+var API_KEY     = process.env.RIOT_KEY;
 
 var CHALLENGER_ROUTE = '/api/lol/na/v2.5/league/challenger';
 

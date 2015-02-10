@@ -4,7 +4,7 @@ var fs          = require('fs'),
     querystring = require('querystring');
 
 var BASE_URL    = 'https://na.api.pvp.net';
-var API_KEY     = '81216707-de8d-4484-9d08-619de3821271';
+var API_KEY     = process.env.RIOT_KEY;
 var KEY_QUERY = querystring.stringify({ api_key: API_KEY });
 
 var MATCH_ROUTE = '/api/lol/na/v2.2/match/';
@@ -39,9 +39,11 @@ function extractMasterySummary(masteries) {
         'Utility': 0
     };
 
-    masteries.forEach(function(mastery) {
-        trees[masteryTreeMapper[mastery.masteryId]] += mastery.rank;
-    });
+    if (masteries) {
+        masteries.forEach(function(mastery) {
+            trees[masteryTreeMapper[mastery.masteryId]] += mastery.rank;
+        });
+    }
 
     return trees;
 }
@@ -70,10 +72,6 @@ function groupPurchases(buys) {
         grouped.push(subGroup);
         i++;
     }
-
-    // console.log(buys);
-    // console.log(grouped);
-    // console.log();
 
     return grouped;
 }
@@ -107,103 +105,92 @@ function parseSkillsAndBuysFromTimeline(matchEntry) {
 }
 
 function compileData() {
+    var start = new Date().getTime();
+
+
     var limit = Infinity;
-    if (process.argv[2]) {
+    var limitStart = 0;
+    if (process.argv[2] && process.argv[3]) {
+        limitStart = process.argv[2];
+        limit = process.argv[3];
+        console.log('Limiting to ' + (limit - limitStart) + ' matches');
+    }
+    else if (process.argv[2]) {
         limit = parseInt(process.argv[2]);
         console.log('Limiting to ' + limit + ' matches');
     }
 
-    var champDataArray = [];
-
     promise.readJson('data-compiled/matches.json')
         .then(function fetchMatches(matches) {
+            var matches = matches.slice(limitStart, limit);
+
             var includeTimelineQuery = querystring.stringify({ includeTimeline: true });
 
-            var matches = matches.slice(0, limit);
-            var groupedMatches = [];
-            var numMatches = matches.length;
+            var champDataArray = [];
 
-            var i = 0;
-            while (i < matches.length) {
-                groupedMatches.push(matches.slice(i, i+RATE_LIMIT));
-                i += RATE_LIMIT;
-            }
+            return promise.rateLimitGet(matches,
+                function mapMatch(matchId) { // How to map a match to a promise request
+                    return promise.persistentGet(BASE_URL + MATCH_ROUTE + matchId + '?' + includeTimelineQuery + '&' + KEY_QUERY);
+                },
+                function handleMatch(matchEntry) { // How to handle a match's response data
+                    parseSkillsAndBuysFromTimeline(matchEntry);
 
-            var rateLimitRatio = 0.75;
+                    matchEntry.participants.forEach(function handleParticipant(participant, i) {
+                        var champId = participant.championId;
 
-            return groupedMatches.reduce(function chainPromiseAlls(chainSoFar, matchesGroup, i) {
-                return chainSoFar.then(function() {
-                    return Promise.all(
-                            matchesGroup.map(function mapMatch(matchId) {
-                                return promise.persistentGet(BASE_URL + MATCH_ROUTE + matchId + '?' + includeTimelineQuery + '&' + KEY_QUERY);
-                            })
-                        )
-                        .then(function assignData(matchesArray) {
-                            matchesArray.forEach(function handleMatch(matchEntry) {
-                                // var matchDate = new Date(matchEntry.matchCreation);
-                                // var dateString = (matchDate.getMonth() + 1) + '/' + matchDate.getUTCDate() + '/' + matchDate.getUTCFullYear();
+                        if (participant.participantId != i+1) {
+                            throw new Error('Issue: The participant index (' + i + ') doesn\'t match the id (' + participant.participantId + ')');
+                        }
 
-                                parseSkillsAndBuysFromTimeline(matchEntry);
+                        // if (!(champId in champDataArray))
+                            // champDataArray[champId] = [];
 
-                                matchEntry.participants.forEach(function handleParticipant(participant, i) {
-                                    var champId = participant.championId;
+                        var buyOrder = groupPurchases(participant.buys);
+                        var runes = convertToObject(participant.runes);
+                        var masteries = convertToObject(participant.masteries);
 
-                                    if (participant.participantId != i+1) {
-                                        throw new Error('Issue: The participant index (' + i + ') doesn\'t match the id (' + participant.participantId + ')');
-                                    }
+                        var masterySummary = extractMasterySummary(participant.masteries);
 
-                                    // if (!(champId in champDataArray))
-                                        // champDataArray[champId] = [];
-
-                                    var buyOrder = groupPurchases(participant.buys);
-                                    var runes = convertToObject(participant.runes);
-                                    var masteries = convertToObject(participant.masteries);
-
-                                    var masterySummary = extractMasterySummary(participant.masteries);
-
-                                    // matchDataObjs.push({
-                                    champDataArray.push ({
-                                        champId:        participant.championId,
-                                        summonerName:   matchEntry.participantIdentities[i].player.summonerName,
-                                        winner:         participant.stats.winner,
-                                        runes:          runes,
-                                        masteries:      masteries,
-                                        masterySummary: masterySummary,
-                                        lane:           participant.timeline.lane,
-                                        kills:          participant.stats.kills,
-                                        deaths:         participant.stats.deaths,
-                                        assists:        participant.stats.assists,
-                                        finalBuild:     [
-                                                            participant.stats.item0,
-                                                            participant.stats.item1,
-                                                            participant.stats.item2,
-                                                            participant.stats.item3,
-                                                            participant.stats.item4,
-                                                            participant.stats.item5,
-                                                            participant.stats.item6
-                                                        ],
-                                        summonerSpells: [
-                                                            participant.spell1Id,
-                                                            participant.spell2Id
-                                                        ],
-                                        date:           matchEntry.matchCreation,
-                                        skillOrder:     participant.skills,
-                                        buyOrder:       buyOrder
-                                    });
-                                });
-                            });
-                        })
-                        .then(function() {
-                            var numFinished = (i + 1) * 10;
-                            console.log('Finished ' + numFinished + ', napping before the next set');
-                            
-                            var promiseBuffer = (numFinished < numMatches) ? promise.wait(RATE_LIMIT_PERIOD * rateLimitRatio) : Promise.resolve();
-                            return promiseBuffer;
+                        // matchDataObjs.push({
+                        champDataArray.push ({
+                            champId:        participant.championId,
+                            summonerName:   matchEntry.participantIdentities[i].player.summonerName,
+                            winner:         participant.stats.winner,
+                            runes:          runes,
+                            masteries:      masteries,
+                            masterySummary: masterySummary,
+                            lane:           participant.timeline.lane,
+                            kills:          participant.stats.kills,
+                            deaths:         participant.stats.deaths,
+                            assists:        participant.stats.assists,
+                            finalBuild:     [
+                                                participant.stats.item0,
+                                                participant.stats.item1,
+                                                participant.stats.item2,
+                                                participant.stats.item3,
+                                                participant.stats.item4,
+                                                participant.stats.item5,
+                                                participant.stats.item6
+                                            ],
+                            summonerSpells: [
+                                                participant.spell1Id,
+                                                participant.spell2Id
+                                            ],
+                            date:           matchEntry.matchCreation,
+                            skillOrder:     participant.skills,
+                            buyOrder:       buyOrder
                         });
                     });
-            }, Promise.resolve());
+                },
+                RATE_LIMIT, // Limit on how many
+                RATE_LIMIT_PERIOD) // Limit on how often
+                .then(function() {
+                    return champDataArray; // Funnel data into the save step
+                });
         })
-        .then(function saveData() {
+        .then(function saveData(champDataArray) {
+            console.log(((new Date().getTime() - start) / 1000 / 3600) + ' hours');
+
             promise.save('data-compiled/data.json', JSON.stringify(champDataArray));
         })
         .catch(function(err) {
@@ -211,5 +198,6 @@ function compileData() {
             exit(1);
         });
 }
+
 
 compileData();
