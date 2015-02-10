@@ -16,7 +16,7 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 // Static serving files from specific folders
-app.use('/favicon.ico', express.static(__dirname + '/favicon.ico'));
+// app.use('/favicon.ico', express.static(__dirname + '/favicon.ico'));
 app.use('/css',         express.static(__dirname + '/css'));
 app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
