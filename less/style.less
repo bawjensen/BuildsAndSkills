@@ -12,21 +12,41 @@
   }
 }
 
+
+@mastery-total-size: 50px;
+
+
+@summary-total-size: 130px;
+
+
+@skill-slot-size: 16px;
+@skill-border-size: 1px;
+@skill-margin-size: 2px;
+@skill-total-size: 19 * (@skill-slot-size + 2 * @skill-border-size + 2 * @skill-margin-size);
+
+
+@rune-total-size: 180px;
+
+
+@buy-total-size: 1120px - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size);
+
 // =================================== General Styling ===================================
 
 body {
-  background-color: black;
-
   color: white;
+
+  background-image: linear-gradient(
+      to right,
+      #0C0C20,
+      #0C0C3C,
+      #0C0C3C,
+      #0C0C3C,
+      #0C0C20
+    );
 }
 
 #content {
-  background-image: linear-gradient(
-      to right,
-      #141430,
-      #14143C,
-      #141430
-    );
+  background-color: rgba(255, 255, 255, 0.05)
 }
 
 @nav-height: 50px;
@@ -91,6 +111,7 @@ nav {
 .champDiv {
   height: 105px;
   width: 105px;
+  padding-top: 15px;
   float: left;
 
   a {
@@ -116,16 +137,19 @@ nav {
 // =================================== General Champ Page Styling ========================
 
 .match-row {
-  border: 1px solid gray;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-  border-left: 10px solid black;
+  padding-bottom: 20px;
+  margin: 10px;
 
-  &.win {
-    border-left-color: green;
-  }
-  &.loss {
-    border-left-color: red;
-  }
+  // border-left: 10px solid black;
+
+  // &.win {
+  //   border-left-color: green;
+  // }
+  // &.loss {
+  //   border-left-color: red;
+  // }
 }
 
 #champ-title {
@@ -135,48 +159,22 @@ nav {
 // =================================== Summary Styling ===================================
 
 .summary-info {
-  
-}
-
-// =================================== Summoners Styling =================================
-
-img.summ-spell {
-  width: 36px;
-  height: auto;
-}
-
-// =================================== Purchase Styling ==================================
-
-.purchase-group {
-  .cf;
-  padding: 2px;
-  margin: 3px;
   float: left;
+  width: @summary-total-size;
 
-  min-height: 30px; // 24 height + 4 padding + 2 border
-
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid gray;
-
-  .item-buy {
-    float: left;
-
-    &.blacklisted {
-      display: none;
-    }
-
-    img.item-buy-icon {
-      width: 24px;
-      height: auto;
-
-    }
-  }
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 // =================================== Skill Styling =====================================
 
-@skill-slot-size: 14px;
 .skill-info {
+  float: left;
+  width: @skill-total-size;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
   .level-column {
     float: left;
 
@@ -184,7 +182,7 @@ img.summ-spell {
       height: @skill-slot-size;
       width: @skill-slot-size;
 
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      border: @skill-border-size solid rgba(0, 0, 0, 0.15);
 
       margin: 2px;
       font-size: 12px;
@@ -202,18 +200,14 @@ img.summ-spell {
   }
 }
 
-// =================================== Rune Styling ======================================
-
-.rune-info {
-  .rune-img {
-    width: 24px;
-    height: auto;
-  }
-}
-
 // =================================== Mastery Styling ===================================
 
 .mastery-info {
+  float: left;
+  width: @mastery-total-size;
+
+  padding-left: 15px;
+  padding-right: 15px;
 
   .mastery-summary {
     cursor: default;
@@ -233,7 +227,7 @@ img.summ-spell {
     display: none;
 
     position: absolute;
-    right: 0;
+    right: -@mastery-detail-width / 2;
     z-index: 1;
     padding: @mastery-detail-padding;
 
@@ -262,7 +256,7 @@ img.summ-spell {
             height: @mastery-img-width;
 
             &.inactive {
-              opacity: 0.375;
+              opacity: 0.25;
             }
           }
 
@@ -272,7 +266,7 @@ img.summ-spell {
 
             bottom: 0;
             right: 5px;
-            font-size: 20px;
+            font-size: 16px;
 
             cursor: default;
 
@@ -291,4 +285,61 @@ img.summ-spell {
   &:hover > .mastery-detail {
     display: block;
   }
+}
+
+// =================================== Purchase Styling ==================================
+
+.buy-info {
+  float: left;
+  width: @buy-total-size;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  .purchase-group {
+    .cf;
+    padding: 2px;
+    margin: 3px;
+    float: left;
+
+    min-height: 30px; // 24 height + 4 padding + 2 border
+
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid gray;
+
+    .item-buy {
+      float: left;
+
+      &.blacklisted {
+        display: none;
+      }
+
+      img.item-buy-icon {
+        width: 24px;
+        height: auto;
+      }
+    }
+  }
+}
+
+// =================================== Rune Styling ======================================
+
+.rune-info {
+  float: left;
+  width: @rune-total-size;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  .rune-img {
+    width: 24px;
+    height: auto;
+  }
+}
+
+// =================================== Summoners Styling =================================
+
+img.summ-spell {
+  width: 36px;
+  height: auto;
 }

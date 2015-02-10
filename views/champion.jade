@@ -19,16 +19,16 @@ block body
   each match in gamesData
     - var _class = match.winner ? 'win' : 'loss';
     .match-row.row(class=_class)
+
       .summary-info.col-md-1
         div= match.summonerName
         - var date = new Date(match.date)
         div= (date.getMonth() + 1) + '/' + date.getUTCDate() + '/' + date.getUTCFullYear()
         div= match.lane
         div= match.winner ? 'Won' : 'Lost'
-        div= match.kills + ' / ' + match.deaths + ' / ' + match.assists
+        div= match.kills + '/' + match.deaths + '/' + match.assists
 
-      .skill-info.col-md-4
-        //- - var trans = ['', 'Q', 'W', 'E', 'R'];
+      .skill-info
         .level-column
           each skillLabel in ['Q', 'W', 'E', 'R']
             .skill-slot
@@ -40,26 +40,6 @@ block body
               - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
               .skill-slot(class=_class)
                 .level-value= match.skillOrder[level] === skill ? level + 1 : ''
-
-
-      //- .col-md-1
-      //-   each item in match.finalBuild
-      //-     .row= staticData.items.data[item] ? staticData.items.data[item].name : item
-
-      .buy-info.col-md-4
-        each buy in match.buyOrder
-          .purchase-group
-            each amount, itemId in buy
-              - var _class = itemBlacklist[itemId] ? 'blacklisted' : '';
-              div.item-buy(class=_class)
-                img.item-buy-icon(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
-                = ' x' + amount
-
-      .rune-info.col-md-2
-        each rank, id in match.runes
-          .row
-            img.rune-img(src='/data/dragontail/current/img/rune/' + staticData.runes[id].image.full)
-            = rank + ' ' + staticData.runes[id].shortName
 
       .mastery-info.col-md-1
         .mastery-summary
@@ -89,6 +69,26 @@ block body
 
 
                         img.mastery-img(class=_class src='/data/dragontail/current/img/mastery/' + staticData.masteries.data[slot.masteryId].image.full)
+
+
+      //- .col-md-1
+      //-   each item in match.finalBuild
+      //-     .row= staticData.items.data[item] ? staticData.items.data[item].name : item
+
+      .buy-info.col-md-4
+        each buy in match.buyOrder
+          .purchase-group
+            each amount, itemId in buy
+              - var _class = itemBlacklist[itemId] ? 'blacklisted' : '';
+              div.item-buy(class=_class)
+                img.item-buy-icon(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
+                = ' x' + amount
+
+      .rune-info.col-md-2
+        each rank, id in match.runes
+          .row
+            img.rune-img(src='/data/dragontail/current/img/rune/' + staticData.runes[id].image.full)
+            = rank + ' ' + staticData.runes[id].shortName
 
       //- .col-md-1
         each spell in match.summonerSpells
