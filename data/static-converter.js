@@ -13,7 +13,7 @@ function convertChamps() {
     for (var champName in data) {
         var champId = parseInt(data[champName].key);
         convertedObj[champId] = data[champName];
-        translatorObj1[champName.toLowerCase()] = champId;
+        translatorObj1[champName.toLowerCase()] = { id: champId, name: champName };
         translatorObj2[champId] = champName;
     }
 

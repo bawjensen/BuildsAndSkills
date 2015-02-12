@@ -28,18 +28,20 @@ html
   body
     nav.navbar.navbar-fixed-top
       .container
-        .navbar-header
+        .site-title
           a(href='/') BuildsAndSkills
 
-        ul.nav.navbar-nav.navbar-right
-          form#champ-search(method='GET')
-            datalist#champions
-              each championName in championNames
-                option(value=championName.toLowerCase())
-            input(type='search' placeholder='Search' list='champions')
+        #nav-search
+          //- datalist#champions
+            each championName in simpleChamps
+              option(value=championName.name)
+          input#header-search.form-control(type='search' placeholder='Search')
 
     .container#content
       block body
+
+    script.
+      var allChamps = !{JSON.stringify(simpleChamps)};
 
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

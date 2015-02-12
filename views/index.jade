@@ -4,6 +4,12 @@ block page-title
   | Welcome
 
 block body
+
+  .row
+    #main-page-search.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.form-group
+      label Champion search
+      input#champ-finder.form-control(type='search' placeholder='Champion Name')
+
   .row
     each champObj in data
       .champDiv
