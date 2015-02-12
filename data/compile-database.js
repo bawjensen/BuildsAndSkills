@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient,
     promise     = require('./helpers/promisedFunctions');
 
-var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
+var MONGO_URL = process.env.MONGOLAB_URI;
 
 function sendDataToDatabase() {
     promise.readJson('data-compiled/data.json')

@@ -24,7 +24,7 @@ var bodyParser  = require("body-parser"),
     request     = require("request"),
     querystring = require("querystring");
 
-var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
+var MONGO_URL = process.env.MONGOLAB_URI;
 
 var KEY = process.env.RIOT_KEY;
 var KEY_QUERY = querystring.stringify({ api_key: KEY });
