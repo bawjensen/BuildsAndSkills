@@ -8,7 +8,7 @@ block body
     .col-md-4
       img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
     .col-md-8#champ-title
-      = staticData.champs[champId].name + ', ' + staticData.champs[champId].title
+      a(href=staticData.champs[champId].name)= staticData.champs[champId].name + ', ' + staticData.champs[champId].title
 
   .row
     .col-md-12.text-center
@@ -17,25 +17,29 @@ block body
   - var itemBlacklist = { '2010': true, '2044': true, '2043': true, '2004': true, '2003': true };
 
   each match in gamesData
-    - var _class = match.winner ? 'win' : 'loss';
-    .match-row.row(class=_class)
+    .match-row.row
 
-      - var _class = match.winner ? 'win' : 'loss';
-      .win-status-info(class=_class)
+      - var winClass = match.winner ? 'win' : 'loss';
+      .win-status-info(class=winClass)
 
 
       .summary-info.col-md-1
-        div= match.summonerName
         - var date = new Date(match.date)
-        div= (date.getMonth() + 1) + '/' + date.getUTCDate() + '/' + date.getUTCFullYear()
-        div= match.lane
-        div= match.winner ? 'Won' : 'Lost'
-        div= match.kills + '/' + match.deaths + '/' + match.assists
+        div.date-text= [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
+        div.name-text= match.summonerName
+        div.lane-text= titleCase(match.lane)
+        //- div.win-text(class=winClass)= match.winner ? 'Won' : 'Lost'
+        div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
+        div.summ-imgs
+          each spell in match.summonerSpells
+            img.summ-spell(src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)
+
 
       .skill-info
         .level-column
-          each skillLabel in ['Q', 'W', 'E', 'R']
-            .skill-slot
+          each skillLabel, i in ['Q', 'W', 'E', 'R']
+            - var tooltip = '<b>' + staticData.champInfo.data[champName].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champName].spells[i].description;
+            .skill-slot(data-toggle='tooltip' title=tooltip)
               .level-value= skillLabel
 
         each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
@@ -46,13 +50,12 @@ block body
               .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
                 .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 
+
       .mastery-info.col-md-1
         .mastery-summary
-          | Masteries:
-          br
-          | (hover for details)
-          br
-          = match.masterySummary['Offense'] + '/' + match.masterySummary['Defense'] + '/' + match.masterySummary['Utility']
+          //- .mastery-hint (hover for details)
+          .mastery-label Masteries:
+          .mastery-text= match.masterySummary['Offense'] + '/' + match.masterySummary['Defense'] + '/' + match.masterySummary['Utility']
 
         .mastery-detail
           each treeName in ['Offense', 'Defense', 'Utility']
@@ -90,6 +93,7 @@ block body
         each item in match.finalBuild
           .row= staticData.items.data[item] ? staticData.items.data[item].name : item
 
+
       .buy-info.col-md-4
         each buy in match.buyOrder
           .purchase-group
@@ -100,13 +104,10 @@ block body
                 img.item-buy-icon(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
                 = ' x' + amount
 
+
       .rune-info.col-md-2
         each rank, id in match.runes
-          - var tooltip = staticData.runes[id].description + ' x ' + rank;
+          - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
           .row(data-toggle='tooltip' title=tooltip)
             img.rune-img(src='/data/dragontail/current/img/rune/' + staticData.runes[id].image.full)
             = ' ' + rank + ' ' + staticData.runes[id].shortName
-
-      //- .col-md-1
-        each spell in match.summonerSpells
-          img.summ-spell(src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)

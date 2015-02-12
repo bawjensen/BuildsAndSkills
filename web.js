@@ -7,7 +7,7 @@ var bodyParser  = require("body-parser"),
     querystring = require("querystring");
 
 // Global constants
-var MONGO_URL = 'mongodb://bawjensen:dummypass@ds031531.mongolab.com:31531/heroku_app33050572';
+var MONGO_URL = process.env.MONGOLAB_URI;
 var CHAMP_ROUTE = '/:champRoute';
 
 var app = express();
@@ -61,6 +61,7 @@ mainRouter
     .all('*', function(req, res, next) {
         console.log('Loading site-wide data');
         res.locals.simpleChamps = loadSiteWideData().map(function(entry) { return { id: entry.id, name: entry.name }; });
+        res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
         next();
     })
 
