@@ -61,35 +61,40 @@ $(function() {
         $('#'+SUGGESTION_BOX_ID).hide();
     });
 
+    var bufferedString;
     $('#champ-finder, #header-search').keyup(function(evt) {
         evt.preventDefault();
         var $selected = $('.suggestion.selected');
+        var $this = $(this);
        
         if (evt.keyCode === 13) {
-            if ($selected.length) {
-                console.log('Selected');
-                $(this).val($selected.text());
-                window.location.href = $selected.attr('id');
-            }
-            else {
-                window.location.href = $(this).val();
-            }
+            window.location.href = $this.val();
         }
         else if (evt.keyCode === 40 || evt.keyCode === 38) { // Up or down
             if ($selected.length) {
                 $selected.removeClass('selected');
 
-                if (evt.keyCode == 40)
-                    $selected.next().addClass('selected');
+                if (evt.keyCode == 40) 
+                    $selected = $selected.next();
                 else
-                    $selected.prev().addClass('selected');
+                    $selected = $selected.prev();
+
+                $selected.addClass('selected');
             }
             else {
-                $('.suggestion:first').addClass('selected');
+                bufferedString = $this.val();
+                $selected = $('.suggestion:first').addClass('selected');
+            }
+
+            if ($('.selected').length) {
+                $this.val($selected.text());
+            }
+            else {
+                $this.val(bufferedString);
+                bufferedString = undefined;
             }
         }
         else {
-            var $this = $(this);
             populateSuggestions($this, $this.val());
         }
     });
