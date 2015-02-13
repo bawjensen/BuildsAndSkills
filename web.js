@@ -13,7 +13,7 @@ var CHAMP_ROUTE = '/:champRoute';
 var app = express();
 
 // Server defaults to port 7500
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || process.argv[2] || 5000));
 
 // Static serving files from specific folders
 // app.use('/favicon.ico', express.static(__dirname + '/favicon.ico'));
@@ -125,5 +125,5 @@ app.use('/', mainRouter);
 
 // Start up the server
 app.listen(app.get('port'), function() {
-    console.log("Active!");
+    console.log('Active on', app.get('port'));
 });
