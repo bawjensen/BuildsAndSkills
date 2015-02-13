@@ -15,23 +15,19 @@
 
 @mastery-total-size: 100px;
 
-
 @summary-total-size: 130px;
-
 
 @skill-slot-size: 16px;
 @skill-border-size: 1px;
 @skill-margin-size: 2px;
 @skill-total-size: 19 * (@skill-slot-size + 2 * @skill-border-size + 2 * @skill-margin-size);
 
-
 @rune-total-size: 180px;
-
 
 @win-status-size: 10px;
 
-
-@buy-total-size: 1120px - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @win-status-size);
+// The odd one out takes the hit
+@buy-total-size: 1120px - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @win-status-size + 2*@content-border-width);
 
 // =================================== General Styling ===================================
 
@@ -48,11 +44,12 @@ body {
     );
 }
 
-@content-border: 1px solid rgba(255, 255, 255, 0.10);
+@content-border-width: 1px;
+@content-border-color: rgba(255, 255, 255, 0.10);
 #content {
   background-color: rgba(255, 255, 255, 0.05);
-  // border-left: @content-border;
-  // border-right: @content-border;
+  border-left: @content-border-width solid @content-border-color;
+  border-right: @content-border-width solid @content-border-color;
 }
 
 @nav-height: 50px;
