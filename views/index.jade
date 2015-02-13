@@ -12,7 +12,7 @@ block body
 
   .row
     each champObj in data
-      .champDiv
+      .champ-div
         a(href=champObj.id)
           img(src='/data/dragontail/current/img/champion/' + champObj.image.full)
-          .champLabel= champObj.name
+          .champ-label= champObj.name
