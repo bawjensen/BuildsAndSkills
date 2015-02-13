@@ -12,7 +12,7 @@ var CHAMP_ROUTE = '/:champRoute';
 
 var app = express();
 
-// Server defaults to port 7500
+// Server defaults to port 5000
 app.set('port', (process.env.PORT || process.argv[2] || 5000));
 
 // Static serving files from specific folders
