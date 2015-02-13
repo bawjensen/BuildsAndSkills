@@ -8,36 +8,38 @@ var KEY_QUERY = querystring.stringify({ api_key: API_KEY });
 
 var MATCH_HISTORY_ROUTE = '/api/lol/na/v2.2/matchhistory/'
 
+var RATE_LIMIT = 10; // Per 10 seconds
+
 function compileMatches() {
     promise.readJson('data-compiled/players.json')
         .then(function fetchMatches(players) {
-            var baseRoute = BASE_URL + MATCH_HISTORY_ROUTE;
-            return Promise.all(
-                players.map(function(id) {
-                    return promise.persistentGet(baseRoute + id + '?' + KEY_QUERY);
-                })
-            );
-        })
-        .then(function extractMatchesData(matchHistoriesArray) {
+            var extractedMatches = {};
+
             var desiredMap = 11; // New summoner's rift id
             var desiredMode = 'CLASSIC';
             var desiredType = 'MATCHED_GAME';
 
-            var extractedMatches = {};
+            var baseRoute = BASE_URL + MATCH_HISTORY_ROUTE;
 
-            for (var i in matchHistoriesArray) {
-                var matches = matchHistoriesArray[i].matches;
+            return promise.rateLimitGet(players, RATE_LIMIT,
+                function mapMatch(id) { // How to map a match to a promise request
+                    return promise.persistentGet(baseRoute + id + '?' + KEY_QUERY);
+                },
+                function handleMatch(matchHistoryEntry) { // How to handle a match's response data
+                    var matches = matchHistoryEntry.matches;
 
-                for (var j in matches) {
-                    var match = matches[j];
+                    for (var i in matches) {
+                        var match = matches[i];
 
-                    if (match.mapId == desiredMap && match.matchMode == desiredMode && match.matchType == desiredType) {
-                        extractedMatches[match.matchId] = true;
+                        if (match.mapId == desiredMap && match.matchMode == desiredMode && match.matchType == desiredType) {
+                            extractedMatches[match.matchId] = true;
+                        }
                     }
-                }
-            }
 
-            return Object.keys(extractedMatches);
+                })
+                .then(function() {
+                    return Object.keys(extractedMatches);
+                });
         })
         .then(function saveMatches(matches) {
             console.log('Got ' + matches.length + ' matches');

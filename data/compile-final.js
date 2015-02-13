@@ -128,7 +128,7 @@ function compileData() {
 
             var champDataArray = [];
 
-            return promise.rateLimitGet(matches,
+            return promise.rateLimitGet(matches, RATE_LIMIT,
                 function mapMatch(matchId) { // How to map a match to a promise request
                     return promise.persistentGet(BASE_URL + MATCH_ROUTE + matchId + '?' + includeTimelineQuery + '&' + KEY_QUERY);
                 },
@@ -181,9 +181,7 @@ function compileData() {
                             buyOrder:       buyOrder
                         });
                     });
-                },
-                RATE_LIMIT, // Limit on how many
-                RATE_LIMIT_PERIOD) // Limit on how often
+                }) // Limit on how many
                 .then(function() {
                     return champDataArray; // Funnel data into the save step
                 });

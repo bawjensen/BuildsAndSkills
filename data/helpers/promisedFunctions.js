@@ -61,15 +61,22 @@ function persistentCallback(url, resolve, reject, err, resp, body) {
         console.log('Issue with: ' + url);
         reject(Error(err));
     }
-    else if (resp.statusCode === 429 || resp.statusCode === 503 || resp.statusCode === 504) {
+    else if (resp.statusCode === 429) {
+        setTimeout(function() {
+            request.get(url, persistentCallback.bind(null, url, resolve, reject));
+        }, parseInt(resp.headers['retry-after']));
+    }
+    else if (resp.statusCode === 503 || resp.statusCode === 504) {
         setTimeout(function() {
             request.get(url, persistentCallback.bind(null, url, resolve, reject));
         }, 100);
     }
-    else if (resp.statusCode != 200)
+    else if (resp.statusCode != 200) {
         reject(Error('Resp status code not 200: ' + resp.statusCode + '(' + url + ')'));
-    else
+    }
+    else {
         resolve(body);
+    }
 }
 function persistentPromiseGet(url) {
     return new Promise(function get(resolve, reject) {
@@ -79,14 +86,12 @@ function persistentPromiseGet(url) {
         .catch(promiseCatchAndQuit);
 }
 
-function promiseRateLimitedGet(list, promiseMapper, matchHandler, limitNumber, limitTime) {
+function promiseRateLimitedGet(list, groupSize, promiseMapper, matchHandler) {
     var listSize = list.length;
 
     var groupedList = [];
-    var i = 0;
-    while (i < list.length) {
-        groupedList.push(list.slice(i, i+limitNumber));
-        i += limitNumber;
+    for (var i = 0; i < list.length; i += groupSize) {
+        groupedList.push(list.slice(i, i+groupSize));
     }
 
     return groupedList.reduce(function chainPromiseAlls(chainSoFar, matchesGroup, i) {
@@ -94,13 +99,7 @@ function promiseRateLimitedGet(list, promiseMapper, matchHandler, limitNumber, l
             return Promise.all(matchesGroup.map(promiseMapper))
                 .then(function assignData(matchesArray) {
                     matchesArray.forEach(matchHandler); // This is where the magic happens - data extracted *outside* of promises
-                })
-                .then(function() {
-                    var numFinished = (i + 1) * 10;
-                    console.log('Finished ' + numFinished + ', napping before the next set');
-                    
-                    var promiseBuffer = (numFinished < listSize) ? promiseWait(limitTime * 0.75) : Promise.resolve();
-                    return promiseBuffer;
+                    console.log('Finished ' + (i + 1) * 10 + ', sending out the next set of requests');
                 })
             });
         }, Promise.resolve());
