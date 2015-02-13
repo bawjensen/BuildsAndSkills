@@ -35,14 +35,9 @@ function populateSuggestions($inputBox, filterText) {
     matching.forEach(function addSuggestion(entry) {
         var newSuggestion = $('<div>', {
             'class': 'suggestion',
-            // html: entry.name,
-            // id: entry.id
-        });
-
-        newSuggestion.append($('<a>', {
             html: entry.name,
-            href: entry.id
-        }));
+            id: entry.id
+        });
 
         $suggestionsBox.append(newSuggestion);
     });
@@ -54,8 +49,7 @@ $(function() {
         $('.item-buy.blacklisted').toggle();
     });
 
-    $($('body')).on('click', '.suggestion', function(evt) {
-        console.log('yay');
+    $(document).on('mousedown', '.suggestion', function(evt) {
         window.location.href = $(evt.target).attr('id');
     });
 
@@ -63,9 +57,8 @@ $(function() {
         $('#'+SUGGESTION_BOX_ID).show();
         populateSuggestions($(this), '');
     });
-    $(document).on('focusout', '#champ-finder, #header-search', function(evt) {
+    $('#champ-finder, #header-search').focusout(function(evt) {
         $('#'+SUGGESTION_BOX_ID).hide();
-        $('.selected').click();
     });
 
     $('#champ-finder, #header-search').keyup(function(evt) {
@@ -74,6 +67,7 @@ $(function() {
        
         if (evt.keyCode === 13) {
             if ($selected.length) {
+                console.log('Selected');
                 $(this).val($selected.text());
                 window.location.href = $selected.attr('id');
             }

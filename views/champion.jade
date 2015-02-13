@@ -27,12 +27,13 @@ block body
         - var date = new Date(match.date)
         div.date-text= [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
         div.name-text= match.summonerName
-        div.lane-text= titleCase(match.lane)
         //- div.win-text(class=winClass)= match.winner ? 'Won' : 'Lost'
         div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
+        div.lane-text= titleCase(match.lane)
         div.summ-imgs
           each spell in match.summonerSpells
-            img.summ-spell(src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)
+            - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
+            img.summ-spell(data-toggle='tooltip' data-container='.match-row' title=tooltip src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)
 
 
       .skill-info

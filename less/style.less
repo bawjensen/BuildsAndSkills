@@ -231,6 +231,10 @@ nav {
 
   text-align: center;
 
+  .tooltip-inner {
+    width: 500px;
+  }
+
   .date-text {
     text-align: left;
     font-size: 0.8em;
@@ -257,6 +261,7 @@ nav {
 
   .kda-text {
     font-size: 1.3em;
+    color: rgba(255, 255, 255, 0.65); // Faded base color
 
     .kills {
       color: @win-color;
@@ -279,6 +284,8 @@ nav {
   padding-left: 15px;
   padding-right: 15px;
 
+  cursor: default;
+
   .level-column {
     float: left;
 
@@ -296,7 +303,6 @@ nav {
 
       &.active {
         background-color: #6BCBE7;
-        cursor: default;
       }
       &.inactive {
         background-color: white;
