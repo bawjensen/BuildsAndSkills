@@ -1,10 +1,11 @@
-var bodyParser  = require("body-parser"),
-    express     = require("express"),
-    fs          = require("fs"),
-    logfmt      = require("logfmt"),
+var argv = require('optimist').argv,
+    bodyParser  = require('body-parser'),
+    express     = require('express'),
+    fs          = require('fs'),
+    logfmt      = require('logfmt'),
     MongoClient = require('mongodb').MongoClient,
-    request     = require("request"),
-    querystring = require("querystring");
+    request     = require('request'),
+    querystring = require('querystring');
 
 // Global constants
 var MONGO_URL = process.env.MONGOLAB_URI;
@@ -59,7 +60,6 @@ var mainRouter = express.Router();
 
 mainRouter
     .all('*', function(req, res, next) {
-        console.log('Loading site-wide data');
         res.locals.simpleChamps = loadSiteWideData().map(function(entry) { return { id: entry.id, name: entry.name }; });
         res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
         next();
@@ -67,7 +67,6 @@ mainRouter
 
 mainRouter
     .get('/', function(req, res) {
-        console.log('Loading front page data and rendering');
         res.render('index.jade', { data: loadSiteWideData() });
     })
 
@@ -83,8 +82,13 @@ mainRouter
     })
     .all(CHAMP_ROUTE, function(req, res, next) {
         MongoClient.connect(MONGO_URL, function callback(err, db) {
-            req.dbCollection = db.collection('champData');
-            next();
+            if (err) {
+                res.status(503).end();
+            }
+            else {
+                req.dbCollection = db.collection('champData');
+                next();
+            }
         });
     })
     .get(CHAMP_ROUTE, function(req, res) {
@@ -124,6 +128,6 @@ mainRouter
 app.use('/', mainRouter);
 
 // Start up the server
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), argv.fe_ip || 'localhost', function() {
     console.log('Active on', app.get('port'));
 });

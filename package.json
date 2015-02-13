@@ -20,6 +20,7 @@
     "jade": "^1.8.2",
     "logfmt": "^1.2.0",
     "mongodb": "^1.4.28",
+    "optimist": "^0.6.1",
     "request": "^2.51.0"
   },
   "engines": {
