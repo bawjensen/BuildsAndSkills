@@ -83,6 +83,7 @@ mainRouter
     .all(CHAMP_ROUTE, function(req, res, next) {
         MongoClient.connect(MONGO_URL, function callback(err, db) {
             if (err) {
+                console.log(err);
                 res.status(503).end();
             }
             else {
