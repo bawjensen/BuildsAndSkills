@@ -81,6 +81,7 @@ mainRouter
         }
     })
     .all(CHAMP_ROUTE, function(req, res, next) {
+        console.log('Connecting to', MONGO_URL, 'for db');
         MongoClient.connect(MONGO_URL, function callback(err, db) {
             if (err) {
                 console.log(err);
