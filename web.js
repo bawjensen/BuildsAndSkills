@@ -130,6 +130,6 @@ mainRouter
 app.use('/', mainRouter);
 
 // Start up the server
-app.listen(app.get('port'), argv.fe_ip || 'localhost', function() {
+app.listen(app.get('port'), function() {
     console.log('Active on', app.get('port'));
 });
