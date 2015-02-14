@@ -109,11 +109,11 @@ mainRouter
         req.dbCollection.find({ champId: champId }).sort({ date: -1 }).limit(10).toArray(function callback(err, games) {
             if (err) {
                 console.log(err.stack);
-                res.send('no');
+                res.status(503).end();
             }
             else if (!games.length) {
                 console.log('No one played ' + champRoute + ' - ' + champId);
-                res.send('no');
+                res.status(404).end();
             }
             else {
                 console.log(games.length);
