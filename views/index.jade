@@ -14,8 +14,6 @@ block body
     each champObj in data
       .champ-div
         a(href=champObj.id)
-          //- img.champ-thumbnail(src='/data/dragontail/current/img/champion/' + champObj.image.full)
           - var img = champObj.image;
-          - var spritePath = '/data/dragontail/current/img/sprite/' + img.sprite;
-          .champ-thumbnail(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(' + spritePath + ') -' + img.x + 'px -' + img.y + 'px no-repeat')
+          .champ-thumbnail(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
           .champ-label= champObj.name

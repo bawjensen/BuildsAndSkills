@@ -30,6 +30,8 @@
 @buy-total-size: 1120px - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @win-status-size + 2*@content-border-width);
 
 
+@sprite-img-width: 48px;
+
 // =================================== Media Queries =====================================
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -446,8 +448,7 @@ footer {
 
           .placeholder-mastery,
           .mastery-img {
-            width: @mastery-img-width;
-            height: @mastery-img-width;
+            zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
 
             &.inactive {
               opacity: 0.25;
@@ -512,9 +513,13 @@ footer {
         display: none;
       }
 
-      img.item-buy-icon {
-        width: 24px;
-        height: auto;
+      .item-buy-icon {
+        @item-buy-icon-width: 24px;
+
+        display: inline-block;
+        vertical-align: middle; // Copied from boostrap img css
+
+        zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
       }
     }
   }
@@ -530,8 +535,12 @@ footer {
   padding-right: 15px;
 
   .rune-img {
-    width: 24px;
-    height: auto;
+    @rune-img-width: 24px;
+
+    display: inline-block;
+    vertical-align: middle; // Copied from boostrap img css
+    
+    zoom: unit(@rune-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
   }
 }
 

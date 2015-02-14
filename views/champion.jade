@@ -80,7 +80,8 @@ block body
                         - var _class = match.masteries[slot.masteryId] ? 'active' : 'inactive' ;
                         - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
 
-                        img.mastery-img(class=_class src='/data/dragontail/current/img/mastery/' + staticData.masteries.data[slot.masteryId].image.full)
+                        - var img = staticData.masteries.data[slot.masteryId].image
+                        .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
 
                         if (match.masteries[slot.masteryId])
                           .mastery-rank
@@ -102,7 +103,8 @@ block body
               - var _class = itemBlacklist[itemId] ? 'blacklisted' : '';
               - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
               div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
-                img.item-buy-icon(src='/data/dragontail/current/img/item/' + staticData.items.data[itemId].image.full)
+                - var img = staticData.items.data[itemId].image
+                .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
                 = ' x' + amount
 
 
@@ -110,5 +112,6 @@ block body
         each rank, id in match.runes
           - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
           .row(data-toggle='tooltip' title=tooltip)
-            img.rune-img(src='/data/dragontail/current/img/rune/' + staticData.runes[id].image.full)
+            - var img = staticData.runes[id].image
+            .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
             = ' ' + rank + ' ' + staticData.runes[id].shortName
