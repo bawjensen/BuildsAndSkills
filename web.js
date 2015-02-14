@@ -88,7 +88,7 @@ mainRouter
                 res.status(503).end();
             }
             else {
-                req.dbCollection = db.collection('champData');
+                req.db = db;
                 next();
             }
         });
@@ -107,14 +107,18 @@ mainRouter
 
         var staticData = loadStaticData(champName);
 
-        req.dbCollection.find({ champId: champId }).sort({ date: -1 }).limit(10).toArray(function callback(err, games) {
+        var champData = req.db.collection('champData')
+
+        champData.find({ champId: champId }).sort({ date: -1 }).limit(10).toArray(function callback(err, games) {
+            req.db.close();
+
             if (err) {
                 console.log(err.stack);
-                res.status(503).end();
+                res.status(503).render('404.jade');
             }
             else if (!games.length) {
                 console.log('No one played ' + champRoute + ' - ' + champId);
-                res.status(404).end();
+                res.status(404).render('404.jade');
             }
             else {
                 console.log(games.length);
