@@ -64,6 +64,7 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Critical Chance/, 'Crit Chance');
             runeObj.shortName = runeObj.shortName.replace(/Magic Resist/, 'MR');
             runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'M. Regen');
+            runeObj.shortName = runeObj.shortName.replace(/Health Regen/, 'H. Regen');
             runeObj.shortName = runeObj.shortName.replace(/Movement Speed/, 'Move Speed');
         }
     }
