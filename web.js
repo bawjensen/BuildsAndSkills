@@ -14,7 +14,7 @@ var CHAMP_ROUTE = '/:champRoute';
 var app = express();
 
 // Server defaults to port 5000
-app.set('port', (process.env.PORT || process.argv[2] || 5000));
+app.set('port', (process.env.PORT || argv.port || 5000));
 
 // Static serving files from specific folders
 // app.use('/favicon.ico', express.static(__dirname + '/favicon.ico'));
