@@ -8,7 +8,7 @@ var argv = require('optimist').argv,
     querystring = require('querystring');
 
 // Global constants
-var MONGO_URL = process.env.MONGO_URL;
+var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.be_ip + process.env.MONGO_URL_SUFFIX;
 var CHAMP_ROUTE = '/:champRoute';
 
 var app = express();
