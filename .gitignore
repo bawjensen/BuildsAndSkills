@@ -1,3 +1,4 @@
 node_modules/
 .DS_Store
 full.log
+data/data-compiled
