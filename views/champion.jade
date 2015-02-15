@@ -7,8 +7,10 @@ block body
   .row
     .col-sm-4
       img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
-    .col-sm-8#champ-title
-      a(href=staticData.champs[champId].name)= staticData.champs[champId].name + ', ' + staticData.champs[champId].title
+    .col-sm-8
+      a#champ-title(href=staticData.champs[champId].name)
+        span#champ-name= staticData.champs[champId].name
+        span#champ-subtitle= staticData.champs[champId].title
 
   .row
     .col-md-12.text-center
