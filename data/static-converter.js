@@ -18,8 +18,8 @@ function convertChamps() {
     }
 
     fs.writeFile('data-compiled/champData.json', JSON.stringify(convertedObj));
-    fs.writeFile('data-compiled/champNames.json', JSON.stringify(translatorObj1));
-    fs.writeFile('data-compiled/champIds.json', JSON.stringify(translatorObj2));
+    fs.writeFile('data-compiled/champsByName.json', JSON.stringify(translatorObj1));
+    fs.writeFile('data-compiled/champsByIdNum.json', JSON.stringify(translatorObj2));
 }
 
 function convertSummonerSpells() {

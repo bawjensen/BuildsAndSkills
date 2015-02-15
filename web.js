@@ -30,10 +30,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function loadChampIdTranslator() {
-    return JSON.parse(fs.readFileSync('data/data-compiled/champIds.json'));
+    return JSON.parse(fs.readFileSync('data/data-compiled/champsByIdNums.json'));
 }
 function loadChampNameTranslator() {
-    return JSON.parse(fs.readFileSync('data/data-compiled/champNames.json'));
+    return JSON.parse(fs.readFileSync('data/data-compiled/champsByName.json'));
 }
 function loadStaticData(champId) {
     return {
