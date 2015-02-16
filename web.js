@@ -23,6 +23,7 @@ app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
 app.use('/data',        express.static(__dirname + '/data'));
 app.use('/bootstrap',   express.static(__dirname + '/bootstrap'));
+app.use('/riot.txt',    express.static(__dirname + '/riot.txt')); // Needed for riot's 3rd party app approval process
 
 // Other stuff to use
 app.use(logfmt.requestLogger());
@@ -30,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function loadChampIdTranslator() {
-    return JSON.parse(fs.readFileSync('data/data-compiled/champsByIdNums.json'));
+    return JSON.parse(fs.readFileSync('data/data-compiled/champsByIdNum.json'));
 }
 function loadChampNameTranslator() {
     return JSON.parse(fs.readFileSync('data/data-compiled/champsByName.json'));
@@ -85,7 +86,7 @@ mainRouter
         MongoClient.connect(MONGO_URL, function callback(err, db) {
             if (err) {
                 console.log(err);
-                res.status(503).end();
+                res.status(503).render('503.jade');
             }
             else {
                 req.db = db;
@@ -98,8 +99,7 @@ mainRouter
         var champData = loadChampNameTranslator()[champRoute.toLowerCase()];
 
         if (!champData) {
-            res.status(404);
-            res.render('404.jade');
+            res.status(404).render('404.jade');
         }
 
         var champId = champData.id;
@@ -114,14 +114,15 @@ mainRouter
 
             if (err) {
                 console.log(err.stack);
-                res.status(503).render('404.jade');
+                res.status(503).render('503.jade');
             }
             else if (!games.length) {
                 console.log('No one played ' + champRoute + ' - ' + champId);
                 res.status(404).render('404.jade');
             }
             else {
-                console.log(games.length);
+                // console.log(games.length);
+                console.log(games.map(function(entry) { return entry.summonerName }));
                 // res.send('yes');
                 // console.log(games);
                 // console.log(staticData)
