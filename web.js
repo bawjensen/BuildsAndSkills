@@ -59,18 +59,31 @@ function loadSiteWideData() {
 
 var mainRouter = express.Router();
 
+
+// Site-wide middleware
 mainRouter
-    .all('*', function(req, res, next) {
+    .use('*', function(req, res, next) {
         res.locals.simpleChamps = loadSiteWideData().map(function(entry) { return { id: entry.id, name: entry.name }; });
         res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
         next();
-    })
+    });
 
+
+// Main page middleware and routes
 mainRouter
     .get('/', function(req, res) {
         res.render('index.jade', { data: loadSiteWideData() });
-    })
+    });
 
+
+// FAQ middleware and routes
+mainRouter
+    .get('/faq', function(req, res) {
+        res.render('faq.jade');
+    });
+
+
+// Champ pages middleware and routes
 mainRouter
     .use(CHAMP_ROUTE, function(req, res, next) {
         var champRoute = req.params.champRoute;
@@ -78,21 +91,18 @@ mainRouter
             res.redirect(loadChampIdTranslator()[champRoute]);
         }
         else {
-            next();
+            console.log('Connecting to', MONGO_URL, 'for db');
+            MongoClient.connect(MONGO_URL, function callback(err, db) {
+                if (err) {
+                    console.log(err);
+                    res.status(503).render('503.jade');
+                }
+                else {
+                    req.db = db;
+                    next();
+                }
+            });
         }
-    })
-    .all(CHAMP_ROUTE, function(req, res, next) {
-        console.log('Connecting to', MONGO_URL, 'for db');
-        MongoClient.connect(MONGO_URL, function callback(err, db) {
-            if (err) {
-                console.log(err);
-                res.status(503).render('503.jade');
-            }
-            else {
-                req.db = db;
-                next();
-            }
-        });
     })
     .get(CHAMP_ROUTE, function(req, res) {
         var champRoute = req.params.champRoute;
@@ -121,11 +131,6 @@ mainRouter
                 res.status(404).render('404.jade');
             }
             else {
-                // console.log(games.length);
-                console.log(games.map(function(entry) { return entry.summonerName }));
-                // res.send('yes');
-                // console.log(games);
-                // console.log(staticData)
                 res.render('champion.jade', { gamesData: games, champId: champId, champName: champName, staticData: staticData });
             }
         });

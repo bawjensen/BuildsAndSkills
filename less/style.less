@@ -112,6 +112,14 @@ body {
     );
 }
 
+a {
+  color: #88C8FF;
+
+  &:hover {
+    color: #4287C5;
+  }
+}
+
 @content-border-width: 1px;
 @content-border-color: rgba(255, 255, 255, 0.10);
 #content {
@@ -178,7 +186,17 @@ nav {
 }
 
 footer {
+  padding-top: 125px;
   min-height: 200px;
+
+  clear: both;
+
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+
+  #riot-disclaimer {
+    font-style: italic;
+  }
 }
 
 // =================================== 404 Styling =======================================
@@ -258,6 +276,17 @@ footer {
   }
 }
 
+
+// =================================== FAQ-Page Styling ==================================
+
+#faq-container {
+  line-height: 2em;
+
+  .question {
+    padding-bottom: 10px;
+    color: #3D87FA;
+  }
+}
 
 // =================================== General Champ Page Styling ========================
 
@@ -384,7 +413,7 @@ footer {
       line-height: @skill-slot-size - 1;
 
       &.active {
-        background-color: #6BCBE7;
+        background-color: #3D87FA;
       }
       &.inactive {
         background-color: white;

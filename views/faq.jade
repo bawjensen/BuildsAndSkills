@@ -1,0 +1,64 @@
+extends skeleton_base
+
+block page-title
+  | FAQ
+
+block body
+  #faq-container
+    .col-xs-12.col-sm-6
+      .row
+        .col-xs-12
+          h3.question.
+            Who made this site?
+          p.answer.
+            On reddit I'm #[a(href='http://www.reddit.com/user/bawjensen') /u/bawjensen], on github I'm simply #[a(href='https://github.com/bawjensen') bawjensen], and #[a(href='http://bawjensen.com/') this] is my personal site. In life I'm a programmer/designer/software engineer, with maybe 3 years of experience, and I like working on sites and projects like this in my free time.
+
+      .row
+        .col-xs-12
+          h3.question.
+            What are your inspirations/what are some similar sites?
+          p.answer.
+            I borrow heavily from sites like #[a(href='http://www.probuilds.net/') probuilds.net], #[a(href='http://champion.gg/') champion.gg] and the #[a(href='http://matchhistory.na.leagueoflegends.com/en/') official match history], for design, concepts and execution. There are plenty of other good sites out there like #[a(href='http://lolbuilder.net/') lolbuilder.net] which I referenced, but didn't pull very much from.
+          
+      .row
+        .col-xs-12
+          h3.question.
+            What makes BuildsAndSkills different/better?
+          p.answer.
+            There are plenty of sites out there for League of Legends that will do complicated statistical computation and analysis, but I know that when I'm in champ select looking at one that I'm not familiar with, I just want a site that easy to glance at to see the information that I want. For a long time, that site was #[a(href='http://www.probuilds.net/') probuilds.net], but eventually I decided it was lacking in some key areas and that's how BuildsAndSkills was started.
+
+    .col-xs-12.col-sm-6
+      .row
+        .col-xs-12
+          h3.question.
+            Where does the data come from?
+          p.answer.
+            Riot makes available a LOT of data through their #[a(href='https://developer.riotgames.com/') API] for people like me and you to make use of. They data they make available is what completely powers this site.
+
+      .row
+        .col-xs-12
+          h3.question.
+            How recent is the data?
+          p.answer.
+            As you can see on each champion's page, the games are stamped with a date marking when it was played. The data is in a continual update loop, so as soon as the data becomes available, it should go live on the site within an hour.
+
+      .row
+        .col-xs-12
+          h3.question.
+            What is the data used/shown?
+          p.answer.
+            The games shown are taken from the top 200 (Challenger) players in certain regions, currently making use of only the NA region. Each champion will show up to 50 of the most recent games played on that champion.
+
+      .row
+        .col-xs-12
+          h3.question.
+            It's open source! (...wait, that's not a question!)
+          p.answer.
+            The project can be found #[a(href='https://github.com/bawjensen/BuildsAndSkills') here] on GitHub. The data aggregation side of things is not open source quite yet.
+
+      .row
+        .col-xs-12
+          h3.question.
+            What technologies are used for BuildsAndSkills?
+          p.answer.
+            Almost purely javascript, the back-end uses Node.js, Express, Jade and MongoDB, with the front-end making use of Bootstrap and jQuery. There're some cool aspects to how this site was coded, like using ES6 Promises on both the front- and back-end.
