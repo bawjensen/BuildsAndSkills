@@ -12,20 +12,18 @@
   }
 }
 
+@sprite-img-width: 48px;
 
 @skill-slot-size: 16px;
 @skill-border-size: 1px;
 @skill-margin-size: 2px;
 
+@screen-xs: 480px;
+@screen-sm: 768px;
+@screen-md: 992px;
+@screen-lg: 1200px;
 
-@sprite-img-width: 48px;
-
-// =================================== General Styling ===================================
-
-body {
-  color: white;
-
-  background-image: linear-gradient(
+@gradient-background: linear-gradient(
       to right,
       #080818,
       #08083C,
@@ -33,6 +31,13 @@ body {
       #08083C,
       #080818
     );
+
+// =================================== General Styling ===================================
+
+body {
+  color: white;
+
+  background-image: @gradient-background;
 }
 
 a {
@@ -240,205 +245,6 @@ footer {
   }
 }
 
-// =================================== Champ Page Media Queries ==========================
-
-// ----------------------------------- Width: 1200px +
-@media (min-width: 1200px) {
-  @parent-width: 1120px;
-
-  @status-total-size: 10px;
-  @summary-total-size: 130px;
-  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
-  @mastery-total-size: 100px;
-  // @buy-total-size: ;
-  @rune-total-size: 180px;
-
-  // The odd one out takes the hit
-  @buy-total-size: @parent-width - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @status-total-size + 2*@content-border-width);
-
-  .win-status-info {
-    width: @status-total-size;
-  }
-
-  .summary-info {
-    width: @summary-total-size;
-  }
-
-  .skill-info {
-    width: @skill-total-size;
-  }
-
-  .mastery-info {
-    width: @mastery-total-size;
-
-    .mastery-detail {
-      right: -@mastery-detail-width / 2 + @mastery-total-size / 2;
-    }
-  }
-
-  .buy-info {
-    width: @buy-total-size;
-  }
-
-  .rune-info {
-    width: @rune-total-size;
-  }
-}
-
-
-// ----------------------------------- Width: 992px - 1200px
-@media (min-width: 992px) and (max-width: 1200px) {
-  @parent-width: 920px;
-
-  @status-total-size: 10px;
-  @summary-total-size: 350px;
-  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
-
-  // The odd one out takes the hit
-  @mastery-total-size: @parent-width - (@status-total-size + @summary-total-size + @skill-total-size + 2*@content-border-width);
-
-  @rune-total-size: 180px;
-  // The odd one out takes the hit
-  @buy-total-size: @parent-width - (@rune-total-size + 2*@content-border-width);
-  
-  .win-status-info {
-    width: @status-total-size;
-  }
-
-  .summary-info {
-    width: @summary-total-size;
-    padding-top: 20px;
-
-    div {
-      display: inline-block;
-      padding: 0 10px;
-      border-right: 1px solid gray;
-    }
-  }
-
-  .skill-info {
-    width: @skill-total-size;
-  }
-
-  .mastery-info {
-    width: @mastery-total-size;
-
-    .mastery-detail {
-      right: 0;
-    }
-  }
-
-  .buy-info {
-    width: @buy-total-size;
-    clear: left;
-  }
-
-  .rune-info {
-    width: @rune-total-size;
-  }
-}
-
-// ----------------------------------- Width: 768px - 991px
-@media (min-width: 768px) and (max-width: 991px) {
-  @parent-width: 700px;
-
-  @status-total-size: 10px;
-  @summary-total-size: 150px;
-  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
-
-  // The odd one out takes the hit
-  @mastery-total-size: @parent-width - (@status-total-size + @summary-total-size + @skill-total-size + 2*@content-border-width);
-
-  @rune-total-size: 180px;
-  // The odd one out takes the hit
-  @buy-total-size: @parent-width - (@rune-total-size + 2*@content-border-width);
-  
-  .win-status-info {
-    width: @status-total-size;
-  }
-
-  .summary-info {
-    width: @summary-total-size;
-  }
-
-  .skill-info {
-    width: @skill-total-size;
-  }
-
-  .mastery-info {
-    width: @mastery-total-size;
-
-    .mastery-detail {
-      right: 0;
-    }
-  }
-
-  .buy-info {
-    clear: left;
-    width: @buy-total-size;
-  }
-
-  .rune-info {
-    width: @rune-total-size;
-  }
-}
-
-// ----------------------------------- Width: 0px - 767px
-@media (max-width: 767px) {
-  @status-total-size: 10px;
-  @summary-total-size: 150px;
-  @skill-slot-size: 12px;
-  @skill-margin-size: 1px;
-  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
-
-  // The odd one out takes the hit
-  @mastery-total-size: 200px;
-
-  @rune-total-size: 180px;
-  // The odd one out takes the hit
-  @buy-total-size: 200px;
-  
-  .win-status-info {
-    width: @status-total-size;
-  }
-
-  .summary-info {
-    // width: @summary-total-size;
-    width: calc(~"100% - " @status-total-size);
-  }
-
-  .skill-info {
-    width: @skill-total-size;
-    clear: left;
-    padding-left: 0px !important;
-
-    .skill-slot {
-      width: @skill-slot-size !important;
-      height: @skill-slot-size !important;
-      margin: @skill-margin-size !important;
-      font-size: @skill-slot-size*0.8 !important;
-      line-height: @skill-slot-size*0.8 !important;
-    }
-  }
-
-  .mastery-info {
-    width: @mastery-total-size;
-
-    .mastery-detail {
-      right: 0;
-    }
-  }
-
-  .buy-info {
-    clear: left;
-    width: @buy-total-size;
-  }
-
-  .rune-info {
-    width: @rune-total-size;
-  }
-}
-
 // =================================== Win Status Styling ================================
 
 @win-color: #38E738;
@@ -506,6 +312,11 @@ footer {
   }
 }
 
+img.summ-spell {
+  width: 24px;
+  height: auto;
+}
+
 // =================================== Skill Styling =====================================
 
 .skill-info {
@@ -526,13 +337,13 @@ footer {
       border: @skill-border-size solid rgba(0, 0, 0, 0.15);
 
       margin: @skill-margin-size;
-      font-size: @skill-slot-size;
+      font-size: @skill-slot-size*0.75;
 
       text-align: center;
       line-height: @skill-slot-size - 1;
 
       &.active {
-        background-color: #3D87FA;
+        background-color: #0054D7;
       }
       &.inactive {
         background-color: white;
@@ -702,9 +513,206 @@ footer {
   }
 }
 
-// =================================== Summoners Styling =================================
+// =================================== Champ Page Media Queries ==========================
 
-img.summ-spell {
-  width: 24px;
-  height: auto;
+// ----------------------------------- Width: 1200px + -----------------------------------
+@media (min-width: @screen-lg) {
+  @parent-width: 1120px;
+
+  @status-total-size: 10px;
+  @summary-total-size: 130px;
+  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
+  @mastery-total-size: 100px;
+  // @buy-total-size: ;
+  @rune-total-size: 180px;
+
+  // The odd one out takes the hit
+  @buy-total-size: @parent-width - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @status-total-size + 2*@content-border-width);
+
+  .win-status-info {
+    width: @status-total-size;
+  }
+
+  .summary-info {
+    width: @summary-total-size;
+  }
+
+  .skill-info {
+    width: @skill-total-size;
+  }
+
+  .mastery-info {
+    width: @mastery-total-size;
+
+    .mastery-detail {
+      right: -@mastery-detail-width / 2 + @mastery-total-size / 2;
+    }
+  }
+
+  .buy-info {
+    width: @buy-total-size;
+  }
+
+  .rune-info {
+    width: @rune-total-size;
+  }
 }
+
+
+// ----------------------------------- Width: 992px - 1200px -----------------------------
+@media (min-width: @screen-md) and (max-width: @screen-lg) {
+  @parent-width: 920px;
+
+  @status-total-size: 10px;
+  @summary-total-size: 350px;
+  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
+
+  // The odd one out takes the hit
+  @mastery-total-size: @parent-width - (@status-total-size + @summary-total-size + @skill-total-size + 2*@content-border-width);
+
+  @rune-total-size: 180px;
+  // The odd one out takes the hit
+  @buy-total-size: @parent-width - (@rune-total-size + 2*@content-border-width);
+  
+  .win-status-info {
+    width: @status-total-size;
+  }
+
+  .summary-info {
+    width: @summary-total-size;
+    padding-top: 20px;
+
+    div {
+      display: inline-block;
+      padding: 0 10px;
+      border-right: 1px solid gray;
+    }
+  }
+
+  .skill-info {
+    width: @skill-total-size;
+  }
+
+  .mastery-info {
+    width: @mastery-total-size;
+
+    .mastery-detail {
+      right: 0;
+    }
+  }
+
+  .buy-info {
+    width: @buy-total-size;
+    clear: left;
+  }
+
+  .rune-info {
+    width: @rune-total-size;
+  }
+}
+
+// ----------------------------------- Width: 768px - 991px ------------------------------
+@media (max-width: @screen-md) {
+  .container {
+    min-width: 750px;
+    background-image: @gradient-background;
+  }
+
+  @parent-width: 700px;
+
+  @status-total-size: 10px;
+  @summary-total-size: 150px;
+  @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
+
+  // The odd one out takes the hit
+  @mastery-total-size: @parent-width - (@status-total-size + @summary-total-size + @skill-total-size + 2*@content-border-width);
+
+  @rune-total-size: 180px;
+  // The odd one out takes the hit
+  @buy-total-size: @parent-width - (@rune-total-size + 2*@content-border-width);
+  
+  .win-status-info {
+    width: @status-total-size;
+  }
+
+  .summary-info {
+    width: @summary-total-size;
+  }
+
+  .skill-info {
+    width: @skill-total-size;
+  }
+
+  .mastery-info {
+    width: @mastery-total-size;
+
+    .mastery-detail {
+      right: 0;
+    }
+  }
+
+  .buy-info {
+    clear: left;
+    width: @buy-total-size;
+  }
+
+  .rune-info {
+    width: @rune-total-size;
+  }
+}
+
+// // ----------------------------------- Width: 0px - 767px
+// @media (max-width: @screen-sm) {
+//   @status-total-size: 10px;
+//   @summary-total-size: 150px;
+//   @skill-slot-size: 12px;
+//   @skill-margin-size: 1px;
+//   @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
+
+//   // The odd one out takes the hit
+//   @mastery-total-size: 200px;
+
+//   @rune-total-size: 180px;
+//   // The odd one out takes the hit
+//   @buy-total-size: 200px;
+  
+//   .win-status-info {
+//     width: @status-total-size;
+//   }
+
+//   .summary-info {
+//     // width: @summary-total-size;
+//     width: calc(~"100% - " @status-total-size);
+//   }
+
+//   .skill-info {
+//     width: @skill-total-size;
+//     clear: left;
+//     padding-left: 0px;
+
+//     .skill-slot {
+//       width: @skill-slot-size;
+//       height: @skill-slot-size;
+//       margin: @skill-margin-size;
+//       font-size: @skill-slot-size*0.75;
+//       line-height: @skill-slot-size*0.8;
+//     }
+//   }
+
+//   .mastery-info {
+//     width: @mastery-total-size;
+
+//     .mastery-detail {
+//       right: 0;
+//     }
+//   }
+
+//   .buy-info {
+//     clear: left;
+//     width: @buy-total-size;
+//   }
+
+//   .rune-info {
+//     width: @rune-total-size;
+//   }
+// }
