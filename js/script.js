@@ -43,6 +43,10 @@ function populateSuggestions($inputBox, filterText) {
     });
 }
 
+function showDetails() {
+    $('masteryDetail')
+}
+
 $(function() {
     $('.display-all-items').click(function(evt) {
         evt.preventDefault();
@@ -59,6 +63,19 @@ $(function() {
     });
     $('#champ-finder, #header-search').focusout(function(evt) {
         $('#'+SUGGESTION_BOX_ID).hide();
+    });
+
+    $('.mastery-info').hover(
+        function hoverIn() {
+            $(this).find('.mastery-detail').show();
+        },
+        function hoverOut() {
+            $(this).find('.mastery-detail').hide();
+        });
+
+    $('.mastery-info').click(function toggle(evt) {
+        if (!($(evt.target).closest('.mastery-detail').length))
+            $(this).find('.mastery-detail').toggle();
     });
 
     var bufferedString;
