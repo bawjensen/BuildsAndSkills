@@ -62,9 +62,11 @@ nav {
   
   background-color: rgba(0, 0, 20, 0.9);
 
-  .site-title {
+  #short-site-title,
+  #site-title {
     float: left;
     font-weight: 300;
+    text-transform: uppercase;
 
     #title-and {
       color: rgba(255, 255, 255, 0.625);
@@ -86,6 +88,10 @@ nav {
   #nav-search {
     float: right;
     margin-top: 10px;
+  }
+
+  #short-site-title {
+    display: none;
   }
 }
 
@@ -416,9 +422,7 @@ img.summ-spell {
 
       .mastery-tier {
         .cf;
-        // float: left;
         .mastery-slot {
-          // .cf;
           float: left;
           position: relative;
           padding: @mastery-slot-padding;
@@ -671,10 +675,6 @@ img.summ-spell {
   @rune-total-size: 100%;
 
   nav {
-    .site-title a {
-      font-size: 20px;
-    }
-
     #header-search {
       padding: 3px;
       height: 24px;
@@ -690,9 +690,12 @@ img.summ-spell {
     width: @summary-total-size;
   }
 
+  @skill-margin-size: 2px;
   .skill-info {
     margin-top: 10px;
     width: @skill-total-size;
+    padding-left: 0;
+    padding-right: 0;
 
     .level-column {
       float: left;
@@ -701,7 +704,7 @@ img.summ-spell {
 
       .skill-slot {
         width: ~"calc(100% - " @skill-margin-size ~")";
-        height: 20px;
+        height: 16px;
 
         border: @skill-border-size solid rgba(0, 0, 0, 0.15);
 
@@ -711,12 +714,11 @@ img.summ-spell {
       }
     }
   }
-
   .mastery-info {
     width: @mastery-total-size;
 
     .mastery-detail {
-      right: 0;
+      right: ~"calc(50% -" @mastery-detail-width / 2 ~")"; // Center the detail in fluid width
     }
   }
 
@@ -731,6 +733,83 @@ img.summ-spell {
     & > div {
       display: table;
       margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  // Width calculations for overriden values
+  @mastery-img-width: 25px;
+  @mastery-detail-padding: 5px;
+  @mastery-slot-padding: 1px;
+  @mastery-detail-width: (@mastery-img-width * 4 * 3) +
+                        (@tree-spacing * 2 * 3) +
+                        (@mastery-detail-padding * 2) +
+                        (@mastery-slot-padding * 4 * 3 * 2);
+  .mastery-info {
+    .mastery-detail {
+      width: @mastery-detail-width;
+      padding: @mastery-detail-padding;
+
+      right: ~"calc(50% -" @mastery-detail-width / 2 ~")";
+
+      .mastery-tree {
+        margin: 0 @tree-spacing;
+
+        .mastery-tier {
+          .mastery-slot {
+            padding: @mastery-slot-padding;
+
+            .placeholder-mastery,
+            .mastery-img {
+              zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  nav {
+    #site-title {
+      display: none;
+    }
+    #short-site-title {
+      display: block;      
+    }
+  }
+
+  // Width calculations for overriden values
+  @mastery-img-width: 20px;
+  @mastery-detail-padding: 5px;
+  @mastery-slot-padding: 1px;
+  @mastery-detail-width: (@mastery-img-width * 4 * 3) +
+                        (@tree-spacing * 2 * 3) +
+                        (@mastery-detail-padding * 2) +
+                        (@mastery-slot-padding * 4 * 3 * 2);
+  .mastery-info {
+    .mastery-detail {
+      width: @mastery-detail-width;
+      padding: @mastery-detail-padding;
+
+      right: ~"calc(50% -" @mastery-detail-width / 2 ~")";
+
+      .mastery-tree {
+        margin: 0 @tree-spacing;
+
+        .mastery-tier {
+          .mastery-slot {
+            padding: @mastery-slot-padding;
+
+            .placeholder-mastery,
+            .mastery-img {
+              zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+            }
+          }
+        }
+      }
     }
   }
 }
