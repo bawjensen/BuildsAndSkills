@@ -194,12 +194,7 @@ footer {
     .champ-thumbnail {
       display: block;
 
-      width: 60px;
-      height: auto;
-
       margin: 0 auto;
-
-      // zoom: 1.25;
     }
 
     .champ-label {
@@ -740,9 +735,20 @@ img.summ-spell {
 
 // ----------------------------------- Super Specific Media Queries ----------------------
 
-// Resizing masteries on very small screens
+// Resizing masteries and front-page champs on very small screens
 
 @media (max-width: 550px) {
+  .champ-div {
+    height: 65px;
+    width: 65px;
+
+    margin: 8px;
+    margin-right: 0;
+
+    padding-right: 2px;
+    padding-top: 0px;
+  }
+
   // Width calculations for overriden values
   @mastery-img-width: 25px;
   @mastery-detail-padding: 5px;
