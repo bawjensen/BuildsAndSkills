@@ -1,31 +1,12 @@
-# LoL Runes and Masteries
+# Builds And Skills
 
-Created and designed by @bawjensen and @dshelts. 
+Website for the viewing of the builds and skills that high-skill players in League of Legends use on a given champion.
+Creating using JavaScript, Node.js, MongoDB, Jade, Riot's API, and probably more.
 
-
-Order of events:
-
-+ Get all challengers
-+ Get match history for each
-+ For each match, get champ, runes and masteries
-+ Parse masteries, runes and find most popular
-+ Assign that to the associated champ
+Created and designed by [bawjensen](https://github.com/bawjensen) and [dshelts](https://github.com/dshelts).
 
 ## Concepts, Plans and Intent
 
 + Easy to use
 + Fast
 + Everything visible on one screen
-
-### Data
-
-+ Dynamic Data
-  + What: Runes and Masteries 
-  + How much: Past N games per champ
-  + Where from: Gathered from API
-  + Where to: Stored in MongoDB on MongoLab
-+ Static Data
-  + What: Everything about the game (descriptional data, champ names, rune effects, etc.)
-  + How much: All of it
-  + Where from: Gathered from static source (ddragon) and preprocessed every patch
-  + Where to: Stored server-side as JSON files
