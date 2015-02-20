@@ -9,7 +9,6 @@ var argv        = require('optimist').argv,
 
 // Global constants
 var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.be_ip + process.env.MONGO_URL_DB;
-var CHAMP_ROUTE = '/:champRoute';
 
 var app = express();
 
@@ -70,22 +69,22 @@ mainRouter
 
 
 // Main page middleware and routes
-mainRouter
-    .get('/', function(req, res) {
+mainRouter.route('/')
+    .get(function(req, res) {
         res.render('index.jade', { data: loadSiteWideData() });
     });
 
 
 // FAQ middleware and routes
-mainRouter
-    .get('/faq', function(req, res) {
+mainRouter.route('/faq')
+    .get(function(req, res) {
         res.render('faq.jade');
     });
 
 
 // Champ pages middleware and routes
-mainRouter
-    .use(CHAMP_ROUTE, function(req, res, next) {
+mainRouter.route('/:champRoute')
+    .all(function(req, res, next) {
         var champRoute = req.params.champRoute;
         if (!isNaN(champRoute)) {
             res.redirect(loadChampIdTranslator()[champRoute]);
@@ -104,7 +103,7 @@ mainRouter
             });
         }
     })
-    .get(CHAMP_ROUTE, function(req, res) {
+    .get(function(req, res) {
         var champRoute = req.params.champRoute;
         var champData = loadChampNameTranslator()[champRoute.toLowerCase()];
 
