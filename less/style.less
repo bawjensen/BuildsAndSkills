@@ -22,9 +22,11 @@
 @gradient-background: linear-gradient(
       to right,
       #080818,
-      #08083C,
-      #08083C,
-      #08083C,
+      #080840,
+      #080850,
+      #080850,
+      #080850,
+      #080840,
       #080818
     );
 
@@ -146,6 +148,9 @@ footer {
 // =================================== Temp Styling ======================================
 
 .display-all-items {
+  display: block;
+  text-align: center;
+
   cursor: pointer;
   color: white;
 
@@ -181,7 +186,7 @@ footer {
 
   margin: 10px;
   margin-right: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.25);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 
   padding-right: 10px;
   padding-top: 10px;
@@ -481,7 +486,7 @@ img.summ-spell {
       }
 
       &.blacklisted {
-        // display: none;
+        display: none;
       }
 
       .item-buy-icon {
