@@ -58,8 +58,9 @@ $(function() {
     });
 
     $('#champ-finder, #header-search').focus(function(evt) {
+        var $this = $(this);
         $('#'+SUGGESTION_BOX_ID).show();
-        populateSuggestions($(this), '');
+        populateSuggestions($this, $this.val());
     });
     $('#champ-finder, #header-search').focusout(function(evt) {
         $('#'+SUGGESTION_BOX_ID).hide();
@@ -85,7 +86,7 @@ $(function() {
         var $this = $(this);
        
         if (evt.keyCode === 13) {
-            window.location.href = $this.val();
+            window.location.href = $selected.text();
         }
         else if (evt.keyCode === 40 || evt.keyCode === 38) { // Up or down
             if ($selected.length) {
@@ -99,20 +100,42 @@ $(function() {
                 $selected.addClass('selected');
             }
             else {
-                bufferedString = $this.val();
-                $selected = $('.suggestion:first').addClass('selected');
+                var pseudoSelector;
+                if (evt.keyCode === 40)
+                    pseudoSelector = ':first';
+                else
+                    pseudoSelector = ':last';
+
+                $selected = $('.suggestion' + pseudoSelector).addClass('selected');
             }
 
-            if ($('.selected').length) {
+            if (bufferedString && $selected.length) {
                 $this.val($selected.text());
             }
-            else {
+            else if (bufferedString && !$selected.length) {
                 $this.val(bufferedString);
                 bufferedString = undefined;
             }
+            else if (!bufferedString && $selected.length) {
+                bufferedString = $this.val();
+                $this.val($selected.text());
+            }
+            else if (!bufferedString && !$selected.length) {
+
+            }
+
+            // if ($('.selected').length) {
+                // $this.val($selected.text());
+            // }
+            // else {
+                // $this.val(bufferedString);
+                // bufferedString = undefined;
+            // }
         }
         else {
             populateSuggestions($this, $this.val());
+
+            $('.suggestion:first').addClass('selected');
         }
     });
 

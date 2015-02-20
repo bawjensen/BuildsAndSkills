@@ -47,7 +47,17 @@ function loadStaticData(champStringId) {
         champInfo: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/champion/' + champStringId + '.json'))
     };
 }
+
 function loadSiteWideData() {
+    var data = JSON.parse(fs.readFileSync('data/data-compiled/champsByName.json'));
+    var dataArray = Object.keys(data).map(function(key) { return data[key]; });
+
+    dataArray.sort(function(a, b) { return (a.name < b.name) ? -1 : 1; });
+
+    return dataArray;
+}
+
+function loadFrontPageData() {
     var data = JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/champion.json')).data;
     var dataArray = Object.keys(data).map(function(key) { return data[key]; });
 
@@ -72,7 +82,7 @@ mainRouter
 // Main page middleware and routes
 mainRouter.route('/')
     .get(function(req, res) {
-        res.render('index.jade', { data: loadSiteWideData() });
+        res.render('index.jade', { data: loadFrontPageData() });
     });
 
 
