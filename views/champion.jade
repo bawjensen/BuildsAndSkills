@@ -4,9 +4,9 @@ block page-title
   = staticData.champs[champId].name
 
 block body
-  .row
+  .row#header-row
     .col-xs-4
-      img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
+      img#champ-img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
     .col-xs-8
       a#champ-title(href=staticData.champs[champId].name)
         span#champ-name= staticData.champs[champId].name + ' '
