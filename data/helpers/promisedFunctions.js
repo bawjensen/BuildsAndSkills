@@ -154,7 +154,6 @@ module.exports = {
     getPipe:            promisePipeFile,
     exec:               promiseExec,
     wait:               promiseWait,
-    rateLimitGet:       promiseRateLimitedGet,
     mongoInsert:        promiseMongoInsert,
     mongoSave:          promiseMongoSave,
     mongoClear:         promiseMongoClear
