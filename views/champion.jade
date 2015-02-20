@@ -116,4 +116,4 @@ block body
           .row(data-toggle='tooltip' title=tooltip)
             - var img = staticData.runes[id].image
             .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-            = ' ' + rank + ' ' + staticData.runes[id].shortName
+            = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Something Rubbish')

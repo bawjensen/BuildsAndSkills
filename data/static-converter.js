@@ -40,8 +40,8 @@ function convertRuneData() {
     for (var runeId in data) {
         var runeObj = data[runeId];
 
-        if (runeObj.name.match(/^Greater/)) {
-            runeObj.shortName = runeObj.name.replace(/^Greater (Mark|Seal|Quintessence|Glyph) of /, '');
+        if (runeObj.rune.tier === '3') {
+            runeObj.shortName = runeObj.name.replace(/(Greater|Razer) (Mark|Seal|Quintessence|Glyph) of (the )?/, '');
 
             if (runeObj.name.match(/Quintessence/)) {
                 runeObj.shortName += ' Quints';
@@ -61,7 +61,7 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Penetration/, 'Pen');
             runeObj.shortName = runeObj.shortName.replace(/Regeneration/, 'Regen'); 
             runeObj.shortName = runeObj.shortName.replace(/Cooldown Reduction/, 'CDR');
-            runeObj.shortName = runeObj.shortName.replace(/Critical Chance/, 'Crit Chance');
+            runeObj.shortName = runeObj.shortName.replace(/Critical/, 'Crit');
             runeObj.shortName = runeObj.shortName.replace(/Magic Resist/, 'MR');
             runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'M. Regen');
             runeObj.shortName = runeObj.shortName.replace(/Health Regen/, 'H. Regen');
