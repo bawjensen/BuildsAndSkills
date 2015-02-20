@@ -111,7 +111,10 @@ nav {
   overflow: scroll;
 
   .suggestion {
-    border-bottom: 1px solid #E8E8E8;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid #E8E8E8;
+    }
 
     &.selected {
       background-color: rgba(0, 40, 255, 0.15);
