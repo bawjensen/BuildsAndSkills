@@ -19,9 +19,8 @@ block body
   - var itemBlacklist = { '2010': true, '2044': true, '2043': true, '2004': true, '2003': true };
 
   each match in gamesData
-    .match-row.row
-
-      - var winClass = match.winner ? 'win' : 'loss';
+    - var winClass = match.winner ? 'win' : 'loss';
+    .match-row.row(class=winClass)
       .win-status-info(class=winClass)
 
 
