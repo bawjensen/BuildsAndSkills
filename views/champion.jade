@@ -1,16 +1,16 @@
 extends skeleton_base
 
 block page-title
-  = staticData.champs[champId].name
+  = champName
 
 block body
   .row#header-row
     .col-xs-4
-      img#champ-img(src='/data/dragontail/current/img/champion/' + staticData.champs[champId].image.full)
+      img#champ-img(src='/data/dragontail/current/img/champion/' + staticData.champs.data[champStringId].image.full)
     .col-xs-8
-      a#champ-title(href=staticData.champs[champId].name)
-        span#champ-name= staticData.champs[champId].name + ' '
-        span#champ-subtitle= staticData.champs[champId].title
+      a#champ-title(href=champName)
+        span#champ-name= champName + ' '
+        span#champ-subtitle= staticData.champs.data[champStringId].title
 
   .row
     .col-xs-12
@@ -40,7 +40,7 @@ block body
       .skill-info
         .level-column
           each skillLabel, i in ['Q', 'W', 'E', 'R']
-            - var tooltip = '<b>' + staticData.champInfo.data[champName].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champName].spells[i].description;
+            - var tooltip = '<b>' + staticData.champInfo.data[champStringId].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[i].description;
             .skill-slot(data-toggle='tooltip' title=tooltip)
               .level-value= skillLabel
 
@@ -48,7 +48,7 @@ block body
           .level-column
             each skill in [1, 2, 3, 4]
               - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
-              - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champName].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champName].spells[skill-1].description : '';
+              - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champStringId].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[skill-1].description : '';
               .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
                 .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 

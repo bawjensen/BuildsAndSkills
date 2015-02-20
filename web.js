@@ -35,15 +35,16 @@ function loadChampIdTranslator() {
 function loadChampNameTranslator() {
     return JSON.parse(fs.readFileSync('data/data-compiled/champsByName.json'));
 }
-function loadStaticData(champId) {
+function loadStaticData(champStringId) {
     return {
         // runes: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/rune.json')),
         runes: JSON.parse(fs.readFileSync('data/data-compiled/runeData.json')),
         masteries: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/mastery.json')),
         items: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/item.json')),
-        champs: JSON.parse(fs.readFileSync('data/data-compiled/champData.json')),
+        // champs: JSON.parse(fs.readFileSync('data/data-compiled/champData.json')),
+        champs: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/champion.json')),
         summSpells: JSON.parse(fs.readFileSync('data/data-compiled/spellData.json')),
-        champInfo: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/champion/' + champId + '.json'))
+        champInfo: JSON.parse(fs.readFileSync('data/dragontail/current/data/en_US/champion/' + champStringId + '.json'))
     };
 }
 function loadSiteWideData() {
@@ -113,26 +114,29 @@ mainRouter.route('/:champRoute')
 
         var champId = champData.id;
         var champName = champData.name;
+        var champStringId = champData.strId;
 
-        var staticData = loadStaticData(champName);
+        var staticData = loadStaticData(champStringId);
 
-        var champData = req.db.collection('champData')
+        req.db.collection('champData')
+            .find({ champId: parseInt(champId) })
+            .sort({ date: -1 })
+            .limit(10)
+            .toArray(function callback(err, games) {
+                req.db.close();
 
-        champData.find({ champId: champId }).sort({ date: -1 }).limit(10).toArray(function callback(err, games) {
-            req.db.close();
-
-            if (err) {
-                console.log(err.stack);
-                res.status(503).render('503.jade');
-            }
-            else if (!games.length) {
-                console.log('No one played ' + champRoute + ' - ' + champId);
-                res.status(404).render('404.jade');
-            }
-            else {
-                res.render('champion.jade', { gamesData: games, champId: champId, champName: champName, staticData: staticData });
-            }
-        });
+                if (err) {
+                    console.log(err.stack);
+                    res.status(503).render('503.jade');
+                }
+                else if (!games.length) {
+                    console.log('No one played ' + champRoute + ' - ' + champId);
+                    res.status(404).render('404.jade');
+                }
+                else {
+                    res.render('champion.jade', { gamesData: games, champName: champName, champStringId: champStringId, staticData: staticData });
+                }
+            });
     });
 
 

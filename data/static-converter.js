@@ -6,18 +6,16 @@ var API_KEY = process.env.RIOT_KEY;
 function convertChamps() {
     var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/champion.json')).data;
 
-    var convertedObj = {};
     var translatorObj1 = {};
     var translatorObj2 = {};
 
-    for (var champName in data) {
-        var champId = parseInt(data[champName].key);
-        convertedObj[champId] = data[champName];
-        translatorObj1[champName.toLowerCase()] = { id: champId, name: champName };
+    for (var champStringId in data) {
+        var champId = data[champStringId].key;
+        var champName = data[champStringId].name;
+        translatorObj1[champName.toLowerCase()] = { id: champId, name: champName, strId: champStringId };
         translatorObj2[champId] = champName;
     }
 
-    fs.writeFile('data-compiled/champData.json', JSON.stringify(convertedObj));
     fs.writeFile('data-compiled/champsByName.json', JSON.stringify(translatorObj1));
     fs.writeFile('data-compiled/champsByIdNum.json', JSON.stringify(translatorObj2));
 }
