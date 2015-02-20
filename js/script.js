@@ -25,7 +25,6 @@ function populateSuggestions($inputBox, filterText) {
         'left': other.left,
         'top': (other.top + $inputBox.outerHeight() - 1) - (fixed ? $(window).scrollTop() : 0 ),
         'width': $inputBox.outerWidth(),
-        'border-radius': $inputBox.css('border-radius'),
         'padding': $inputBox.css('padding'),
         'color': $inputBox.css('color')
     });
@@ -89,6 +88,7 @@ $(function() {
             window.location.href = $selected.text();
         }
         else if (evt.keyCode === 40 || evt.keyCode === 38) { // Up or down
+            // Handle the selection of a suggestion
             if ($selected.length) {
                 $selected.removeClass('selected');
 
@@ -109,6 +109,7 @@ $(function() {
                 $selected = $('.suggestion' + pseudoSelector).addClass('selected');
             }
 
+            // Handle the text within the input search
             if (bufferedString && $selected.length) {
                 $this.val($selected.text());
             }
@@ -121,16 +122,22 @@ $(function() {
                 $this.val($selected.text());
             }
             else if (!bufferedString && !$selected.length) {
-
+                // Impossible scenario?
             }
 
-            // if ($('.selected').length) {
-                // $this.val($selected.text());
-            // }
-            // else {
-                // $this.val(bufferedString);
-                // bufferedString = undefined;
-            // }
+            // Handle the scrolling of the suggestion box
+            if ($selected.length) {
+                var $suggestions = $('.suggestion');
+                var suggestionNum = $suggestions.index($selected);
+                var suggestionHeight = $suggestions.outerHeight();
+                var containerHeight = $selected.parent().height();
+
+                var newOffset = ((suggestionNum+1) * suggestionHeight) - (containerHeight/2);
+
+                console.log(suggestionNum, suggestionHeight, containerHeight, newOffset);
+
+                $selected.parent().scrollTop(newOffset);
+            }
         }
         else {
             populateSuggestions($this, $this.val());
