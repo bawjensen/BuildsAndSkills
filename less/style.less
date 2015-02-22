@@ -238,10 +238,12 @@ footer {
   margin: 10px;
 
   &.win {
-    background-color: rgba(0, 128, 0, 0.2);
+    // background-color: rgba(0, 128, 0, 0.2);
+    fade(@win-color, 19%);
   }
   &.loss {
-    background-color: rgba(128, 0, 0, 0.2);
+    // background-color: rgba(128, 0, 0, 0.2);
+    fade(@loss-color, 19%);
   }
 }
 
