@@ -16,7 +16,6 @@ var app = express();
 app.set('port', (process.env.PORT || argv.port || 5000));
 
 // Static serving files from specific folders
-// app.use('/favicon.ico', express.static(__dirname + '/favicon.ico'));
 app.use('/css',         express.static(__dirname + '/css'));
 app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
@@ -120,6 +119,7 @@ mainRouter.route('/:champRoute')
 
         if (!champData) {
             res.status(404).render('404.jade');
+            return;
         }
 
         var champId = parseInt(champData.id);
