@@ -12,8 +12,6 @@
   }
 }
 
-@sprite-img-width: 48px;
-
 @screen-xs: 480px;
 @screen-sm: 768px;
 @screen-md: 992px;
@@ -29,6 +27,11 @@
       #080830,
       #080818
     );
+
+@sprite-img-width: 48px;
+
+@win-color: #38E738;
+@loss-color: #CF4640;
 
 // =================================== General Styling ===================================
 
@@ -239,11 +242,11 @@ footer {
 
   &.win {
     // background-color: rgba(0, 128, 0, 0.2);
-    fade(@win-color, 19%);
+    background-color: fade(@win-color, 10%);
   }
   &.loss {
     // background-color: rgba(128, 0, 0, 0.2);
-    fade(@loss-color, 19%);
+    background-color: fade(@loss-color, 10%);
   }
 }
 
@@ -269,8 +272,6 @@ footer {
 
 // =================================== Win Status Styling ================================
 
-@win-color: #38E738;
-@loss-color: #CF4640;
 .win-status-info {
   float: left;
 
@@ -357,6 +358,7 @@ img.summ-spell {
 
 .skill-info {
   float: left;
+  margin-top: 15px;
 
   cursor: default;
 
