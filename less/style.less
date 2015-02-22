@@ -452,7 +452,11 @@ img.summ-spell {
           position: relative;
           padding: @mastery-slot-padding;
 
-          .placeholder-mastery,
+          .placeholder-mastery {
+            width: @mastery-img-width;
+            height: @mastery-img-width;
+          }
+
           .mastery-img {
             zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
 
