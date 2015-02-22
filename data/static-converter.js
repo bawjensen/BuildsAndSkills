@@ -51,19 +51,6 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'M. Regen');
             runeObj.shortName = runeObj.shortName.replace(/Health Regen/, 'H. Regen');
             runeObj.shortName = runeObj.shortName.replace(/Movement Speed/, 'Move Speed');
-
-            // if (runeObj.name.match(/Quintessence/)) {
-            //     runeObj.typeLabel = 'Quints';
-            // }
-            // else if (runeObj.name.match(/Glyph/)) {
-            //     runeObj.typeLabel = 'Glyphs';
-            // }
-            // else if (runeObj.name.match(/Mark/)) {
-            //     runeObj.typeLabel = 'Marks';
-            // }
-            // else if (runeObj.name.match(/Seal/)) {
-            //     runeObj.typeLabel = 'Seals';
-            // }
         }
     }
 
