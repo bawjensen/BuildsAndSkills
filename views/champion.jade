@@ -114,7 +114,6 @@ block body
       .rune-info
         each runeType in [{ id: 'red', label: 'Marks', img: 'r_1_3' }, { id: 'blue', label: 'Glyphs', img: 'b_1_3' }, { id: 'yellow', label: 'Seals', img: 'y_1_3' }, { id: 'black', label: 'Quints', img: 'bl_1_3' }]
           div.rune-type(class=runeType.id)
-            //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/rune/' + runeType.img + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
             img.rune-type-img(src='/data/dragontail/current/img/rune/' + runeType.img + '.png')
             span.rune-type-label= runeType.label + ': '
             each rank, id in match.runes[runeType.id]
