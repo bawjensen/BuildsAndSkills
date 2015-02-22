@@ -113,6 +113,37 @@ mainRouter.route('/:champRoute')
             });
         }
     })
+    .all(function(req, res, next) {
+
+        res.locals.blacklisted = function(itemId) {
+            //                                               
+            var itemBlacklist = {
+                '1004': true, // Faerie Charm
+                '1006': true, // Rejuv Bead
+                '1027': true, // Sapphire Crystal
+                '1028': true, // Health Crystal
+                '1029': true, // Cloth Armor
+                '1033': true, // Null-Magic Mantle
+                '1036': true, // Long Sword
+                '1042': true, // Dagger
+                '1051': true, // Brawler's Gloves
+                '1052': true, // Amp. Tome
+                '2003': true, // Health Potion
+                '2004': true, // Mana Potion
+                '2010': true, // Total Biscuit
+                '2043': true, // Vision Ward
+                '2044': true, // Stealth Ward
+                '2137': true, // Elixir of Ruin
+                '2138': true, // Elixir of Iron
+                '2139': true, // Elixir of Sorcery
+                '2140': true, // Elixir of Wrath
+            };
+
+            return itemBlacklist[itemId];
+        }
+        next();
+
+    })
     .get(function(req, res) {
         var champRoute = req.params.champRoute;
         var champData = loadChampNameTranslator()[champRoute.toLowerCase()];

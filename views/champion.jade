@@ -16,8 +16,6 @@ block body
     .col-xs-12
       a.display-all-items(href='#') Show/Hide 'Small' Items
 
-  - var itemBlacklist = { '2010': true, '2044': true, '2043': true, '2004': true, '2003': true };
-
   each match in gamesData
     - var winClass = match.winner ? 'win' : 'loss';
     .match-row.row(class=winClass)
@@ -103,7 +101,7 @@ block body
         each buy in match.buyOrder
           .purchase-group
             each amount, itemId in buy
-              - var _class = itemBlacklist[itemId] ? 'blacklisted' : '';
+              - var _class = blacklisted(itemId) ? 'blacklisted' : '';
               - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
               div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
                 - var img = staticData.items.data[itemId].image
