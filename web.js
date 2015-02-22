@@ -122,16 +122,16 @@ mainRouter.route('/:champRoute')
             res.status(404).render('404.jade');
         }
 
-        var champId = champData.id;
+        var champId = parseInt(champData.id);
         var champName = champData.name;
         var champStringId = champData.strId;
 
         var staticData = loadStaticData(champStringId);
 
         req.db.collection('champData')
-            .find({ champId: parseInt(champId) })
+            .find({ champId: champId })
             .sort({ date: -1 })
-            .limit(10)
+            .limit(30)
             .toArray(function callback(err, games) {
                 req.db.close();
 
@@ -140,7 +140,7 @@ mainRouter.route('/:champRoute')
                     res.status(503).render('503.jade');
                 }
                 else if (!games.length) {
-                    console.log('No one played ' + champRoute + ' - ' + champId);
+                    console.log('No one played:', champName, '-', champId);
                     res.status(404).render('404.jade');
                 }
                 else {

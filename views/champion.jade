@@ -24,13 +24,15 @@ block body
       .win-status-info(class=winClass)
 
 
-      .summary-info.col-md-1
-        - var date = new Date(match.date)
-        div.date-text= [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
-        div.name-text= match.summonerName
-        //- div.win-text(class=winClass)= match.winner ? 'Won' : 'Lost'
-        div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
+      .summary-info
+        - var date = new Date(match.date);
+        - var now = new Date;
+        - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
+        - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
+        div.date-text= dateText + ' - ' + timeText
         div.lane-text= titleCase(match.lane)
+        div.name-text= match.summonerName
+        div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
         div.summ-imgs
           each spell in match.summonerSpells
             - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
@@ -53,7 +55,7 @@ block body
                 .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 
 
-      .mastery-info.col-md-1
+      .mastery-info
         .mastery-summary
           //- .mastery-hint (hover for details)
           .mastery-label Masteries:
@@ -92,12 +94,12 @@ block body
                         .placeholder-mastery
 
 
-      //- .col-md-1
+      //- 
         each item in match.finalBuild
           .row= staticData.items.data[item] ? staticData.items.data[item].name : item
 
 
-      .buy-info.col-md-4
+      .buy-info
         each buy in match.buyOrder
           .purchase-group
             each amount, itemId in buy
@@ -109,10 +111,15 @@ block body
                 = ' x' + amount
 
 
-      .rune-info.col-md-2
-        each rank, id in match.runes
-          - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
-          .row(data-toggle='tooltip' title=tooltip)
-            - var img = staticData.runes[id].image
-            .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-            = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Something Rubbish')
+      .rune-info
+        each runeType in [{ id: 'red', label: 'Marks', img: 'r_1_3' }, { id: 'blue', label: 'Glyphs', img: 'b_1_3' }, { id: 'yellow', label: 'Seals', img: 'y_1_3' }, { id: 'black', label: 'Quints', img: 'bl_1_3' }]
+          div.rune-type(class=runeType.id)
+            //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/rune/' + runeType.img + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+            img.rune-type-img(src='/data/dragontail/current/img/rune/' + runeType.img + '.png')
+            span.rune-type-label= runeType.label + ': '
+            each rank, id in match.runes[runeType.id]
+              - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
+              span.specific-rune(data-toggle='tooltip' title=tooltip)
+                //- = staticData.runes[id].image.full
+                //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Something Rubbish')

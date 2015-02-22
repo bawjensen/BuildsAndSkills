@@ -41,19 +41,6 @@ function convertRuneData() {
         if (runeObj.rune.tier === '3') {
             runeObj.shortName = runeObj.name.replace(/(Greater|Razer) (Mark|Seal|Quintessence|Glyph) of (the )?/, '');
 
-            if (runeObj.name.match(/Quintessence/)) {
-                runeObj.shortName += ' Quints';
-            }
-            else if (runeObj.name.match(/Glyph/)) {
-                runeObj.shortName += ' Glyphs';
-            }
-            else if (runeObj.name.match(/Mark/)) {
-                runeObj.shortName += ' Marks';
-            }
-            else if (runeObj.name.match(/Seal/)) {
-                runeObj.shortName += ' Seals';
-            }
-
             runeObj.shortName = runeObj.shortName.replace(/Ability Power/, 'AP');
             runeObj.shortName = runeObj.shortName.replace(/Attack Damage/, 'AD');
             runeObj.shortName = runeObj.shortName.replace(/Penetration/, 'Pen');
@@ -64,6 +51,19 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'M. Regen');
             runeObj.shortName = runeObj.shortName.replace(/Health Regen/, 'H. Regen');
             runeObj.shortName = runeObj.shortName.replace(/Movement Speed/, 'Move Speed');
+
+            // if (runeObj.name.match(/Quintessence/)) {
+            //     runeObj.typeLabel = 'Quints';
+            // }
+            // else if (runeObj.name.match(/Glyph/)) {
+            //     runeObj.typeLabel = 'Glyphs';
+            // }
+            // else if (runeObj.name.match(/Mark/)) {
+            //     runeObj.typeLabel = 'Marks';
+            // }
+            // else if (runeObj.name.match(/Seal/)) {
+            //     runeObj.typeLabel = 'Seals';
+            // }
         }
     }
 
