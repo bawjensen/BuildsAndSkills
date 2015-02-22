@@ -102,7 +102,7 @@ block body
           .purchase-group
             each amount, itemId in buy
               //- - var _class = blacklisted(itemId) ? 'blacklisted' : '';
-              - var _class = staticData.items.data[itemId].gold.total < 850 ? 'blacklisted' : '';
+              - var _class = staticData.items.data[itemId].gold.total < 700 ? 'blacklisted' : '';
               - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
               div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
                 - var img = staticData.items.data[itemId].image
