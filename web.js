@@ -131,7 +131,7 @@ mainRouter.route('/:champRoute')
         req.db.collection('champData')
             .find({ champId: champId })
             .sort({ date: -1 })
-            .limit(30)
+            .limit(10)
             .toArray(function callback(err, games) {
                 req.db.close();
 
