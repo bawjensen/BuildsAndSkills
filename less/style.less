@@ -507,10 +507,6 @@ img.summ-spell {
         text-align: left;
       }
 
-      &.blacklisted {
-        display: none;
-      }
-
       .item-buy-icon {
         @item-buy-icon-width: 24px;
 
@@ -519,6 +515,13 @@ img.summ-spell {
 
         zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
       }
+    }
+
+    &:not(:first-of-type) .item-buy.blacklisted {
+      display: none;
+    }
+    &:first-of-type {
+      border: 1px solid #30FF33;
     }
   }
 }
