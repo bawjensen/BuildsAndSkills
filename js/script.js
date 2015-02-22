@@ -49,7 +49,7 @@ function showDetails() {
 $(function() {
     $('.display-all-items').click(function(evt) {
         evt.preventDefault();
-        $('.purchase-group:not(:first) .item-buy.blacklisted').toggle();
+        $('.purchase-group:not(:first-of-type) .item-buy.blacklisted').toggle();
     });
 
     $(document).on('mousedown', '.suggestion', function(evt) {
