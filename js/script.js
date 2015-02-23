@@ -52,6 +52,31 @@ $(function() {
         $('.purchase-group:not(:first-of-type) .item-buy.blacklisted').toggle();
     });
 
+
+    var stickyOpen = false;
+    $('.mastery-info').hover(
+        function hoverIn() {
+            $(this).find('.mastery-detail').show();
+        },
+        function hoverOut() {
+            if (!stickyOpen)
+                $(this).find('.mastery-detail').hide();
+        });
+
+    $('.mastery-info').click(function toggle(evt) {
+        if (!($(evt.target).closest('.mastery-detail').length)) { // If not clicking on the 'mastery-detail'
+            if (stickyOpen) {
+                $(this).find('.mastery-detail').hide();
+            }
+            else {
+                $(this).find('.mastery-detail').show();
+            }
+
+            stickyOpen = !stickyOpen;
+        }
+    });
+
+
     $(document).on('mousedown', '.suggestion', function(evt) {
         window.location.href = $(evt.target).attr('id');
     });
@@ -65,18 +90,6 @@ $(function() {
         $('#'+SUGGESTION_BOX_ID).hide();
     });
 
-    $('.mastery-info').hover(
-        function hoverIn() {
-            $(this).find('.mastery-detail').show();
-        },
-        function hoverOut() {
-            $(this).find('.mastery-detail').hide();
-        });
-
-    $('.mastery-info').click(function toggle(evt) {
-        if (!($(evt.target).closest('.mastery-detail').length))
-            $(this).find('.mastery-detail').toggle();
-    });
 
     var bufferedString;
     $('#champ-finder, #header-search').keyup(function(evt) {

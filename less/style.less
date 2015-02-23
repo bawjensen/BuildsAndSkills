@@ -394,10 +394,12 @@ img.summ-spell {
 @tree-spacing: 4px;
 @mastery-detail-padding: 10px;
 @mastery-slot-padding: 2px;
+@mastery-tree-border-width: 1px;
 @mastery-detail-width: (@mastery-img-width * 4 * 3) +
-                      (@tree-spacing * 2 * 3) +
-                      (@mastery-detail-padding * 2) +
-                      (@mastery-slot-padding * 4 * 3 * 2);
+                       (@tree-spacing * 2 * 3) +
+                       (@mastery-detail-padding * 2) +
+                       (@mastery-slot-padding * 4 * 3 * 2) +
+                       (@mastery-tree-border-width * 2);
 
 .mastery-info {
   float: left;
@@ -443,7 +445,12 @@ img.summ-spell {
     .mastery-tree {
       .cf;
       float: left;
-      margin: 0 @tree-spacing;
+      margin-left: @tree-spacing;
+
+      &:not(:last-of-type) {
+        border-right: @mastery-tree-border-width solid rgba(127, 127, 255, 0.375);
+        padding-right: @tree-spacing;
+      }
 
       .mastery-tier {
         .cf;
@@ -788,10 +795,12 @@ img.summ-spell {
   @mastery-img-width: 25px;
   @mastery-detail-padding: 5px;
   @mastery-slot-padding: 1px;
+  @mastery-tree-border-width: 1px;
   @mastery-detail-width: (@mastery-img-width * 4 * 3) +
-                        (@tree-spacing * 2 * 3) +
-                        (@mastery-detail-padding * 2) +
-                        (@mastery-slot-padding * 4 * 3 * 2);
+                         (@tree-spacing * 2 * 3) +
+                         (@mastery-detail-padding * 2) +
+                         (@mastery-slot-padding * 4 * 3 * 2) +
+                         (@mastery-tree-border-width * 2);
   .mastery-info {
     .mastery-detail {
       width: @mastery-detail-width;
@@ -800,7 +809,11 @@ img.summ-spell {
       right: ~"calc(50% -" @mastery-detail-width / 2 ~")";
 
       .mastery-tree {
-        margin: 0 @tree-spacing;
+        margin-right: 0 @tree-spacing;
+
+        &:not(:last-of-type) {
+          padding-right: @tree-spacing;
+        }
 
         .mastery-tier {
           .mastery-slot {
@@ -833,10 +846,12 @@ img.summ-spell {
   @mastery-img-width: 20px;
   @mastery-detail-padding: 5px;
   @mastery-slot-padding: 1px;
+  @mastery-tree-border-width: 1px;
   @mastery-detail-width: (@mastery-img-width * 4 * 3) +
-                        (@tree-spacing * 2 * 3) +
-                        (@mastery-detail-padding * 2) +
-                        (@mastery-slot-padding * 4 * 3 * 2);
+                         (@tree-spacing * 2 * 3) +
+                         (@mastery-detail-padding * 2) +
+                         (@mastery-slot-padding * 4 * 3 * 2) +
+                         (@mastery-tree-border-width * 2);
   .mastery-info {
     .mastery-detail {
       width: @mastery-detail-width;
@@ -845,7 +860,11 @@ img.summ-spell {
       right: ~"calc(50% -" @mastery-detail-width / 2 ~")";
 
       .mastery-tree {
-        margin: 0 @tree-spacing;
+        margin-right: 0 @tree-spacing;
+
+        &:not(:last-of-type) {
+          padding-right: @tree-spacing;
+        }
 
         .mastery-tier {
           .mastery-slot {
