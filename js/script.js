@@ -53,26 +53,27 @@ $(function() {
     });
 
 
-    var stickyOpen = false;
     $('.mastery-info').hover(
         function hoverIn() {
-            $(this).find('.mastery-detail').show();
+            console.log('Hovering in');
+            $(this).find('.mastery-detail').addClass('shown');
         },
         function hoverOut() {
-            if (!stickyOpen)
-                $(this).find('.mastery-detail').hide();
+            console.log('Hovering out');
+            $(this).find('.mastery-detail').removeClass('shown');
         });
 
     $('.mastery-info').click(function toggle(evt) {
         if (!($(evt.target).closest('.mastery-detail').length)) { // If not clicking on the 'mastery-detail'
-            if (stickyOpen) {
-                $(this).find('.mastery-detail').hide();
+            var $this = $(this).find('.mastery-detail');
+
+            if ($this.hasClass('sticky-open')) {
+                $this.removeClass('sticky-open');
+                $this.removeClass('shown');
             }
             else {
-                $(this).find('.mastery-detail').show();
+                $this.addClass('sticky-open');
             }
-
-            stickyOpen = !stickyOpen;
         }
     });
 

@@ -433,6 +433,18 @@ img.summ-spell {
   .mastery-detail {
     display: none;
 
+    border: 1px solid transparent;
+
+
+    &.shown,
+    &.sticky-open {
+      display: block;
+    }
+
+    &.sticky-open {
+      border: 1px solid rgba(0, 148, 255, 0.85);
+    }
+
     position: absolute;
     z-index: 1;
     padding: @mastery-detail-padding;
@@ -448,7 +460,7 @@ img.summ-spell {
       margin-left: @tree-spacing;
 
       &:not(:last-of-type) {
-        border-right: @mastery-tree-border-width solid rgba(127, 127, 255, 0.375);
+        border-right: @mastery-tree-border-width solid rgba(255, 255, 255, 0.2);
         padding-right: @tree-spacing;
       }
 
