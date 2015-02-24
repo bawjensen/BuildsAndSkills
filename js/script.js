@@ -47,12 +47,14 @@ function showDetails() {
 }
 
 $(function() {
+    // ---------------------------------- Toggling items ----------------------------------
     $('.display-all-items').click(function(evt) {
         evt.preventDefault();
         $('.purchase-group:not(:first-of-type) .item-buy.blacklisted').toggle();
     });
 
 
+    // ---------------------------------- Toggling detailed masteries ---------------------
     $('.mastery-info').hover(
         function hoverIn() {
             $(this).find('.mastery-detail').addClass('shown');
@@ -75,6 +77,7 @@ $(function() {
     });
 
 
+    // ---------------------------------- Search Suggestions ------------------------------
     $(document).on('mousedown', '.suggestion', function(evt) {
         window.location.href = $(evt.target).attr('id');
     });
@@ -155,5 +158,12 @@ $(function() {
         }
     });
 
+    // ---------------------------------- Fixng sprited image widths on mozilla -----------
+
+    var $spritedImages = $('.mastery-img, .item-buy-icon');
+    $spritedImages.parent().width($spritedImages.width() / $spritedImages.css('zoom'));
+
+
+    // ---------------------------------- Tooltips ----------------------------------------
     $('[data-toggle="tooltip"]').tooltip({ html: true });
 });

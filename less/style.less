@@ -12,6 +12,14 @@
   }
 }
 
+@sprite-img-width: 48px;
+
+.zoom-to(@new-width: 48px) {
+  background-size: 1000%; // Ratio of sprite size to sprite sheet size
+  height: @new-width;
+  width: @new-width;
+}
+
 @screen-xs: 480px;
 @screen-sm: 768px;
 @screen-md: 992px;
@@ -28,7 +36,6 @@
       #080818
     );
 
-@sprite-img-width: 48px;
 
 @win-color: #38E738;
 @loss-color: #CF4640;
@@ -471,13 +478,14 @@ img.summ-spell {
           position: relative;
           padding: @mastery-slot-padding;
 
+          .mastery-img,
           .placeholder-mastery {
             width: @mastery-img-width;
             height: @mastery-img-width;
           }
 
           .mastery-img {
-            zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+            .zoom-to(@mastery-img-width);
 
             &.inactive {
               opacity: 0.25;
@@ -536,7 +544,7 @@ img.summ-spell {
         display: inline-block;
         vertical-align: middle; // Copied from boostrap img css
 
-        zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+        .zoom-to(@item-buy-icon-width);
       }
     }
 
@@ -833,7 +841,7 @@ img.summ-spell {
 
             .placeholder-mastery,
             .mastery-img {
-              zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+              .zoom-to(@mastery-img-width);
             }
           }
         }
@@ -884,7 +892,7 @@ img.summ-spell {
 
             .placeholder-mastery,
             .mastery-img {
-              zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+              .zoom-to(@mastery-img-width);
             }
           }
         }

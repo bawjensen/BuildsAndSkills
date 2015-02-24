@@ -82,7 +82,7 @@ block body
                         - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
 
                         - var img = staticData.masteries.data[slot.masteryId].image
-                        .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                        .mastery-img(class=_class style='background-image: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\'); background-position: -' + img.x*0.75 + 'px -' + img.y*0.75 + 'px')
 
                         if (match.masteries[slot.masteryId])
                           .mastery-rank
@@ -106,7 +106,7 @@ block body
               - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
               div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
                 - var img = staticData.items.data[itemId].image
-                .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                .item-buy-icon(style='background-image: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\'); background-position: -' + img.x*0.5 + 'px -' + img.y*0.5 + 'px')
                 = ' x' + amount
 
 
