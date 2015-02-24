@@ -55,11 +55,9 @@ $(function() {
 
     $('.mastery-info').hover(
         function hoverIn() {
-            console.log('Hovering in');
             $(this).find('.mastery-detail').addClass('shown');
         },
         function hoverOut() {
-            console.log('Hovering out');
             $(this).find('.mastery-detail').removeClass('shown');
         });
 
@@ -68,8 +66,7 @@ $(function() {
             var $this = $(this).find('.mastery-detail');
 
             if ($this.hasClass('sticky-open')) {
-                $this.removeClass('sticky-open');
-                $this.removeClass('shown');
+                $this.removeClass('sticky-open').removeClass('shown');
             }
             else {
                 $this.addClass('sticky-open');
@@ -147,8 +144,6 @@ $(function() {
                 var containerHeight = $selected.parent().height();
 
                 var newOffset = ((suggestionNum+1) * suggestionHeight) - (containerHeight/2);
-
-                console.log(suggestionNum, suggestionHeight, containerHeight, newOffset);
 
                 $selected.parent().scrollTop(newOffset);
             }
