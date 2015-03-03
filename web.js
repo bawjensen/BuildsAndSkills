@@ -129,40 +129,29 @@ function reroute(req, res, next) {
     var champRoute = req.params.champRoute;
     var lane = req.params.lane;
 
-    var dirty = false; // Whether or not the redirect is needed
+    var redirecting = false;
 
     var newRoute = req.url; // Default to old route
 
-    if (!isNaN(champRoute)) {
+    var isNum = !isNaN(champRoute);
+    var isUppercase = /[A-Z]/.test(champRoute);
+
+    if (isNum || isUppercase) {
         var idTranslator = loadChampIdTranslator();
-        var stringRoute = idTranslator[champRoute];
 
-        if (lane)
-            newRoute = '/' + stringRoute + '/' + lane + '/';
-        else
-            newRoute = '/' + stringRoute + '/';
+        var routeBase = isNum ? idTranslator[champRoute] : champRoute.toLowerCase();
 
-        dirty = true;
+        redirecting = true;
+
+        newRoute = '/' + routeBase + '/' + (lane ? lane + '/' : '');
     }
-    else if (/[A-Z]/.test(champRoute)) {
-        var nameTranslator = loadChampNameTranslator();
-        var lowerCaseRoute = champRoute.toLowerCase();
-
-        if (lane)
-            newRoute = '/' + lowerCaseRoute + '/' + lane + '/';
-        else
-            newRoute = '/' + lowerCaseRoute + '/';
-
-        dirty = true;
-    }
-
-    if (newRoute.indexOf('/', newRoute.length - 1) === -1) {
+    if (newRoute.indexOf('/', newRoute.length - 1) === -1) { // testing if it ends with '/'
         newRoute += '/';
-        dirty = true;
+        redirecting = true;
     }
 
-    if (dirty) {
-        console.log('Was dirty, redirecting:', newRoute);
+    if (redirecting) {
+        console.log('Was redirecting, redirecting:', newRoute);
         res.redirect(newRoute);
     }
     else {
