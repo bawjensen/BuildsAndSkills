@@ -28,6 +28,8 @@ app.use(logfmt.requestLogger());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// ================================= Helper functions =================================
+
 function loadChampIdTranslator() {
     return JSON.parse(fs.readFileSync('data/data-compiled/champsByIdNum.json'));
 }
@@ -65,6 +67,7 @@ function loadFrontPageData() {
     return dataArray;
 }
 
+// ================================= Routing functions ================================
 
 var mainRouter = express.Router();
 
@@ -91,96 +94,168 @@ mainRouter.route('/faq')
         res.render('faq.jade');
     });
 
+// ================================= Champ Page functions =============================
 
-// Champ pages middleware and routes
-mainRouter.route('/:champRoute')
-    .all(function(req, res, next) {
-        var champRoute = req.params.champRoute;
-        if (!isNaN(champRoute)) {
-            res.redirect(loadChampIdTranslator()[champRoute]);
+function loadItemBlacklist(req, res, next) {
+    res.locals.blacklisted = function(itemId) {
+        var itemBlacklist = {
+            '1004': true, // Faerie Charm
+            '1006': true, // Rejuv Bead
+            '1027': true, // Sapphire Crystal
+            '1028': true, // Health Crystal
+            '1029': true, // Cloth Armor
+            '1033': true, // Null-Magic Mantle
+            '1036': true, // Long Sword
+            '1042': true, // Dagger
+            '1051': true, // Brawler's Gloves
+            '1052': true, // Amp. Tome
+            '2003': true, // Health Potion
+            '2004': true, // Mana Potion
+            '2010': true, // Total Biscuit
+            '2043': true, // Vision Ward
+            '2044': true, // Stealth Ward
+            '2137': true, // Elixir of Ruin
+            '2138': true, // Elixir of Iron
+            '2139': true, // Elixir of Sorcery
+            '2140': true, // Elixir of Wrath
+        };
+
+        return itemBlacklist[itemId];
+    }
+    next();
+}
+
+function reroute(req, res, next) {
+    var champRoute = req.params.champRoute;
+    var lane = req.params.lane;
+
+    var dirty = false; // Whether or not the redirect is needed
+
+    var newRoute = req.url; // Default to old route
+
+    if (!isNaN(champRoute)) {
+        var idTranslator = loadChampIdTranslator();
+        var stringRoute = idTranslator[champRoute];
+
+        if (lane)
+            newRoute = '/' + stringRoute + '/' + lane + '/';
+        else
+            newRoute = '/' + stringRoute + '/';
+
+        dirty = true;
+    }
+    else if (/[A-Z]/.test(champRoute)) {
+        var nameTranslator = loadChampNameTranslator();
+        var lowerCaseRoute = champRoute.toLowerCase();
+
+        if (lane)
+            newRoute = '/' + lowerCaseRoute + '/' + lane + '/';
+        else
+            newRoute = '/' + lowerCaseRoute + '/';
+
+        dirty = true;
+    }
+
+    if (newRoute.indexOf('/', newRoute.length - 1) === -1) {
+        newRoute += '/';
+        dirty = true;
+    }
+
+    if (dirty) {
+        console.log('Was dirty, redirecting:', newRoute);
+        res.redirect(newRoute);
+    }
+    else {
+        next();
+    }
+}
+
+function loadMongoDb(req, res, next) {
+    console.log('Connecting to', MONGO_URL, 'for db');
+    MongoClient.connect(MONGO_URL, function callback(err, db) {
+        if (err) {
+            console.log(err);
+            res.status(503).render('503.jade');
         }
         else {
-            console.log('Connecting to', MONGO_URL, 'for db');
-            MongoClient.connect(MONGO_URL, function callback(err, db) {
-                if (err) {
-                    console.log(err);
-                    res.status(503).render('503.jade');
-                }
-                else {
-                    req.db = db;
-                    next();
-                }
-            });
+            req.db = db;
+            next();
         }
-    })
-    .all(function(req, res, next) {
-
-        res.locals.blacklisted = function(itemId) {
-            //                                               
-            var itemBlacklist = {
-                '1004': true, // Faerie Charm
-                '1006': true, // Rejuv Bead
-                '1027': true, // Sapphire Crystal
-                '1028': true, // Health Crystal
-                '1029': true, // Cloth Armor
-                '1033': true, // Null-Magic Mantle
-                '1036': true, // Long Sword
-                '1042': true, // Dagger
-                '1051': true, // Brawler's Gloves
-                '1052': true, // Amp. Tome
-                '2003': true, // Health Potion
-                '2004': true, // Mana Potion
-                '2010': true, // Total Biscuit
-                '2043': true, // Vision Ward
-                '2044': true, // Stealth Ward
-                '2137': true, // Elixir of Ruin
-                '2138': true, // Elixir of Iron
-                '2139': true, // Elixir of Sorcery
-                '2140': true, // Elixir of Wrath
-            };
-
-            return itemBlacklist[itemId];
-        }
-        next();
-
-    })
-    .get(function(req, res) {
-        var champRoute = req.params.champRoute;
-        var champData = loadChampNameTranslator()[champRoute.toLowerCase()];
-
-        if (!champData) {
-            res.status(404).render('404.jade');
-            return;
-        }
-
-        var champId = parseInt(champData.id);
-        var champName = champData.name;
-        var champStringId = champData.strId;
-
-        var staticData = loadStaticData(champStringId);
-
-        req.db.collection('champData')
-            .find({ champId: champId })
-            .sort({ date: -1 })
-            .limit(10)
-            .toArray(function callback(err, games) {
-                req.db.close();
-
-                if (err) {
-                    console.log(err.stack);
-                    res.status(503).render('503.jade');
-                }
-                else if (!games.length) {
-                    console.log('No one played:', champName, '-', champId);
-                    res.status(404).render('404.jade');
-                }
-                else {
-                    res.render('champion.jade', { gamesData: games, champName: champName, champStringId: champStringId, staticData: staticData });
-                }
-            });
     });
+}
+
+function champPageHandler(req, res) {
+    var champRoute = req.params.champRoute;
+    var lane = req.params.lane;
+
+    var champData = loadChampNameTranslator()[champRoute];
+
+    if (!champData) {
+        res.status(404).render('404.jade');
+        return;
+    }
+
+    var champId = parseInt(champData.id);
+    var champStringId = champData.strId;
+
+    var staticData = loadStaticData(champStringId);
+
+    var criteria = {
+        champId: champId
+    }
+
+    req.db.collection('champData')
+        .find(criteria, { lane: 1, _id: 0 })
+        .toArray(function callback(err, lanes) {
+            var uniqueLanes = {};
+            lanes.forEach(function(entry) {
+                uniqueLanes[entry.lane] = true;
+            });
+
+            res.locals.uniqueLanes = Object.keys(uniqueLanes);
+
+            if (lane) {
+                criteria.lane = {
+                    $regex: lane,
+                    $options: 'i'
+                }
+            }
+
+            req.db.collection('champData')
+                .find(criteria)
+                .sort({ date: -1 })
+                .limit(10)
+                .toArray(function callback(err, games) {
+                    req.db.close();
+
+                    res.locals.champName = champData.name;
+                    res.locals.champStringId = champStringId;
+
+                    if (err) {
+                        console.log(err.stack);
+                        res.status(503).render('503.jade');
+                    }
+                    else if (!games.length) {
+                        res.render('champion.jade', { staticData: staticData });
+                    }
+                    else {
+                        res.render('champion.jade', { gamesData: games, staticData: staticData });
+                    }
+                });
+        });
+}
+
+// Champ pages middleware and routes
+mainRouter.route('/:champRoute/:lane?')
+    // Rerouting middleware
+    .all(reroute)
+    .all(loadMongoDb)
+    // Jade-specific middleware
+    // .all(loadItemBlacklist)
+    .get(champPageHandler);
 
 
+// Register the router
 app.use('/', mainRouter);
 
 // Start up the server
