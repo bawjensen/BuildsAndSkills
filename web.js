@@ -50,12 +50,20 @@ function loadStaticData(champStringId) {
 }
 
 function loadSiteWideData() {
-    var data = JSON.parse(fs.readFileSync('data/data-compiled/champsByName.json'));
-    var dataArray = Object.keys(data).map(function(key) { return data[key]; });
+    var champNamesObj = JSON.parse(fs.readFileSync('data/data-compiled/champsByName.json'));
+    var champNamesArray = Object.keys(champNamesObj).map(function(key) { return champNamesObj[key]; });
 
-    dataArray.sort(function(a, b) { return (a.name < b.name) ? -1 : 1; });
+    champNamesArray
+        .sort(function(a, b) {
+            return (a.name < b.name) ? -1 : 1;
+        })
+        .map(function(entry) {
+            return { id: entry.id, name: entry.name };
+        });
 
-    return dataArray;
+    var version = fs.readFileSync('data/version.txt', 'utf8');
+
+    return { champs: champNamesArray, version: version };
 }
 
 function loadFrontPageData() {
@@ -75,7 +83,9 @@ var mainRouter = express.Router();
 // Site-wide middleware
 mainRouter
     .use('*', function(req, res, next) {
-        res.locals.simpleChamps = loadSiteWideData().map(function(entry) { return { id: entry.id, name: entry.name }; });
+        var siteWideData = loadSiteWideData();
+        res.locals.simpleChamps = siteWideData.champs;
+        res.locals.version = siteWideData.version;
         res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
         next();
     });
@@ -127,7 +137,7 @@ function loadItemBlacklist(req, res, next) {
 
 function reroute(req, res, next) {
     var champRoute = req.params.champRoute;
-    var lane = req.params.lane;
+    var role = req.params.role;
 
     var redirecting = false;
 
@@ -143,7 +153,7 @@ function reroute(req, res, next) {
 
         redirecting = true;
 
-        newRoute = '/' + routeBase + '/' + (lane ? lane + '/' : '');
+        newRoute = '/' + routeBase + '/' + (role ? role + '/' : '');
     }
     if (newRoute.indexOf('/', newRoute.length - 1) === -1) { // testing if it ends with '/'
         newRoute += '/';
@@ -175,7 +185,8 @@ function loadMongoDb(req, res, next) {
 
 function champPageHandler(req, res) {
     var champRoute = req.params.champRoute;
-    var lane = req.params.lane;
+    var role = req.params.role;
+    res.locals.activeRole = role;
 
     var champData = loadChampNameTranslator()[champRoute];
 
@@ -194,48 +205,52 @@ function champPageHandler(req, res) {
     }
 
     req.db.collection('champData')
-        .find(criteria, { lane: 1, _id: 0 })
-        .toArray(function callback(err, lanes) {
-            var uniqueLanes = {};
-            lanes.forEach(function(entry) {
-                uniqueLanes[entry.lane] = true;
+        .find(criteria, { role: 1, _id: 0 })
+        .toArray(function callback(err, roles) {
+            var uniqueRoles = {};
+            roles.forEach(function(entry) {
+                uniqueRoles[entry.role] = true;
             });
 
-            res.locals.uniqueLanes = Object.keys(uniqueLanes);
+            res.locals.uniqueRoles = Object.keys(uniqueRoles);
 
-            if (lane) {
-                criteria.lane = {
-                    $regex: lane,
+            if (role) {
+                criteria.role = {
+                    $regex: role,
                     $options: 'i'
                 }
             }
 
-            req.db.collection('champData')
-                .find(criteria)
-                .sort({ date: -1 })
-                .limit(10)
-                .toArray(function callback(err, games) {
-                    req.db.close();
+            req.db.collection('champData').count(criteria, function(err, count) {
+                res.locals.numGames = count;
 
-                    res.locals.champName = champData.name;
-                    res.locals.champStringId = champStringId;
+                req.db.collection('champData')
+                    .find(criteria)
+                    .sort({ date: -1 })
+                    .limit(10)
+                    .toArray(function callback(err, games) {
+                        req.db.close();
 
-                    if (err) {
-                        console.log(err.stack);
-                        res.status(503).render('503.jade');
-                    }
-                    else if (!games.length) {
-                        res.render('champion.jade', { staticData: staticData });
-                    }
-                    else {
-                        res.render('champion.jade', { gamesData: games, staticData: staticData });
-                    }
-                });
+                        res.locals.champName = champData.name;
+                        res.locals.champStringId = champStringId;
+
+                        if (err) {
+                            console.log(err.stack);
+                            res.status(503).render('503.jade');
+                        }
+                        else if (!games.length) {
+                            res.render('champion.jade', { staticData: staticData });
+                        }
+                        else {
+                            res.render('champion.jade', { gamesData: games, staticData: staticData });
+                        }
+                    });
+            });
         });
 }
 
 // Champ pages middleware and routes
-mainRouter.route('/:champRoute/:lane?')
+mainRouter.route('/:champRoute/:role?')
     // Rerouting middleware
     .all(reroute)
     .all(loadMongoDb)

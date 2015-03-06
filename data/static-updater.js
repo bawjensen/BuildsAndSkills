@@ -21,8 +21,10 @@ function updateStaticData() {
         })
         .then(function getLatestData(versions) {
             console.log('Got versions');
-            versionDataDir = SAVE_DIR + '/' + versions[0];
-            return promise.getPipe('http://ddragon.leagueoflegends.com/cdn/dragontail-' + versions[0] + '.tgz', SAVE_LOCATION);
+            var currVersion = versions[0];
+            versionDataDir = SAVE_DIR + '/' + currVersion;
+            promise.save('version.txt', currVersion);
+            return promise.getAndPipe('http://ddragon.leagueoflegends.com/cdn/dragontail-' + currVersion + '.tgz', SAVE_LOCATION);
         })
         .then(function extractData() {
             console.log('Got data');

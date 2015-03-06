@@ -15,5 +15,5 @@ block body
       .champ-div
         a(href='/' + champObj.name.toLowerCase() + '/')
           - var img = champObj.image;
-          .champ-thumbnail(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+          .champ-thumbnail(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'//ddragon.leagueoflegends.com/cdn/' + version + '/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
           .champ-label= champObj.name

@@ -151,7 +151,7 @@ module.exports = {
     read:               promiseReadFile,
     readJson:           promiseReadJsonFile,
     persistentGet:      persistentPromiseGet,
-    getPipe:            promisePipeFile,
+    getAndPipe:         promisePipeFile,
     exec:               promiseExec,
     wait:               promiseWait,
     mongoInsert:        promiseMongoInsert,

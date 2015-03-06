@@ -228,9 +228,30 @@ footer {
 
 // =================================== General Champ Page Styling ========================
 
+@champ-img-width: 120px;
 #champ-img {
-  height: 120px;
-  width: 120px;
+  height: @champ-img-width;
+  width: @champ-img-width;
+  float: left;
+}
+
+#lanes-container {
+  float: left;
+  width: calc(~"100% - "@champ-img-width);
+
+  .champ-role {
+    display: block;
+    padding: 5px 0;
+    font-size: 20px;
+    text-align: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
 }
 
 .match-row {
@@ -254,6 +275,8 @@ footer {
   display: block;
   // float: left; // Make it only take the space needed
 
+  text-align: center;
+
   margin-top: 20px;
 
   color: inherit;
@@ -268,13 +291,6 @@ footer {
     // text-transform: uppercase;
     // padding-left: 20px;
   }
-}
-
-.champ-lane {
-  display: block;
-  padding: 5px 0;
-  font-size: 20px;
-  text-align: center;
 }
 
 #no-games {

@@ -4,15 +4,17 @@ block page-title
   = champName
 
 block body
+  - var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
   .row#header-row
-    .col-xs-4.col-sm-2
+    .col-xs-4.col-sm-4
       a(href='/' + champName.toLowerCase() + '/')
-        img#champ-img(src='/data/dragontail/current/img/champion/' + staticData.champs.data[champStringId].image.full)
-    .col-xs-8.col-sm-2
-      each lane in uniqueLanes
-        a.champ-lane(href='/' + champName.toLowerCase() + '/' + lane.toLowerCase() + '/')= titleCase(lane)
+        img#champ-img(src=ddragonCDN + 'img/champion/' + staticData.champs.data[champStringId].image.full)
+      #lanes-container
+        each role in uniqueRoles
+          - var _class = role.toLowerCase() == activeRole ? 'active' : '';
+          a.champ-role(class=_class href='/' + champName.toLowerCase() + '/' + role.toLowerCase() + '/')= titleCase(role)
     .col-xs-12.col-sm-8
-      a#champ-title(href='.')
+      a#champ-title(href='/' + champName.toLowerCase() + '/')
         span#champ-name= champName + ' '
         span#champ-subtitle= staticData.champs.data[champStringId].title
 
@@ -33,13 +35,13 @@ block body
           - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
           - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
           div.date-text= dateText + ' - ' + timeText
-          div.lane-text= titleCase(match.lane)
+          div.lane-text= titleCase(match.role)
           div.name-text= match.summonerName
           div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
           div.summ-imgs
-            each spell in match.summonerSpells
+            each spell in match.summonerSpells.sort()
               - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
-              img.summ-spell(data-toggle='tooltip' data-container='.match-row' title=tooltip src='/data/dragontail/current/img/spell/' + staticData.summSpells[spell].image.full)
+              img.summ-spell(data-toggle='tooltip' data-container='.match-row' title=tooltip src=ddragonCDN + 'img/spell/' + staticData.summSpells[spell].image.full)
 
 
         .skill-info
@@ -87,7 +89,7 @@ block body
                           - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
 
                           - var img = staticData.masteries.data[slot.masteryId].image
-                          .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                          .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
 
                           if (match.masteries[slot.masteryId])
                             .mastery-rank
@@ -111,20 +113,20 @@ block body
                 - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
                 div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
                   - var img = staticData.items.data[itemId].image
-                  .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                  .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
                   = ' x' + amount
 
 
         .rune-info
           each runeType in [{ id: 'red', label: 'Marks', img: 'r_1_3' }, { id: 'blue', label: 'Glyphs', img: 'b_1_3' }, { id: 'yellow', label: 'Seals', img: 'y_1_3' }, { id: 'black', label: 'Quints', img: 'bl_1_3' }]
             div.rune-type(class=runeType.id)
-              img.rune-type-img(src='/data/dragontail/current/img/rune/' + runeType.img + '.png')
+              img.rune-type-img(src=ddragonCDN + 'img/rune/' + runeType.img + '.png')
               span.rune-type-label= runeType.label + ': '
               each rank, id in match.runes[runeType.id]
                 - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
                 span.specific-rune(data-toggle='tooltip' title=tooltip)
                   //- = staticData.runes[id].image.full
-                  //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'/data/dragontail/current/img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                  //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
                   = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Novelty')
   else
     #no-games No games yet!
