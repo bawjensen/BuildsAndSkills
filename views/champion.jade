@@ -36,7 +36,8 @@ block body
           - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
           div.date-text= dateText + ' - ' + timeText
           div.lane-text= titleCase(match.role)
-          div.name-text= match.summonerName
+          div.name-text
+           a(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')= match.summonerName
           div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
           div.summ-imgs
             each spell in match.summonerSpells.sort()
