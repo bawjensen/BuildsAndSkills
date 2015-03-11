@@ -4,8 +4,9 @@ block page-title
   = champName
 
 block header
-  span.info-switcher#in-game In-Game Info
-  span.info-switcher#pre-game Pre-Game Info
+  #info-states
+    span.info-switcher#pre-game(class=(displayMode === 'pre-game' ? 'active' : '')) Pre-Game Info
+    span.info-switcher#in-game(class=(displayMode === 'in-game' ? 'active' : '')) In-Game Info
 
 block body
   - var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
@@ -34,11 +35,11 @@ block body
 
 
         .summary-info
-          - var date = new Date(match.date);
-          - var now = new Date;
-          - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
-          - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
-          div.date-text= dateText + ' - ' + timeText
+          //- - var date = new Date(match.date);
+          //- - var now = new Date;
+          //- - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
+          //- - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
+          //- div.date-text= dateText + ' - ' + timeText
           div.lane-text= match.role === 'adc' ? 'ADC' : titleCase(match.role)
           div.name-text
            a(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')= match.summonerName
@@ -46,7 +47,7 @@ block body
           div.summ-imgs
             each spell in match.summonerSpells.sort()
               - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
-              img.summ-spell(data-toggle='tooltip' data-container='.match-row' title=tooltip src=ddragonCDN + 'img/spell/' + staticData.summSpells[spell].image.full)
+              img.summ-spell(data-toggle='tooltip' title=tooltip src=ddragonCDN + 'img/spell/' + staticData.summSpells[spell].image.full)
 
 
 
@@ -109,8 +110,10 @@ block body
           .skill-info
             .skill-summary
               - var translate = { '1': 'Q', '2': 'W', '3': 'E' };
-              each skill in match.skillMaxOrder
+              each skill, i in match.skillMaxOrder
                 span.skill-name= translate[skill]
+                if i !== match.skillMaxOrder.length-1
+                  span.skill-separator &gt;
 
             .skill-detail
               .level-column

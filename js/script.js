@@ -53,11 +53,25 @@ $(function() {
     });
 
     $('span.info-switcher').click(function() {
-        var thisId = $(this).attr('id');
-        var otherId = thisId === 'in-game' ? 'pre-game' : 'in-game';
+        var $this = $(this);
+        var $other = $this.siblings();
+
+        var thisId = $this.attr('id');
+        var otherId = $other.attr('id');
 
         $('.' + thisId + '-info').show();
         $('.' + otherId + '-info').hide();
+
+        $('#' + thisId).addClass('active');
+        $('#' + otherId).removeClass('active');
+
+        $.ajax({
+            type: 'POST',
+            url: '/info-state',
+            data: { newState: thisId },
+        }).done(function() {
+            console.log('Updated');
+        });
     });
 
 

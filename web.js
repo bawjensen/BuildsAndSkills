@@ -1,11 +1,13 @@
 var argv        = require('optimist').argv,
     bodyParser  = require('body-parser'),
+    // cookieParser = require('cookie-parser'),
     express     = require('express'),
     fs          = require('fs'),
     logfmt      = require('logfmt'),
     MongoClient = require('mongodb').MongoClient,
+    querystring = require('querystring'),
     request     = require('request'),
-    querystring = require('querystring');
+    session     = require('express-session');
 
 // Global constants
 var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.be_ip + process.env.MONGO_URL_DB;
@@ -14,6 +16,14 @@ var app = express();
 
 // Server defaults to port 5000
 app.set('port', (process.env.PORT || argv.port || 5000));
+
+// Session stuff
+app.use(session({
+    secret: 'noonewilleverknow',
+    resave: false,
+    saveUninitialized: false
+}));
+// app.use(cookieParser());
 
 // Static serving files from specific folders
 app.use('/css',         express.static(__dirname + '/css'));
@@ -102,6 +112,12 @@ mainRouter.route('/')
 mainRouter.route('/faq')
     .get(function(req, res) {
         res.render('faq.jade');
+    });
+
+mainRouter.route('/info-state')
+    .post(function(req, res) {
+        req.session.state = req.body.newState;
+        res.send(true);
     });
 
 // ================================= Champ Page functions =============================
@@ -233,7 +249,11 @@ function champPageHandler(req, res) {
 
                         res.locals.champName = champData.name;
                         res.locals.champStringId = champStringId;
-                        res.locals.displayMode = 'pre-game';
+
+                        if (!req.session.state)
+                            req.session.state = 'in-game';
+                        
+                        res.locals.displayMode = req.session.state;
 
                         if (err) {
                             console.log(err.stack);
