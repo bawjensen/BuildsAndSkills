@@ -48,8 +48,8 @@ function convertRuneData() {
             runeObj.shortName = runeObj.shortName.replace(/Cooldown Reduction/, 'CDR');
             runeObj.shortName = runeObj.shortName.replace(/Critical/, 'Crit');
             runeObj.shortName = runeObj.shortName.replace(/Magic Resist/, 'MR');
-            runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'M. Regen');
-            runeObj.shortName = runeObj.shortName.replace(/Health Regen/, 'H. Regen');
+            runeObj.shortName = runeObj.shortName.replace(/Mana Regen/, 'Mana Regen');
+            runeObj.shortName = runeObj.shortName.replace(/Health Regen/, 'Health Regen');
             runeObj.shortName = runeObj.shortName.replace(/Movement Speed/, 'Move Speed');
         }
     }

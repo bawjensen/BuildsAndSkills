@@ -233,6 +233,7 @@ function champPageHandler(req, res) {
 
                         res.locals.champName = champData.name;
                         res.locals.champStringId = champStringId;
+                        res.locals.displayMode = 'pre-game';
 
                         if (err) {
                             console.log(err.stack);

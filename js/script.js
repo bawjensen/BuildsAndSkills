@@ -52,6 +52,14 @@ $(function() {
         $('.purchase-group:not(:first-of-type) .item-buy.blacklisted').toggle();
     });
 
+    $('span.info-switcher').click(function() {
+        var thisId = $(this).attr('id');
+        var otherId = thisId === 'in-game' ? 'pre-game' : 'in-game';
+
+        $('.' + thisId + '-info').show();
+        $('.' + otherId + '-info').hide();
+    });
+
 
     $('.skill-info').hover(
         function hoverIn() {
