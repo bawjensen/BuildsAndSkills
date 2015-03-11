@@ -46,19 +46,25 @@ block body
 
 
         .skill-info
-          .level-column
-            each skillLabel, i in ['Q', 'W', 'E', 'R']
-              - var tooltip = '<b>' + staticData.champInfo.data[champStringId].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[i].description;
-              .skill-slot(data-toggle='tooltip' title=tooltip)
-                .level-value= skillLabel
+          .skill-summary
+            - var translate = { '1': 'Q', '2': 'W', '3': 'E' };
+            each skill in match.skillMaxOrder
+              span.skill-name= translate[skill]
 
-          each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+          .skill-detail
             .level-column
-              each skill in [1, 2, 3, 4]
-                - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
-                - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champStringId].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[skill-1].description : '';
-                .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
-                  .level-value= match.skillOrder[level] === skill ? level + 1 : ''
+              each skillLabel, i in ['Q', 'W', 'E', 'R']
+                - var tooltip = '<b>' + staticData.champInfo.data[champStringId].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[i].description;
+                .skill-slot(data-toggle='tooltip' title=tooltip)
+                  .level-value= skillLabel
+
+            each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+              .level-column
+                each skill in [1, 2, 3, 4]
+                  - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
+                  - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champStringId].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[skill-1].description : '';
+                  .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
+                    .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 
 
         .mastery-info

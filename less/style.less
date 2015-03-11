@@ -392,26 +392,57 @@ img.summ-spell {
 
   cursor: default;
 
-  .level-column {
-    float: left;
+  .skill-summary {
+    .skill-name {
+      display: inline-block;
 
-    .skill-slot {
-      height: @skill-slot-size;
-      width: @skill-slot-size;
+      width: 40px;
+      height: 20px;
+      font-size: 15px;
 
-      border: @skill-border-size solid rgba(0, 0, 0, 0.15);
-
-      margin: @skill-margin-size;
-      font-size: @skill-slot-size - 2*@skill-border-size - 1;
-
-      text-align: center;
-      line-height: @skill-slot-size - 1;
-
-      &.active {
-        background-color: #0054D7;
+      &:not(:last-of-type):after {
+        content: ' ->';
       }
-      &.inactive {
-        background-color: white;
+    }
+  }
+
+  .skill-detail {
+    display: none;
+
+    position: absolute;
+    z-index: 1;
+
+    &.shown,
+    &.sticky-open {
+      display: block;
+    }
+
+    border: 1px solid transparent;
+    &.sticky-open {
+      border: 1px solid rgba(0, 148, 255, 0.85);
+    }
+
+    .level-column {
+      float: left;
+
+      .skill-slot {
+        height: @skill-slot-size;
+        width: @skill-slot-size;
+
+        border: @skill-border-size solid rgba(0, 0, 0, 0.15);
+
+        margin: @skill-margin-size;
+        font-size: @skill-slot-size - 2*@skill-border-size - 1;
+
+        text-align: center;
+        line-height: @skill-slot-size - 1;
+
+        &.active {
+          background-color: #0054D7;
+        }
+        &.inactive {
+          background-color: white;
+        }
       }
     }
   }
@@ -463,18 +494,6 @@ img.summ-spell {
   .mastery-detail {
     display: none;
 
-    border: 1px solid transparent;
-
-
-    &.shown,
-    &.sticky-open {
-      display: block;
-    }
-
-    &.sticky-open {
-      border: 1px solid rgba(0, 148, 255, 0.85);
-    }
-
     position: absolute;
     z-index: 1;
     padding: @mastery-detail-padding;
@@ -483,6 +502,17 @@ img.summ-spell {
 
     background-color: rgba(0, 0, 0, 0.95);
     box-shadow: 0 0 10px 2px black;
+
+
+    &.shown,
+    &.sticky-open {
+      display: block;
+    }
+
+    border: 1px solid transparent;
+    &.sticky-open {
+      border: 1px solid rgba(0, 148, 255, 0.85);
+    }
 
     .mastery-tree {
       .cf;

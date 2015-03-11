@@ -53,6 +53,28 @@ $(function() {
     });
 
 
+    $('.skill-info').hover(
+        function hoverIn() {
+            $(this).find('.skill-detail').addClass('shown');
+        },
+        function hoverOut() {
+            $(this).find('.skill-detail').removeClass('shown');
+        });
+
+    $('.skill-info').click(function toggle(evt) {
+        if (!($(evt.target).closest('.skill-detail').length)) { // If not clicking on the 'skill-detail'
+            var $this = $(this).find('.skill-detail');
+
+            if ($this.hasClass('sticky-open')) {
+                $this.removeClass('sticky-open').removeClass('shown');
+            }
+            else {
+                $this.addClass('sticky-open');
+            }
+        }
+    });
+
+
     $('.mastery-info').hover(
         function hoverIn() {
             $(this).find('.mastery-detail').addClass('shown');
