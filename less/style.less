@@ -19,19 +19,22 @@
 
 @gradient-background: linear-gradient(
       to right,
-      #080818,
-      #080830,
-      #08083C,
-      #08083C,
-      #08083C,
-      #080830,
-      #080818
+      #100818,
+      #180830,
+      #18083C,
+      #18083C,
+      #18083C,
+      #180830,
+      #100818
     );
 
 @sprite-img-width: 48px;
 
 @win-color: #38E738;
 @loss-color: #CF4640;
+
+@highlighted-border-color: rgba(128, 148, 255, 0.85);
+@pop-out-background-color: rgba(0, 0, 0, 1.0);
 
 // =================================== General Styling ===================================
 
@@ -306,7 +309,7 @@ footer {
   padding-top: 5px;
   margin: 5px;
 
-  min-height: 50px;
+  min-height: 40px;
 
   &.win {
     // background-color: rgba(0, 128, 0, 0.2);
@@ -449,7 +452,7 @@ img.summ-spell {
 
     position: absolute;
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: @pop-out-background-color;
     padding: 5px;
 
     &.shown,
@@ -459,7 +462,7 @@ img.summ-spell {
 
     border: 1px solid transparent;
     &.sticky-open {
-      border: 1px solid rgba(0, 148, 255, 0.85);
+      border: 1px solid @highlighted-border-color;
     }
 
     .level-column {
@@ -495,7 +498,7 @@ img.summ-spell {
 @tree-spacing: 4px;
 @mastery-detail-padding: 10px;
 @mastery-slot-padding: 2px;
-@mastery-tree-border-width: 1px;
+@mastery-tree-border-width: 0px;
 @mastery-detail-width: (@mastery-img-width * 4 * 3) +
                        (@tree-spacing * 2 * 3) +
                        (@mastery-detail-padding * 2) +
@@ -540,8 +543,8 @@ img.summ-spell {
 
     width: @mastery-detail-width;
 
-    background-color: rgba(0, 0, 0, 0.95);
-    box-shadow: 0 0 10px 2px black;
+    background-color: @pop-out-background-color;
+    // box-shadow: 0 0 10px 2px black;
 
 
     &.shown,
@@ -551,7 +554,7 @@ img.summ-spell {
 
     border: 1px solid transparent;
     &.sticky-open {
-      border: 1px solid rgba(0, 148, 255, 0.85);
+      border: 1px solid @highlighted-border-color;
     }
 
     .mastery-tree {
@@ -560,8 +563,20 @@ img.summ-spell {
       margin-left: @tree-spacing;
 
       &:not(:last-of-type) {
-        border-right: @mastery-tree-border-width solid rgba(255, 255, 255, 0.2);
+        border-right: @mastery-tree-border-width solid rgba(63, 63, 63, 1.0);
         padding-right: @tree-spacing;
+      }
+
+      &:nth-of-type(1) {
+        background-color: rgba(255, 0, 0, 0.1);
+      }
+
+      &:nth-of-type(2) {
+        background-color: rgba(0, 255, 0, 0.1);
+      }
+
+      &:nth-of-type(3) {
+        background-color: rgba(0, 0, 255, 0.1);
       }
 
       .mastery-tier {
@@ -577,7 +592,9 @@ img.summ-spell {
           }
 
           .mastery-img {
-            zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+            // zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+            width: @mastery-img-width;
+            height: auto;
 
             &.inactive {
               opacity: 0.25;
@@ -611,51 +628,75 @@ img.summ-spell {
 
 .buy-info {
   float: left;
-  white-space: nowrap;
-  overflow: hidden;
 
-  box-shadow: inset 2px 2px 5px 5px black;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  // box-shadow: inset 2px 2px 5px 5px black;
+  // border: 1px solid rgba(255, 255, 255, 0.15);
 
-  &:hover {
-    white-space: normal;
+  // &:hover {
+  //   white-space: normal;
+  // }
+
+  .purchases {
+    width: calc(~"100%" - 40px);
+    display: inline-block;
+    vertical-align: middle;
+
+    line-height: 0; // Removes the extra height of a container of inline-blocks
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    *.tooltip-inner {
+      white-space: normal;
+    }
+
+    &.expanded {
+      white-space: normal;
+    }
+
+    .purchase-group {
+      .cf;
+      // padding: 2px;
+      margin: 3px;
+      display: inline-block;
+
+      // background-color: rgba(255, 255, 255, 0.5);
+      border: 1px solid gray;
+
+      .item-buy {
+        float: left;
+
+        // .tooltip-inner {
+        //   text-align: left;
+        // }
+
+        .item-buy-icon {
+          @item-buy-icon-width: 24px;
+
+          display: inline-block;
+          // vertical-align: middle; // Copied from boostrap img css
+
+          // zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+          width: @item-buy-icon-width;
+          height: auto;
+        }
+      }
+
+      &:not(:first-of-type) .item-buy.blacklisted {
+        display: none;
+      }
+      &:first-of-type {
+        // border: 1px solid #30FF33;
+      }
+    }
   }
 
-  .purchase-group {
-    .cf;
-    padding: 2px;
-    margin: 3px;
-    // float: left;
-    display: inline-block;
+  .expand-buys {
+    font-size: 20px;
+    vertical-align: top;
 
-    min-height: 30px; // 24 height + 4 padding + 2 border
-
-    // background-color: rgba(255, 255, 255, 0.5);
-    border: 1px solid gray;
-
-    .item-buy {
-      float: left;
-
-      .tooltip-inner {
-        text-align: left;
-      }
-
-      .item-buy-icon {
-        @item-buy-icon-width: 24px;
-
-        display: inline-block;
-        vertical-align: middle; // Copied from boostrap img css
-
-        zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
-      }
-    }
-
-    &:not(:first-of-type) .item-buy.blacklisted {
-      display: none;
-    }
-    &:first-of-type {
-      border: 1px solid #30FF33;
-    }
+    width: 20px;
+    margin-left: 20px;
   }
 }
 
@@ -664,7 +705,7 @@ img.summ-spell {
 .rune-info {
   float: left;
 
-  & > .rune-type {
+  .rune-type {
     cursor: default;
 
     display: inline-block;
@@ -677,6 +718,10 @@ img.summ-spell {
 
     &:hover {
       white-space: normal;
+    }
+
+    *.tooltip-inner {
+      white-space: normal; // Fixing tooltip layout
     }
     
     .rune-type-img {
@@ -750,7 +795,8 @@ img.summ-spell {
 
   .pre-game-info {
     .mastery-info {
-      width: 120px;
+      width: 70px;
+      margin: 0 25px;
     }
 
     .rune-info {
@@ -761,8 +807,11 @@ img.summ-spell {
   }
 
   .in-game-info {
+    float: left;
+    width: calc(~"100% - 343px");
+
     .buy-info {
-      max-width: 600px;
+      width: calc(~"100% - 124px");
     }
   }
 }

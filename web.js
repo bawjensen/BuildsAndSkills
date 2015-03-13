@@ -147,7 +147,8 @@ function loadItemBlacklist(req, res, next) {
         };
 
         return itemBlacklist[itemId];
-    }
+    };
+
     next();
 }
 
@@ -218,7 +219,7 @@ function champPageHandler(req, res) {
 
     var criteria = {
         champId: champId
-    }
+    };
 
     req.db.collection('champData')
         .find(criteria, { role: 1, _id: 0 })
@@ -234,7 +235,7 @@ function champPageHandler(req, res) {
                 criteria.role = {
                     $regex: role,
                     $options: 'i'
-                }
+                };
             }
 
             req.db.collection('champData').count(criteria, function(err, count) {

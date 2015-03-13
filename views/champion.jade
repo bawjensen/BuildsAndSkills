@@ -51,7 +51,7 @@ block body
 
 
 
-        .pre-game-info(style='display: ' + (displayMode === 'in-game' ? 'none' : ''))
+        .pre-game-info(style=displayMode === 'in-game' ? 'display: none' : '')
 
           .mastery-info
             .mastery-summary
@@ -82,7 +82,8 @@ block body
                             - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
 
                             - var img = staticData.masteries.data[slot.masteryId].image
-                            .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                            //- .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                            img.mastery-img(class=_class src=ddragonCDN + 'img/mastery/' + img.full)
 
                             if (match.masteries[slot.masteryId])
                               .mastery-rank
@@ -105,7 +106,7 @@ block body
                     = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Novelty')
 
 
-        .in-game-info(style='display: ' + (displayMode === 'in-game' ? '' : 'none'))
+        .in-game-info(style=displayMode === 'in-game' ? '' : 'display: none')
 
           .skill-info
             .skill-summary
@@ -132,16 +133,22 @@ block body
 
 
           .buy-info
-            each buy in match.buyOrder
-              .purchase-group
-                each amount, itemId in buy
-                  //- - var _class = blacklisted(itemId) ? 'blacklisted' : '';
-                  - var _class = staticData.items.data[itemId].gold.total < 700 ? 'blacklisted' : '';
-                  - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
-                  div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
-                    - var img = staticData.items.data[itemId].image
-                    .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-                    = ' x' + amount
+            .purchases
+              each buy in match.buyOrder
+                .purchase-group
+                  each amount, itemId in buy
+                    //- - var _class = blacklisted(itemId) ? 'blacklisted' : '';
+                    if staticData.items.data[itemId]
+                      - var _class = staticData.items.data[itemId].gold.total < 700 ? 'blacklisted' : '';
+                      - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
+                      div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' title=tooltip)
+                        - var img = staticData.items.data[itemId].image
+                        //- .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                        img.item-buy-icon(src=ddragonCDN + 'img/item/' + img.full)
+                        = ' x' + amount
+                    else
+                      div.error= itemId
+            span.expand-buys.glyphicon-plus
 
 
         //- .build-info
