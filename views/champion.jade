@@ -35,14 +35,15 @@ block body
 
 
         .summary-info
-          //- - var date = new Date(match.date);
-          //- - var now = new Date;
-          //- - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
+          - var date = new Date(match.date);
+          - var now = new Date;
+          - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
           //- - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
           //- div.date-text= dateText + ' - ' + timeText
+          div.date-text= dateText
           div.lane-text= match.role === 'adc' ? 'ADC' : titleCase(match.role)
-          div.name-text
-           a(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')= match.summonerName
+          a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')
+          div.name-text= match.summonerName
           div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
           div.summ-imgs
             each spell in match.summonerSpells.sort()
@@ -110,9 +111,9 @@ block body
 
           .skill-info
             .skill-summary
-              - var translate = { '1': 'Q', '2': 'W', '3': 'E' };
+              - var translate = { '1': 'Q', '2': 'W', '3': 'E', '4': 'R' };
               each skill, i in match.skillMaxOrder
-                span.skill-name= translate[skill]
+                span.skill-name(class='skill-' + translate[skill].toLowerCase())= translate[skill]
                 if i !== match.skillMaxOrder.length-1
                   span.skill-separator &gt;
 
@@ -148,7 +149,7 @@ block body
                         = ' x' + amount
                     else
                       div.error= itemId
-            span.expand-buys.glyphicon-plus
+            span.glyphicon.glyphicon-plus.expand-buys
 
 
         //- .build-info

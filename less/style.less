@@ -20,11 +20,11 @@
 @gradient-background: linear-gradient(
       to right,
       #100818,
-      #180830,
-      #18083C,
-      #18083C,
-      #18083C,
-      #180830,
+      #200830,
+      #20083C,
+      #20083C,
+      #20083C,
+      #200830,
       #100818
     );
 
@@ -281,7 +281,7 @@ footer {
 
 #champ-title {
   display: block;
-  // float: left; // Make it only take the space needed
+  float: left; // Make it only take the space needed
 
   text-align: left;
 
@@ -358,29 +358,23 @@ footer {
   // text-align: center;
 
   padding: 0 10px;
+  position: relative; // Allow for absolute position of date text
 
   .date-text {
     text-align: left;
     font-size: 0.8em;
     position: absolute;
-    // top: -10px;
-    // right: 0;
-    // top: 0;
+    top: 18px;
+    left: 10px;
   }
 
   div {
     display: inline-block;
   }
 
-  .lane-text {
-    width: 55px;
-  }
-
   .name-text {
     font-size: 1.1em;
     font-weight: 700;
-
-    width: 110px;
 
     white-space: nowrap;
     overflow: hidden;
@@ -388,6 +382,7 @@ footer {
     vertical-align: middle; // Override whatever wierdness is going on with overflow hidden
 
     // cursor: default;
+    z-index: 1;
 
     &:hover {
       // white-space: normal;
@@ -398,7 +393,6 @@ footer {
   .kda-text {
     font-size: 16px;
     color: rgba(255, 255, 255, 0.65); // Faded base color
-    width: 100px;
 
     .kills {
       color: @win-color;
@@ -409,10 +403,6 @@ footer {
     .assists {
       color: #F0ED00;
     }
-  }
-
-  .summ-imgs {
-    width: 48px;
   }
 }
 
@@ -432,8 +422,6 @@ img.summ-spell {
 
   cursor: default;
 
-  margin: 0 10px;
-
   .skill-summary {
     .skill-name {
       display: inline-block;
@@ -444,6 +432,23 @@ img.summ-spell {
       text-align: center;
       margin: 2px;
       border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .skill-q {
+      // background-color: rgba(17,22,37, 0.5);
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .skill-w {
+      // background-color: rgba(87,27,60, 0.5);
+      background-color: rgba(255, 255, 255, 0.325);
+    }
+    .skill-e {
+      // background-color: rgba(122,30,72, 0.5);
+      background-color: rgba(255, 255, 255, 0.45);
+    }
+    .skill-r {
+      // background-color: rgba(157,32,83, 0.5);
+      background-color: rgba(255, 255, 255, 0.575);
     }
   }
 
@@ -656,19 +661,15 @@ img.summ-spell {
 
     .purchase-group {
       .cf;
-      // padding: 2px;
       margin: 3px;
       display: inline-block;
 
-      // background-color: rgba(255, 255, 255, 0.5);
+      height: 26px;
+
       border: 1px solid gray;
 
       .item-buy {
         float: left;
-
-        // .tooltip-inner {
-        //   text-align: left;
-        // }
 
         .item-buy-icon {
           @item-buy-icon-width: 24px;
@@ -686,13 +687,13 @@ img.summ-spell {
         display: none;
       }
       &:first-of-type {
-        // border: 1px solid #30FF33;
+        border: 1px solid @highlighted-border-color;
       }
     }
   }
 
   .expand-buys {
-    font-size: 20px;
+    // font-size: 20px;
     vertical-align: top;
 
     width: 20px;
@@ -788,8 +789,25 @@ img.summ-spell {
   // }
 
   .summary-info {
+    .lane-text {
+      width: 55px;
+    }
+
+    .matchhistory-link {
+      width: 20px;
+    }
+
+    .name-text {
+      width: 90px;
+    }
+
     .kda-text {
       text-align: center;
+      width: 100px;
+    }
+
+    .summ-imgs {
+      width: 48px;
     }
   }
 
@@ -808,10 +826,15 @@ img.summ-spell {
 
   .in-game-info {
     float: left;
-    width: calc(~"100% - 343px");
+    width: calc(~"100% - 357px");
+
+    .skill-info {
+      width: 142px;
+      margin: 0 10px;
+    }
 
     .buy-info {
-      width: calc(~"100% - 124px");
+      width: calc(~"100% - 162px");
     }
   }
 }
