@@ -175,12 +175,36 @@ function masteryStickyOpenToggle(evt) {
     }
 }
 
+// =========================== Item Filtering ===================================
+
+function handleItemHiding(evt) {
+    var newCutoff = this.value;
+
+    if (newCutoff === '') {
+        return;
+    }
+
+    $('.item-buy').each(function(i, entry) {
+        var $entry = $(entry);
+        if (parseInt($entry.data('gold')) < newCutoff) {
+            $entry.addClass('cut-off');
+        }
+        else {
+            $entry.removeClass('cut-off');
+        }
+    })
+}
+
+
 // =========================== Set up event callbacks ===========================
 
 $(function() {
-    $('.display-all-items').click(function(evt) {
-        evt.preventDefault();
-        $('.purchase-group:not(:first-of-type) .item-buy.blacklisted').toggle();
+    // $('.display-all-items').click(function(evt) {
+    //     evt.preventDefault();
+    //     $('.purchase-group:not(:first-of-type) .item-buy.blacklisted').toggle();
+    // });
+    $('#item-cutoff').change(handleItemHiding).keyup(function() {
+        $(this).change();
     });
 
     $('span.info-switcher').click(switchInfoState);

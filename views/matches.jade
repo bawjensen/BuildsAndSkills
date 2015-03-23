@@ -15,7 +15,8 @@ block body
   .row#header-row
     block overview
 
-    .form-group
+    #item-filtering
+      label#filtering-label(for='item-cutoff') Cut-Off Threshold: 
       input(type='number' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
   if gamesData

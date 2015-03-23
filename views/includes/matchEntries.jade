@@ -111,7 +111,7 @@ each match in gamesData
               each amount, itemId in buy
                 //- - var _class = blacklisted(itemId) ? 'blacklisted' : '';
                 if staticData.items.data[itemId]
-                  - var _class = staticData.items.data[itemId].gold.total < defaultCutoff ? 'blacklisted' : '';
+                  - var _class = staticData.items.data[itemId].gold.total < defaultCutoff ? 'cut-off' : '';
                   - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
                   div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' data-gold=staticData.items.data[itemId].gold.total title=tooltip)
                     - var img = staticData.items.data[itemId].image

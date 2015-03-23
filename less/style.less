@@ -349,12 +349,22 @@ footer {
   }
 }
 
-#item-cutoff {
+#item-filtering {
   float: right;
-  width: 200px;
 
-  &:invalid {
-    border-color: red;
+  #filtering-label {
+    display: inline;
+  }
+
+  #item-cutoff {
+    display: inline-block;
+    width: 75px;
+
+    padding-right: 6px;
+
+    &:invalid {
+      border-color: red;
+    }
   }
 }
 
@@ -700,6 +710,10 @@ img.summ-spell {
           // zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
           width: @item-buy-icon-width;
           height: auto;
+        }
+
+        &.cut-off {
+          display: none;
         }
       }
 
