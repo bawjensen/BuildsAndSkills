@@ -201,6 +201,8 @@ function loadMongoDb(req, res, next) {
 }
 
 function champPageHandler(req, res) {
+    var findBySummoner = false;
+
     var champRoute = req.params.champRoute;
     var role = req.params.role;
     res.locals.activeRole = role;
@@ -208,22 +210,34 @@ function champPageHandler(req, res) {
     var champData = loadChampNameTranslator()[champRoute];
 
     if (!champData) {
-        res.status(404).render('404.jade');
-        return;
+        findBySummoner = true;
     }
 
-    var champId = parseInt(champData.id);
-    var champStringId = champData.strId;
+    var criteria;
+    if (!findBySummoner) {
+        var champId = parseInt(champData.id);
+        var champStringId = champData.strId;
 
-    var staticData = loadStaticData(champStringId);
+        var staticData = loadStaticData(champStringId);
 
-    var criteria = {
-        champId: champId
-    };
+        res.locals.champName = champData.name;
+        res.locals.champStringId = champStringId;
+
+        criteria = {
+            champId: champId
+        };
+    }
+    else {
+        criteria = {
+            summonerName: { $regex: champRoute, $options: 'i' }
+        };
+    }
 
     req.db.collection('champData')
         .find(criteria, { role: 1, _id: 0 })
         .toArray(function callback(err, roles) {
+            if (err) throw err;
+
             var uniqueRoles = {};
             roles.forEach(function(entry) {
                 uniqueRoles[entry.role] = true;
@@ -238,8 +252,8 @@ function champPageHandler(req, res) {
                 };
             }
 
-            req.db.collection('champData').count(criteria, function(err, count) {
-                res.locals.numGames = count;
+            // req.db.collection('champData').count(criteria, function(err, count) {
+                // res.locals.numGames = count;
 
                 req.db.collection('champData')
                     .find(criteria)
@@ -248,26 +262,25 @@ function champPageHandler(req, res) {
                     .toArray(function callback(err, games) {
                         req.db.close();
 
-                        res.locals.champName = champData.name;
-                        res.locals.champStringId = champStringId;
-
                         if (!req.session.state)
                             req.session.state = 'in-game';
                         
                         res.locals.displayMode = req.session.state;
+
+                        var viewName = findBySummoner ? 'player.jade' : 'champion.jade';
 
                         if (err) {
                             console.log(err.stack);
                             res.status(503).render('503.jade');
                         }
                         else if (!games.length) {
-                            res.render('champion.jade', { staticData: staticData });
+                            res.render(viewName, { staticData: staticData });
                         }
                         else {
-                            res.render('champion.jade', { gamesData: games, staticData: staticData });
+                            res.render(viewName, { gamesData: games, staticData: staticData });
                         }
                     });
-            });
+            // });
         });
 }
 

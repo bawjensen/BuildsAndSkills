@@ -1,0 +1,25 @@
+extends skeleton_base
+
+block page-title
+  = champName
+
+block header
+  #info-states
+    span.info-switcher#pre-game(class=(displayMode === 'pre-game' ? 'active' : '')) Pre-Game Info
+    span.info-switcher#in-game(class=(displayMode === 'in-game' ? 'active' : '')) In-Game Info
+
+block body
+  - var defaultCutoff = 700;
+  - var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
+
+  .row#header-row
+    block overview
+
+    .form-group
+      input(type='number' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
+
+  if gamesData
+    include includes/matchEntries.jade
+    
+  else
+    #no-games No games yet!

@@ -12,6 +12,22 @@
   }
 }
 
+.pop-out-text {
+  position: relative;
+  z-index: 1;
+
+  overflow: visible;
+  text-shadow:
+   -2px -2px 0 #000,  
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+     2px 2px 0 #000,
+   -2px -2px 0 #000,  
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+     2px 2px 0 #000;
+}
+
 @screen-xs: 480px;
 @screen-sm: 768px;
 @screen-md: 992px;
@@ -152,27 +168,6 @@ footer {
 
 #error-404-message {
   text-align: center;
-}
-
-// =================================== Temp Styling ======================================
-
-.display-all-items {
-  display: table;
-  margin: 0 auto;
-
-  cursor: pointer;
-  color: white;
-
-  &:focus {
-    color: white;
-    text-decoration: none;
-  }
-
-  &:hover {
-    color: white;
-    opacity: 0.5;
-    text-decoration: underline;
-  }
 }
 
 // =================================== Front-Page Styling ================================
@@ -335,13 +330,38 @@ footer {
   .cf;
 }
 
+.display-all-items {
+  display: table;
+  margin: 0 auto;
+
+  cursor: pointer;
+  color: white;
+
+  &:focus {
+    color: white;
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: white;
+    opacity: 0.5;
+    text-decoration: underline;
+  }
+}
+
+#item-cutoff {
+  float: right;
+  width: 200px;
+
+  &:invalid {
+    border-color: red;
+  }
+}
+
 // =================================== Win Status Styling ================================
 
 .win-status-info {
   float: left;
-
-  height: 30px;
-  width: 10px;
 
   &.win {
     background-color: @win-color;
@@ -381,12 +401,12 @@ footer {
     text-overflow: ellipsis;
     vertical-align: middle; // Override whatever wierdness is going on with overflow hidden
 
-    // cursor: default;
-    z-index: 1;
+
+    // position: relative; // Allows for z-index
+    // z-index: 1;
 
     &:hover {
-      // white-space: normal;
-      overflow: visible;
+      .pop-out-text;
     }
   }
 
@@ -718,7 +738,8 @@ img.summ-spell {
     text-overflow: ellipsis;
 
     &:hover {
-      white-space: normal;
+      // white-space: normal;
+      .pop-out-text;
     }
 
     *.tooltip-inner {
@@ -787,6 +808,10 @@ img.summ-spell {
   // .rune-info {
   //   width: @rune-total-size;
   // }
+  .win-status-info {
+    height: 30px;
+    width: 10px;
+  }
 
   .summary-info {
     .lane-text {
