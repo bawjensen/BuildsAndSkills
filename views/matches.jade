@@ -15,9 +15,9 @@ block body
   .row#header-row
     block overview
 
-    #item-filtering
+    #item-filtering.col-lg-3
       label#filtering-label(for='item-cutoff') Cut-Off Threshold: 
-      input(type='number' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
+      input(type='number' step='100' min='0' max='4000' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
   if gamesData
     include includes/matchEntries.jade
