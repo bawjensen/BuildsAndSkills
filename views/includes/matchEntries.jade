@@ -17,7 +17,7 @@ each match in gamesData
       div.name-text= match.summonerName
       div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
       div.summ-imgs
-        each spell in match.summonerSpells.sort()
+        each spell in match.summonerSpells.sort(sortSummonerSpells)
           - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
           img.summ-spell(data-toggle='tooltip' title=tooltip src=ddragonCDN + 'img/spell/' + staticData.summSpells[spell].image.full)
 

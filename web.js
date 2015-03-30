@@ -97,6 +97,7 @@ mainRouter
         res.locals.simpleChamps = siteWideData.champs;
         res.locals.version = siteWideData.version;
         res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
+        res.locals.sortSummonerSpells = function(a,b) { return (a === 4) ? 1 : (b === 4) ? -1 : a < b ? 1 : a > b ? -1 : 0 };
         next();
     });
 
