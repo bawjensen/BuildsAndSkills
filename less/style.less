@@ -145,8 +145,8 @@ nav {
 }
 
 footer {
-  padding-top: 125px;
-  min-height: 200px;
+  margin-top: 25px;
+  min-height: 250px;
 
   clear: both;
 
@@ -154,6 +154,8 @@ footer {
   color: rgba(255, 255, 255, 0.5);
 
   #riot-disclaimer {
+    display: block; // So I can put a margin on it
+    margin-top: 50px;
     font-style: italic;
   }
 }
@@ -175,10 +177,6 @@ footer {
 #content {
   margin-top: @nav-space;
   min-height: 90vh;
-}
-
-.search-ad {
-  height: 200px;
 }
 
 #main-page-search {
@@ -279,12 +277,13 @@ footer {
 }
 
 #champ-title {
-  display: block;
-  float: left; // Make it only take the space needed
+  display: table;
+  margin: 0 auto;
+  // float: left; // Make it only take the space needed
 
   text-align: left;
 
-  margin-top: 20px;
+  // margin-top: 20px;
 
   color: inherit;
   text-decoration: none;

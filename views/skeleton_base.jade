@@ -39,10 +39,16 @@ html
           input#header-search.form-control(type='search' placeholder='Search')
 
     .container#content
+      //- .content-container.col-xs-12.col-sm-10
       block body
 
+      //- .ad-sidebar.col-xs-12.col-sm-2
+        include includes/adsense_resp.html
+
+
       footer
-        p BuildsAndSkills isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+        include includes/adsense_resp.html
+        p#riot-disclaimer BuildsAndSkills isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
 
     script.
       var allChamps = !{JSON.stringify(simpleChamps)};

@@ -11,6 +11,7 @@ var argv        = require('optimist').argv,
 
 // Global constants
 var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.be_ip + process.env.MONGO_URL_DB;
+var MATCHES_PER_PAGE = 30;
 
 var app = express();
 
@@ -259,7 +260,7 @@ function champPageHandler(req, res) {
                 req.db.collection('champData')
                     .find(criteria)
                     .sort({ date: -1 })
-                    .limit(10)
+                    .limit(MATCHES_PER_PAGE)
                     .toArray(function callback(err, games) {
                         req.db.close();
 

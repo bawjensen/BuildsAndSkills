@@ -1,14 +1,16 @@
 extends matches
 
 block overview
-  .col-xs-4.col-sm-4
+  .col-xs-12
+    a#champ-title(href='/' + champName.toLowerCase() + '/')
+      span#champ-name= champName + ' '
+      span#champ-subtitle= staticData.champs.data[champStringId].title
+  .col-xs-4
     a(href='/' + champName.toLowerCase() + '/')
       img#champ-img(src=ddragonCDN + 'img/champion/' + staticData.champs.data[champStringId].image.full)
     #lanes-container
       each role in uniqueRoles
         - var _class = role.toLowerCase() == activeRole ? 'active' : '';
         a.champ-role(class=_class href='/' + champName.toLowerCase() + '/' + role.toLowerCase() + '/')= role === 'adc' ? 'ADC' : titleCase(role)
-  .col-xs-12.col-sm-8
-    a#champ-title(href='/' + champName.toLowerCase() + '/')
-      span#champ-name= champName + ' '
-      span#champ-subtitle= staticData.champs.data[champStringId].title
+  .col-xs-8
+    include includes/adsense_resp.html

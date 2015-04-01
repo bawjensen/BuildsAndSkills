@@ -4,17 +4,16 @@ block page-title
   | Welcome
 
 block body
-
   .row
-    .search-ad.col-xs-1.col-sm-3
-      include includes/adsense.html
+    //- .search-ad.col-xs-1.col-sm-3
+    //-   include includes/adsense_search.html
 
-    #main-page-search.col-xs-10.col-sm-6.form-group
+    #main-page-search.col-xs-10.col-sm-6.col-sm-offset-3.form-group
       label Champion search
       input#champ-finder.form-control(type='search' placeholder='Champion Name')
 
-    .search-ad.col-xs-1.col-sm-3
-      include includes/adsense.html
+    //- .search-ad.col-xs-1.col-sm-3
+    //-   include includes/adsense_search.html
 
   .row
     each champObj in data
