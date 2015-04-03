@@ -180,8 +180,10 @@ footer {
 }
 
 #main-page-search {
-  margin-top: 80px;
-  margin-bottom: 80px;
+  @media (min-width: @screen-lg) {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
 
   position: relative;
 }
@@ -230,7 +232,10 @@ footer {
 
 #info-states {
   float: left;
-  margin-left: 10%;
+
+  @media (min-width: @screen-lg) {
+    margin-left: 10%;
+  }
 
   .info-switcher {
     display: inline-block;
@@ -325,14 +330,6 @@ footer {
   font-size: 20px;
 }
 
-.pre-game-info {
-  .cf;
-}
-
-.in-game-info {
-  .cf;
-}
-
 .display-all-items {
   display: table;
   margin: 0 auto;
@@ -376,6 +373,11 @@ footer {
 .win-status-info {
   float: left;
 
+  @media (min-width: @screen-lg) {
+    height: 30px;
+    width: 10px;
+  }
+
   &.win {
     background-color: @win-color;
   }
@@ -387,11 +389,34 @@ footer {
 // =================================== Summary Styling ===================================
 
 .summary-info {
+
   float: left;
   // text-align: center;
 
   padding: 0 10px;
   position: relative; // Allow for absolute position of date text
+
+  // Baseline widths
+  .lane-text {
+    width: 55px;
+  }
+
+  .matchhistory-link {
+    width: 20px;
+  }
+
+  .name-text {
+    width: 90px;
+  }
+
+  .kda-text {
+    width: 100px;
+    text-align: center;
+  }
+
+  .summ-imgs {
+    width: 48px;
+  }
 
   .date-text {
     text-align: left;
@@ -444,416 +469,12 @@ img.summ-spell {
   height: auto;
 }
 
-// =================================== Skill Styling =====================================
+// =================================== Pre-Game Styling ==================================
 
-@skill-slot-size: 14px;
-@skill-border-size: 1px;
-@skill-margin-size: 2px;
+.pre-game-info {
+  .cf;
 
-.skill-info {
-  float: left;
-
-  cursor: default;
-
-  .skill-summary {
-    .skill-name {
-      display: inline-block;
-
-      width: 25px;
-      height: 25px;
-      font-size: 15px;
-      text-align: center;
-      margin: 2px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-
-    .skill-q {
-      // background-color: rgba(17,22,37, 0.5);
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    .skill-w {
-      // background-color: rgba(87,27,60, 0.5);
-      background-color: rgba(255, 255, 255, 0.325);
-    }
-    .skill-e {
-      // background-color: rgba(122,30,72, 0.5);
-      background-color: rgba(255, 255, 255, 0.45);
-    }
-    .skill-r {
-      // background-color: rgba(157,32,83, 0.5);
-      background-color: rgba(255, 255, 255, 0.575);
-    }
-  }
-
-  .skill-detail {
-    display: none;
-
-    position: absolute;
-    z-index: 1;
-    background-color: @pop-out-background-color;
-    padding: 5px;
-
-    &.shown,
-    &.sticky-open {
-      display: block;
-    }
-
-    border: 1px solid transparent;
-    &.sticky-open {
-      border: 1px solid @highlighted-border-color;
-    }
-
-    .level-column {
-      float: left;
-
-      .skill-slot {
-        height: @skill-slot-size;
-        width: @skill-slot-size;
-
-        border: @skill-border-size solid rgba(0, 0, 0, 0.15);
-
-        margin: @skill-margin-size;
-        font-size: @skill-slot-size - 2*@skill-border-size - 1;
-
-        text-align: center;
-        line-height: @skill-slot-size - 1;
-
-        &.active {
-          background-color: #0054D7;
-        }
-        &.inactive {
-          background-color: white;
-        }
-      }
-    }
-  }
-}
-
-// =================================== Mastery Styling ===================================
-
-// Width calculations
-@mastery-img-width: 36px;
-@tree-spacing: 4px;
-@mastery-detail-padding: 10px;
-@mastery-slot-padding: 2px;
-@mastery-tree-border-width: 0px;
-@mastery-detail-width: (@mastery-img-width * 4 * 3) +
-                       (@tree-spacing * 2 * 3) +
-                       (@mastery-detail-padding * 2) +
-                       (@mastery-slot-padding * 4 * 3 * 2) +
-                       (@mastery-tree-border-width * 2);
-
-.mastery-info {
-  float: left;
-  position: relative;
-
-  .mastery-summary {
-    cursor: default;
-    text-align: center;
-
-    // Center inside the parent
-    // display: table;
-    // margin: 0 auto;
-
-    .mastery-label {
-
-    }
-
-    .mastery-hint {
-      font-size: 0.7em;
-    }
-
-    .mastery-text {
-      font-size: 1.2em;
-    }
-  }
-
-  // &:hover > .mastery-detail {
-  //   display: block;
-  // }
-
-  .mastery-detail {
-    display: none;
-
-    position: absolute;
-    z-index: 1;
-    padding: @mastery-detail-padding;
-
-    width: @mastery-detail-width;
-
-    background-color: @pop-out-background-color;
-    // box-shadow: 0 0 10px 2px black;
-
-
-    &.shown,
-    &.sticky-open {
-      display: block;
-    }
-
-    border: 1px solid transparent;
-    &.sticky-open {
-      border: 1px solid @highlighted-border-color;
-    }
-
-    .mastery-tree {
-      .cf;
-      float: left;
-      margin-left: @tree-spacing;
-
-      &:not(:last-of-type) {
-        border-right: @mastery-tree-border-width solid rgba(63, 63, 63, 1.0);
-        padding-right: @tree-spacing;
-      }
-
-      &:nth-of-type(1) {
-        background-color: rgba(255, 0, 0, 0.1);
-      }
-
-      &:nth-of-type(2) {
-        background-color: rgba(0, 255, 0, 0.1);
-      }
-
-      &:nth-of-type(3) {
-        background-color: rgba(0, 0, 255, 0.1);
-      }
-
-      .mastery-tier {
-        .cf;
-        .mastery-slot {
-          float: left;
-          position: relative;
-          padding: @mastery-slot-padding;
-
-          .placeholder-mastery {
-            width: @mastery-img-width;
-            height: @mastery-img-width;
-          }
-
-          .mastery-img {
-            // zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
-            width: @mastery-img-width;
-            height: auto;
-
-            &.inactive {
-              opacity: 0.25;
-            }
-          }
-
-          .mastery-rank {
-            position: absolute;
-            z-index: 2;
-
-            bottom: 0;
-            right: 5px;
-            font-size: 16px;
-
-            cursor: default;
-
-            color: white;
-            text-shadow:
-             -1px -1px 0 #000,  
-              1px -1px 0 #000,
-              -1px 1px 0 #000,
-               1px 1px 0 #000;
-          }
-        }
-      }
-    }
-  }
-}
-
-// =================================== Purchase Styling ==================================
-
-.buy-info {
-  float: left;
-
-  // box-shadow: inset 2px 2px 5px 5px black;
-  // border: 1px solid rgba(255, 255, 255, 0.15);
-
-  // &:hover {
-  //   white-space: normal;
-  // }
-
-  .purchases {
-    width: calc(~"100%" - 40px);
-    display: inline-block;
-    vertical-align: middle;
-
-    line-height: 0; // Removes the extra height of a container of inline-blocks
-
-    overflow: hidden;
-    white-space: nowrap;
-
-    *.tooltip-inner {
-      white-space: normal;
-    }
-
-    &.expanded {
-      white-space: normal;
-    }
-
-    .purchase-group {
-      .cf;
-      margin: 3px;
-      display: inline-block;
-
-      height: 26px;
-
-      border: 1px solid gray;
-
-      .item-buy {
-        float: left;
-
-        .item-buy-icon {
-          @item-buy-icon-width: 24px;
-
-          display: inline-block;
-          // vertical-align: middle; // Copied from boostrap img css
-
-          // zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
-          width: @item-buy-icon-width;
-          height: auto;
-        }
-
-        // &.cut-off {
-        //   display: none;
-        // }
-      }
-
-      &:not(:first-of-type) .item-buy.cut-off {
-        display: none;
-      }
-      &:first-of-type {
-        border: 1px solid @highlighted-border-color;
-      }
-    }
-  }
-
-  .expand-buys {
-    // font-size: 20px;
-    vertical-align: top;
-
-    width: 20px;
-    margin-left: 20px;
-  }
-}
-
-// =================================== Rune Styling ======================================
-
-.rune-info {
-  float: left;
-
-  .rune-type {
-    cursor: default;
-
-    display: inline-block;
-    width: 150px;
-    vertical-align: top;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    &:hover {
-      // white-space: normal;
-      .pop-out-text;
-    }
-
-    *.tooltip-inner {
-      white-space: normal; // Fixing tooltip layout
-    }
-    
-    .rune-type-img {
-      height: 16px;
-      width: auto;
-      margin-right: 3px;
-    }
-
-    .rune-type-label {
-      font-weight: 700;
-    }
-
-    .specific-rune {
-      &:not(:last-of-type):after {
-        content: ', ';
-      }
-    }
-  }
-}
-
-// =================================== Champ Page Media Queries ==========================
-
-// ----------------------------------- Width: 1200px + -----------------------------------
-@media (min-width: @screen-lg) {
-  // @parent-width: 1120px;
-
-  // @status-total-size: 10px;
-  // @summary-total-size: 250px;
-  // @skill-total-size: 19 * (@skill-slot-size + 2*@skill-margin-size);
-  // @mastery-total-size: 130px;
-  // // @buy-total-size: ;
-  // @rune-total-size: 700px;
-
-  // // The odd one out takes the hit
-  // @buy-total-size: @parent-width - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @status-total-size + 2*@content-border-width);
-
-  // .win-status-info {
-  //   width: @status-total-size;
-  // }
-
-  // .summary-info {
-  //   width: @summary-total-size;
-  // }
-
-  // .skill-info {
-  //   width: @skill-total-size;
-  // }
-
-  // .mastery-info {
-  //   width: @mastery-total-size;
-
-  //   .mastery-detail {
-  //     right: -@mastery-detail-width / 2 + @mastery-total-size / 2;
-  //   }
-  // }
-
-  // .buy-info {
-  //   width: @buy-total-size;
-  //   padding-right: 10px;
-  // }
-
-  // .rune-info {
-  //   width: @rune-total-size;
-  // }
-  .win-status-info {
-    height: 30px;
-    width: 10px;
-  }
-
-  .summary-info {
-    .lane-text {
-      width: 55px;
-    }
-
-    .matchhistory-link {
-      width: 20px;
-    }
-
-    .name-text {
-      width: 90px;
-    }
-
-    .kda-text {
-      text-align: center;
-      width: 100px;
-    }
-
-    .summ-imgs {
-      width: 48px;
-    }
-  }
-
-  .pre-game-info {
+  @media (min-width: @screen-lg) {
     .mastery-info {
       width: 70px;
       margin: 0 25px;
@@ -866,7 +487,190 @@ img.summ-spell {
     }
   }
 
-  .in-game-info {
+
+  // ----------------------------------- Mastery Styling -----------------------------------
+
+  // Width calculations
+  @mastery-img-width: 36px;
+  @tree-spacing: 4px;
+  @mastery-detail-padding: 10px;
+  @mastery-slot-padding: 2px;
+  @mastery-tree-border-width: 0px;
+  @mastery-detail-width: (@mastery-img-width * 4 * 3) +
+                         (@tree-spacing * 2 * 3) +
+                         (@mastery-detail-padding * 2) +
+                         (@mastery-slot-padding * 4 * 3 * 2) +
+                         (@mastery-tree-border-width * 2);
+
+  .mastery-info {
+    float: left;
+    position: relative;
+
+    .mastery-summary {
+      cursor: default;
+      text-align: center;
+
+      // Center inside the parent
+      // display: table;
+      // margin: 0 auto;
+
+      .mastery-label {
+
+      }
+
+      .mastery-hint {
+        font-size: 0.7em;
+      }
+
+      .mastery-text {
+        font-size: 1.2em;
+      }
+    }
+
+    // &:hover > .mastery-detail {
+    //   display: block;
+    // }
+
+    .mastery-detail {
+      display: none;
+
+      position: absolute;
+      z-index: 1;
+      padding: @mastery-detail-padding;
+
+      width: @mastery-detail-width;
+
+      background-color: @pop-out-background-color;
+      // box-shadow: 0 0 10px 2px black;
+
+
+      &.shown,
+      &.sticky-open {
+        display: block;
+      }
+
+      border: 1px solid transparent;
+      &.sticky-open {
+        border: 1px solid @highlighted-border-color;
+      }
+
+      .mastery-tree {
+        .cf;
+        float: left;
+        margin-left: @tree-spacing;
+
+        &:not(:last-of-type) {
+          border-right: @mastery-tree-border-width solid rgba(63, 63, 63, 1.0);
+          padding-right: @tree-spacing;
+        }
+
+        &:nth-of-type(1) {
+          background-color: rgba(255, 0, 0, 0.1);
+        }
+
+        &:nth-of-type(2) {
+          background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        &:nth-of-type(3) {
+          background-color: rgba(0, 0, 255, 0.1);
+        }
+
+        .mastery-tier {
+          .cf;
+          .mastery-slot {
+            float: left;
+            position: relative;
+            padding: @mastery-slot-padding;
+
+            .placeholder-mastery {
+              width: @mastery-img-width;
+              height: @mastery-img-width;
+            }
+
+            .mastery-img {
+              // zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+              width: @mastery-img-width;
+              height: auto;
+
+              &.inactive {
+                opacity: 0.25;
+              }
+            }
+
+            .mastery-rank {
+              position: absolute;
+              z-index: 2;
+
+              bottom: 0;
+              right: 5px;
+              font-size: 16px;
+
+              cursor: default;
+
+              color: white;
+              text-shadow:
+               -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                 1px 1px 0 #000;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // ----------------------------------- Rune Styling --------------------------------------
+
+  .rune-info {
+    float: left;
+
+    .rune-type {
+      cursor: default;
+
+      display: inline-block;
+      width: 150px;
+      vertical-align: top;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        // white-space: normal;
+        .pop-out-text;
+      }
+
+      *.tooltip-inner {
+        white-space: normal; // Fixing tooltip layout
+      }
+      
+      .rune-type-img {
+        height: 16px;
+        width: auto;
+        margin-right: 3px;
+      }
+
+      .rune-type-label {
+        font-weight: 700;
+      }
+
+      .specific-rune {
+        &:not(:last-of-type):after {
+          content: ', ';
+        }
+      }
+    }
+  }
+}
+
+// =================================== In-Game Styling ===================================
+
+.in-game-info {
+  .cf;
+
+  @media (min-width: @screen-lg) {
     float: left;
     width: calc(~"100% - 357px");
 
@@ -879,280 +683,169 @@ img.summ-spell {
       width: calc(~"100% - 162px");
     }
   }
+
+  // ----------------------------------- Skill Styling -------------------------------------
+
+  @skill-slot-size: 14px;
+  @skill-border-size: 1px;
+  @skill-margin-size: 2px;
+
+  .skill-info {
+    float: left;
+
+    cursor: default;
+
+    .skill-summary {
+      .skill-name {
+        display: inline-block;
+
+        width: 25px;
+        height: 25px;
+        font-size: 15px;
+        text-align: center;
+        margin: 2px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .skill-q {
+        // background-color: rgba(17,22,37, 0.5);
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .skill-w {
+        // background-color: rgba(87,27,60, 0.5);
+        background-color: rgba(255, 255, 255, 0.325);
+      }
+      .skill-e {
+        // background-color: rgba(122,30,72, 0.5);
+        background-color: rgba(255, 255, 255, 0.45);
+      }
+      .skill-r {
+        // background-color: rgba(157,32,83, 0.5);
+        background-color: rgba(255, 255, 255, 0.575);
+      }
+    }
+
+    .skill-detail {
+      display: none;
+
+      position: absolute;
+      z-index: 1;
+      background-color: @pop-out-background-color;
+      padding: 5px;
+
+      &.shown,
+      &.sticky-open {
+        display: block;
+      }
+
+      border: 1px solid transparent;
+      &.sticky-open {
+        border: 1px solid @highlighted-border-color;
+      }
+
+      .level-column {
+        float: left;
+
+        .skill-slot {
+          height: @skill-slot-size;
+          width: @skill-slot-size;
+
+          border: @skill-border-size solid rgba(0, 0, 0, 0.15);
+
+          margin: @skill-margin-size;
+          font-size: @skill-slot-size - 2*@skill-border-size - 1;
+
+          text-align: center;
+          line-height: @skill-slot-size - 1;
+
+          &.active {
+            background-color: #0054D7;
+          }
+          &.inactive {
+            background-color: white;
+          }
+        }
+      }
+    }
+  }
+
+  // ----------------------------------- Purchase Styling ----------------------------------
+
+  .buy-info {
+    float: left;
+
+    // box-shadow: inset 2px 2px 5px 5px black;
+    // border: 1px solid rgba(255, 255, 255, 0.15);
+
+    // &:hover {
+    //   white-space: normal;
+    // }
+
+      @media (min-width: @screen-md) and (max-width: @screen-lg) {
+      }
+
+    .purchases {
+      display: inline-block;
+      vertical-align: middle;
+
+      line-height: 0; // Removes the extra height of a container of inline-blocks
+
+      overflow: hidden;
+      white-space: nowrap;
+
+      width: calc(~"100%" - 40px);
+
+      *.tooltip-inner {
+        white-space: normal;
+      }
+
+      &.expanded {
+        white-space: normal;
+      }
+
+      .purchase-group {
+        .cf;
+        margin: 3px;
+        display: inline-block;
+
+        height: 26px;
+
+        border: 1px solid gray;
+
+        .item-buy {
+          float: left;
+
+          .item-buy-icon {
+            @item-buy-icon-width: 24px;
+
+            display: inline-block;
+            // vertical-align: middle; // Copied from boostrap img css
+
+            // zoom: unit(@item-buy-icon-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
+            width: @item-buy-icon-width;
+            height: auto;
+          }
+
+          // &.cut-off {
+          //   display: none;
+          // }
+        }
+
+        &:not(:first-of-type) .item-buy.cut-off {
+          display: none;
+        }
+        &:first-of-type {
+          border: 1px solid @highlighted-border-color;
+        }
+      }
+    }
+
+    .expand-buys {
+      // font-size: 20px;
+      vertical-align: top;
+
+      width: 20px;
+      margin-left: 20px;
+    }
+  }
 }
-
-
-// // ----------------------------------- Width: 992px - 1200px -----------------------------
-// @media (min-width: @screen-md) and (max-width: @screen-lg) {
-//   @parent-width: 920px;
-
-//   @status-total-size: 10px;
-//   @summary-total-size: 100px;
-//   @skill-total-size: 19 * (@skill-slot-size + 2*@skill-margin-size);
-//   @mastery-total-size: 100px;
-//   // @buy-total-size: ;
-//   @rune-total-size: 180px;
-
-//   // The odd one out takes the hit
-//   @buy-total-size: @parent-width - (@mastery-total-size + @summary-total-size + @skill-total-size + @rune-total-size + @status-total-size + 2*@content-border-width);
-  
-//   .win-status-info {
-//     width: @status-total-size;
-//   }
-
-//   .summary-info {
-//     width: @summary-total-size;
-//   }
-
-//   .skill-info {
-//     width: @skill-total-size;
-//   }
-
-//   .mastery-info {
-//     width: @mastery-total-size;
-
-//     .mastery-detail {
-//       right: -@mastery-detail-width / 2 + @mastery-total-size / 2;
-//     }
-//   }
-
-//   .buy-info {
-//     width: @buy-total-size;
-//     // clear: left;
-//   }
-
-//   .rune-info {
-//     width: @rune-total-size;
-//   }
-// }
-
-// // ----------------------------------- Width: 768px - 991px ------------------------------
-// @media (min-width: @screen-sm) and (max-width: @screen-md) {
-//   @parent-width: 700px;
-
-//   @status-total-size: 10px;
-//   @summary-total-size: 150px;
-//   @skill-total-size: 19 * (@skill-slot-size + 2*@skill-border-size + 2*@skill-margin-size);
-
-//   // The odd one out takes the hit
-//   @mastery-total-size: @parent-width - (@status-total-size + @summary-total-size + @skill-total-size + 2*@content-border-width);
-
-//   @rune-total-size: 220px;
-//   // The odd one out takes the hit
-//   @buy-total-size: @parent-width - (@rune-total-size + 2*@content-border-width);
-  
-//   .win-status-info {
-//     width: @status-total-size;
-//   }
-
-//   .summary-info {
-//     width: @summary-total-size;
-//   }
-
-//   .skill-info {
-//     width: @skill-total-size;
-//   }
-
-//   .mastery-info {
-//     width: @mastery-total-size;
-
-//     .mastery-detail {
-//       right: 0;
-//     }
-//   }
-
-//   .buy-info {
-//     clear: left;
-//     width: @buy-total-size;
-//   }
-
-//   .rune-info {
-//     width: @rune-total-size;
-//   }
-// }
-
-// // ----------------------------------- Width: 0px - 768px --------------------------------
-// @media (max-width: @screen-sm) {
-//   @status-total-size: 100%;
-//   @summary-total-size: 100%;
-
-//   @skill-total-size: 100%;
-
-//   @mastery-total-size: 100%;
-
-//   @buy-total-size: 100%;
-//   @rune-total-size: 100%;
-
-//   nav {
-//     #header-search {
-//       padding: 3px;
-//       height: 24px;
-//     }
-//   }
-
-//   #champ-title {
-//     text-align: center;
-//   }
-  
-//   .win-status-info {
-//     width: @status-total-size;
-//     height: 5px;
-//   }
-
-//   .summary-info {
-//     width: @summary-total-size;
-//   }
-
-//   @skill-margin-size: 2px;
-//   .skill-info {
-//     margin-top: 10px;
-//     width: @skill-total-size;
-//     padding-left: 0;
-//     padding-right: 0;
-
-//     .level-column {
-//       float: left;
-
-//       width: ~"calc(100% / 19)";
-
-//       .skill-slot {
-//         width: ~"calc(100% - " @skill-margin-size ~")";
-//         height: 16px;
-
-//         border: @skill-border-size solid rgba(0, 0, 0, 0.15);
-
-//         margin: @skill-margin-size;
-
-//         text-align: center;
-//       }
-//     }
-//   }
-//   .mastery-info {
-//     width: @mastery-total-size;
-
-//     .mastery-detail {
-//       right: ~"calc(50% -" @mastery-detail-width / 2 ~")"; // Center the detail in fluid width
-//     }
-//   }
-
-//   .buy-info {
-//     clear: left;
-//     width: @buy-total-size;
-//   }
-
-//   .rune-info {
-//     width: @rune-total-size;
-
-//     & > div {
-//       display: table;
-//       margin: 0 auto;
-//     }
-//   }
-// }
-
-
-// // ----------------------------------- Super Specific Media Queries ----------------------
-
-// // Resizing masteries and front-page champs on very small screens
-
-// @media (max-width: 550px) {
-//   .champ-div {
-//     height: 65px;
-//     width: 65px;
-
-//     margin: 8px;
-//     margin-right: 0;
-
-//     padding-right: 2px;
-//     padding-top: 0px;
-//   }
-
-//   // Width calculations for overriden values
-//   @mastery-img-width: 25px;
-//   @mastery-detail-padding: 5px;
-//   @mastery-slot-padding: 1px;
-//   @mastery-tree-border-width: 1px;
-//   @mastery-detail-width: (@mastery-img-width * 4 * 3) +
-//                          (@tree-spacing * 2 * 3) +
-//                          (@mastery-detail-padding * 2) +
-//                          (@mastery-slot-padding * 4 * 3 * 2) +
-//                          (@mastery-tree-border-width * 2);
-//   .mastery-info {
-//     .mastery-detail {
-//       width: @mastery-detail-width;
-//       padding: @mastery-detail-padding;
-
-//       right: ~"calc(50% -" @mastery-detail-width / 2 ~")";
-
-//       .mastery-tree {
-//         margin-right: 0 @tree-spacing;
-
-//         &:not(:last-of-type) {
-//           padding-right: @tree-spacing;
-//         }
-
-//         .mastery-tier {
-//           .mastery-slot {
-//             padding: @mastery-slot-padding;
-
-//             .placeholder-mastery,
-//             .mastery-img {
-//               zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-// // Resizing masteries on even smaller screens, and handling header bar title switching
-
-// @media (max-width: 450px) {
-//   nav {
-//     #site-title {
-//       display: none;
-//     }
-//     #short-site-title {
-//       display: block;      
-//     }
-//   }
-
-//   // Width calculations for overriden values
-//   @mastery-img-width: 20px;
-//   @mastery-detail-padding: 5px;
-//   @mastery-slot-padding: 1px;
-//   @mastery-tree-border-width: 1px;
-//   @mastery-detail-width: (@mastery-img-width * 4 * 3) +
-//                          (@tree-spacing * 2 * 3) +
-//                          (@mastery-detail-padding * 2) +
-//                          (@mastery-slot-padding * 4 * 3 * 2) +
-//                          (@mastery-tree-border-width * 2);
-//   .mastery-info {
-//     .mastery-detail {
-//       width: @mastery-detail-width;
-//       padding: @mastery-detail-padding;
-
-//       right: ~"calc(50% -" @mastery-detail-width / 2 ~")";
-
-//       .mastery-tree {
-//         margin-right: 0 @tree-spacing;
-
-//         &:not(:last-of-type) {
-//           padding-right: @tree-spacing;
-//         }
-
-//         .mastery-tier {
-//           .mastery-slot {
-//             padding: @mastery-slot-padding;
-
-//             .placeholder-mastery,
-//             .mastery-img {
-//               zoom: unit(@mastery-img-width / @sprite-img-width); // Calculate proper zoom, and remove 'px' with unit()
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
