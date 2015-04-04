@@ -234,7 +234,7 @@ footer {
   float: left;
 
   @media (min-width: @screen-lg) {
-    margin-left: 10%;
+    margin-left: 10px;
   }
 
   .info-switcher {
@@ -250,6 +250,25 @@ footer {
 
     &.active {
       background-color: rgba(255, 255, 255, 0.25);
+    }
+  }
+}
+
+#item-filtering {
+  float: left;
+
+  #filtering-label {
+    display: inline;
+  }
+
+  #item-cutoff {
+    display: inline-block;
+    width: 75px;
+
+    padding-right: 6px;
+
+    &:invalid {
+      border-color: red;
     }
   }
 }
@@ -346,25 +365,6 @@ footer {
     color: white;
     opacity: 0.5;
     text-decoration: underline;
-  }
-}
-
-#item-filtering {
-  float: right;
-
-  #filtering-label {
-    display: inline;
-  }
-
-  #item-cutoff {
-    display: inline-block;
-    width: 75px;
-
-    padding-right: 6px;
-
-    &:invalid {
-      border-color: red;
-    }
   }
 }
 

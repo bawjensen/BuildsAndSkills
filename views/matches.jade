@@ -8,6 +8,11 @@ block header
     span.info-switcher#pre-game(class=(displayMode === 'pre-game' ? 'active' : '')) Pre-Game Info
     span.info-switcher#in-game(class=(displayMode === 'in-game' ? 'active' : '')) In-Game Info
 
+
+  #item-filtering
+    label#filtering-label(for='item-cutoff') Item Price Min: 
+    input(type='number' step='100' min='0' max='4000' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
+
 block body
   - var defaultCutoff = 700;
   - var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
@@ -17,10 +22,6 @@ block body
 
   .row#header-row
     block overview
-
-    //- #item-filtering.col-lg-3
-    //-   label#filtering-label(for='item-cutoff') Item Price Threshold: 
-    //-   input(type='number' step='100' min='0' max='4000' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
   if gamesData
     include includes/matchEntries.jade
