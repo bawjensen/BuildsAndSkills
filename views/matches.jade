@@ -1,5 +1,8 @@
 extends skeleton_base
 
+- var defaultCutoff = 700;
+- var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
+
 block page-title
   = champName
 
@@ -14,8 +17,6 @@ block header
     input(type='number' step='100' min='0' max='4000' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
 block body
-  - var defaultCutoff = 700;
-  - var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
 
   //- .row
   //-   include includes/adsense_resp.html
