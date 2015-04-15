@@ -12,6 +12,7 @@ var argv        = require('optimist').argv,
 // Global constants
 var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.be_ip + process.env.MONGO_URL_DB;
 var MATCHES_PER_PAGE = 30;
+var DEFAULT_PRICE_CUTOFF = 700;
 
 var app = express();
 
@@ -97,6 +98,7 @@ mainRouter
         var siteWideData = loadSiteWideData();
         res.locals.simpleChamps = siteWideData.champs;
         res.locals.version = siteWideData.version;
+        res.locals.ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + siteWideData.version + '/';
         res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
         res.locals.sortSummonerSpells = function(a,b) { return (a === 4) ? 1 : (b === 4) ? -1 : a < b ? 1 : a > b ? -1 : 0 };
         next();
@@ -119,6 +121,13 @@ mainRouter.route('/faq')
 mainRouter.route('/info-state')
     .post(function(req, res) {
         req.session.state = req.body.newState;
+        res.send(true);
+    });
+
+mainRouter.route('/price-cutoff')
+    .post(function(req, res) {
+        console.log('Saving', req.body.newCutoff);
+        req.session.priceCutoff = req.body.newCutoff;
         res.send(true);
     });
 
@@ -268,6 +277,8 @@ function champPageHandler(req, res) {
                             req.session.state = 'in-game';
                         
                         res.locals.displayMode = req.session.state;
+                        // Load and remember the price cutoff
+                        res.locals.priceCutoff = req.session.priceCutoff = req.session.priceCutoff ? req.session.priceCutoff : DEFAULT_PRICE_CUTOFF;
 
                         var viewName = findBySummoner ? 'player.jade' : 'champion.jade';
 

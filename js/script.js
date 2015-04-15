@@ -112,17 +112,17 @@ function searchKeyUpHandler(evt) {
 // =========================== Champion Info State ==============================
 
 function switchInfoState() {
-    var $this = $(this);
-    var $other = $this.siblings();
-
-    var thisId = $this.attr('id');
-    var otherId = $other.attr('id');
+    var thisId = $(this).attr('id');
+    var otherId = $(this).siblings().attr('id');
 
     $('.' + thisId + '-info').show();
     $('.' + otherId + '-info').hide();
 
     $('#' + thisId).addClass('active');
     $('#' + otherId).removeClass('active');
+
+    var $itemFiltering = $('#item-filtering');
+    thisId == 'in-game' ? $itemFiltering.addClass('active') : $itemFiltering.removeClass('active');
 
     $.ajax({
         type: 'POST',
@@ -177,12 +177,30 @@ function masteryStickyOpenToggle(evt) {
 
 // =========================== Item Filtering ===================================
 
+var cooldownTimerId; // Timing how long between adjustments of item cutoff,
+                     // to only update when the user 'settled' on a value
+
+function saveItemCutoff(newCutoff) {
+    console.log('Saving cutoff:', newCutoff);
+
+    $.ajax({
+        type: 'POST',
+        url: '/price-cutoff',
+        data: { newCutoff: newCutoff },
+    }).done(function() {
+        console.log('Saved cutoff:', newCutoff);
+    });
+}
+
 function handleItemHiding(evt) {
     var newCutoff = this.value;
 
     if (newCutoff === '') {
         return;
     }
+
+    if (cooldownTimerId) window.clearTimeout(cooldownTimerId);
+    cooldownTimerId = window.setTimeout(saveItemCutoff.bind(null, newCutoff), 1000); // Wait a second between changes in order to save
 
     $('.item-buy').each(function(i, entry) {
         var $entry = $(entry);

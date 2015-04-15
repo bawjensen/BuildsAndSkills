@@ -1,7 +1,6 @@
 extends skeleton_base
 
-- var defaultCutoff = 700;
-- var ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + version + '/';
+include includes/matchEntries.jade
 
 block page-title
   = champName
@@ -12,9 +11,9 @@ block header
     span.info-switcher#in-game(class=(displayMode === 'in-game' ? 'active' : '')) In-Game Info
 
 
-  #item-filtering
-    label#filtering-label(for='item-cutoff') Item Price Min: 
-    input(type='number' step='100' min='0' max='4000' value=defaultCutoff name='itemCutoff' id='item-cutoff' class='form-control')
+  #item-filtering(class=(displayMode === 'in-game' ? 'active' : ''))
+    label#filtering-label(for='item-cutoff') Item Price Min.: 
+    input(type='number' step='100' min='0' max='4000' value=priceCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
 block body
 
@@ -25,7 +24,7 @@ block body
     block overview
 
   if gamesData
-    include includes/matchEntries.jade
+    +matchEntries(ddragonCDN)
     
   else
     #no-games No games yet!
