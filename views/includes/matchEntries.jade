@@ -1,129 +1,128 @@
-mixin matchEntries(cdnURL) 
-  each match in gamesData
-    - var winClass = match.winner ? 'win' : 'loss';
-    .match-row.row(class=winClass)
-      .win-status-info(class=winClass)
+each match in gamesData
+  - var winClass = match.winner ? 'win' : 'loss';
+  .match-row.row(class=winClass)
+    .win-status-info(class=winClass)
 
 
-      .summary-info
-        - var date = new Date(match.date);
-        - var now = new Date;
-        - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
-        //- - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
-        //- div.date-text= dateText + ' - ' + timeText
-        div.date-text= dateText
-        div.lane-text= match.role === 'adc' ? 'ADC' : titleCase(match.role)
-        a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')
-        //- div.name-text: a(href='/' + match.summonerName)= match.summonerName
-        div.name-text= match.summonerName
-        div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
-        div.summ-imgs
-          each spell in match.summonerSpells.sort(sortSummonerSpells)
-            - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
-            img.summ-spell(data-toggle='tooltip' title=tooltip src=cdnURL + 'img/spell/' + staticData.summSpells[spell].image.full)
+    .summary-info
+      - var date = new Date(match.date);
+      - var now = new Date;
+      - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
+      //- - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
+      //- div.date-text= dateText + ' - ' + timeText
+      div.date-text= dateText
+      div.lane-text= match.role === 'adc' ? 'ADC' : titleCase(match.role)
+      a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')
+      //- div.name-text: a(href='/' + match.summonerName)= match.summonerName
+      div.name-text= match.summonerName
+      div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
+      div.summ-imgs
+        each spell in match.summonerSpells.sort(sortSummonerSpells)
+          - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
+          img.summ-spell(data-toggle='tooltip' title=tooltip src=ddragonCDN + 'img/spell/' + staticData.summSpells[spell].image.full)
 
 
 
-      .pre-game-info(style=displayMode === 'in-game' ? 'display: none' : '')
+    .pre-game-info(style=displayMode === 'in-game' ? 'display: none' : '')
 
-        .mastery-info
-          .mastery-summary
-            //- .mastery-hint (hover for details)
-            //- .mastery-label Masteries:
-            .mastery-text= '[' + match.masterySummary['Offense'] + '/' + match.masterySummary['Defense'] + '/' + match.masterySummary['Utility'] + ']'
+      .mastery-info
+        .mastery-summary
+          //- .mastery-hint (hover for details)
+          //- .mastery-label Masteries:
+          .mastery-text= '[' + match.masterySummary['Offense'] + '/' + match.masterySummary['Defense'] + '/' + match.masterySummary['Utility'] + ']'
 
-          .mastery-detail
-            each treeName in ['Offense', 'Defense', 'Utility']
-              .mastery-tree
-                - var subTree = staticData.masteries.tree[treeName];
+        .mastery-detail
+          each treeName in ['Offense', 'Defense', 'Utility']
+            .mastery-tree
+              - var subTree = staticData.masteries.tree[treeName];
 
-                each tier in ['0', '1', '2', '3', '4', '5']
-                  .mastery-tier
-                    - var masteryTier = subTree[tier];
+              each tier in ['0', '1', '2', '3', '4', '5']
+                .mastery-tier
+                  - var masteryTier = subTree[tier];
 
-                    each column in ['0', '1', '2', '3']
-                      - var slot = masteryTier[column];
+                  each column in ['0', '1', '2', '3']
+                    - var slot = masteryTier[column];
+                    if (slot)
+                      - var masteryData = staticData.masteries.data[slot.masteryId];
+                      - var tooltip = '<b>' + masteryData.name + '</b><br><br>' + masteryData.description[0];
+                    else
+                      - var tooltip = '';
+
+                    .mastery-slot(data-toggle='tooltip' title=tooltip)
                       if (slot)
-                        - var masteryData = staticData.masteries.data[slot.masteryId];
-                        - var tooltip = '<b>' + masteryData.name + '</b><br><br>' + masteryData.description[0];
+                        - var _class = match.masteries[slot.masteryId] ? 'active' : 'inactive' ;
+                        - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
+
+                        - var img = staticData.masteries.data[slot.masteryId].image
+                        //- .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                        img.mastery-img(class=_class src=ddragonCDN + 'img/mastery/' + img.full)
+
+                        if (match.masteries[slot.masteryId])
+                          .mastery-rank
+                            = match.masteries[slot.masteryId]
+
                       else
-                        - var tooltip = '';
+                        .placeholder-mastery
 
-                      .mastery-slot(data-toggle='tooltip' title=tooltip)
-                        if (slot)
-                          - var _class = match.masteries[slot.masteryId] ? 'active' : 'inactive' ;
-                          - var tooltip = staticData.masteries.data[slot.masteryId].description[0];
-
-                          - var img = staticData.masteries.data[slot.masteryId].image
-                          //- .mastery-img(class=_class style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + cdnURL + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-                          img.mastery-img(class=_class src=cdnURL + 'img/mastery/' + img.full)
-
-                          if (match.masteries[slot.masteryId])
-                            .mastery-rank
-                              = match.masteries[slot.masteryId]
-
-                        else
-                          .placeholder-mastery
-
-        .rune-info
-          //- each runeType in [{ id: 'red', label: 'Marks', img: 'r_1_3' }, { id: 'blue', label: 'Glyphs', img: 'b_1_3' }, { id: 'yellow', label: 'Seals', img: 'y_1_3' }, { id: 'black', label: 'Quints', img: 'bl_1_3' }]
-          each runeType in [{ id: 'red', label: 'M', img: 'r_1_3' }, { id: 'blue', label: 'G', img: 'b_1_3' }, { id: 'yellow', label: 'S', img: 'y_1_3' }, { id: 'black', label: 'Q', img: 'bl_1_3' }]
-            div.rune-type(class=runeType.id)
-              img.rune-type-img(src=cdnURL + 'img/rune/' + runeType.img + '.png')
-              span.rune-type-label= runeType.label + ': '
-              each rank, id in match.runes[runeType.id]
-                - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
-                span.specific-rune(data-toggle='tooltip' title=tooltip)
-                  //- = staticData.runes[id].image.full
-                  //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + cdnURL + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-                  = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Novelty')
+      .rune-info
+        //- each runeType in [{ id: 'red', label: 'Marks', img: 'r_1_3' }, { id: 'blue', label: 'Glyphs', img: 'b_1_3' }, { id: 'yellow', label: 'Seals', img: 'y_1_3' }, { id: 'black', label: 'Quints', img: 'bl_1_3' }]
+        each runeType in [{ id: 'red', label: 'M', img: 'r_1_3' }, { id: 'blue', label: 'G', img: 'b_1_3' }, { id: 'yellow', label: 'S', img: 'y_1_3' }, { id: 'black', label: 'Q', img: 'bl_1_3' }]
+          div.rune-type(class=runeType.id)
+            img.rune-type-img(src=ddragonCDN + 'img/rune/' + runeType.img + '.png')
+            span.rune-type-label= runeType.label + ': '
+            each rank, id in match.runes[runeType.id]
+              - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
+              span.specific-rune(data-toggle='tooltip' title=tooltip)
+                //- = staticData.runes[id].image.full
+                //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Novelty')
 
 
-      .in-game-info(style=displayMode === 'in-game' ? '' : 'display: none')
+    .in-game-info(style=displayMode === 'in-game' ? '' : 'display: none')
 
-        .skill-info
-          .skill-summary
-            - var translate = { '1': 'Q', '2': 'W', '3': 'E', '4': 'R' };
-            each skill, i in match.skillMaxOrder
-              span.skill-name(class='skill-' + translate[skill].toLowerCase())= translate[skill]
-              if i !== match.skillMaxOrder.length-1
-                span.skill-separator &gt;
+      .skill-info
+        .skill-summary
+          - var translate = { '1': 'Q', '2': 'W', '3': 'E', '4': 'R' };
+          each skill, i in match.skillMaxOrder
+            span.skill-name(class='skill-' + translate[skill].toLowerCase())= translate[skill]
+            if i !== match.skillMaxOrder.length-1
+              span.skill-separator &gt;
 
-          .skill-detail
+        .skill-detail
+          .level-column
+            each skillLabel, i in ['Q', 'W', 'E', 'R']
+              - var tooltip = '<b>' + staticData.champInfo.data[champStringId].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[i].description;
+              .skill-slot(data-toggle='tooltip' title=tooltip)
+                .level-value= skillLabel
+
+          each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
             .level-column
-              each skillLabel, i in ['Q', 'W', 'E', 'R']
-                - var tooltip = '<b>' + staticData.champInfo.data[champStringId].spells[i].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[i].description;
-                .skill-slot(data-toggle='tooltip' title=tooltip)
-                  .level-value= skillLabel
-
-            each level in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-              .level-column
-                each skill in [1, 2, 3, 4]
-                  - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
-                  - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champStringId].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[skill-1].description : '';
-                  .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
-                    .level-value= match.skillOrder[level] === skill ? level + 1 : ''
+              each skill in [1, 2, 3, 4]
+                - var _class = match.skillOrder[level] === skill ? 'active' : 'inactive';
+                - var tooltip = match.skillOrder[level] === skill ? '<b>' + staticData.champInfo.data[champStringId].spells[skill-1].name + '</b><br><br>' + staticData.champInfo.data[champStringId].spells[skill-1].description : '';
+                .skill-slot(class=_class data-toggle='tooltip' title=tooltip)
+                  .level-value= match.skillOrder[level] === skill ? level + 1 : ''
 
 
-        .buy-info
-          .purchases
-            each buy in match.buyOrder
-              .purchase-group
-                each amount, itemId in buy
-                  //- - var _class = blacklisted(itemId) ? 'blacklisted' : '';
-                  if staticData.items.data[itemId]
-                    - var _class = staticData.items.data[itemId].gold.total < defaultCutoff ? 'cut-off' : '';
-                    - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
-                    div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' data-gold=staticData.items.data[itemId].gold.total title=tooltip)
-                      - var img = staticData.items.data[itemId].image
-                      //- .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + cdnURL + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-                      img.item-buy-icon(src=cdnURL + 'img/item/' + img.full)
-                      = ' x' + amount
-                  else
-                    div.error= itemId
-          span.glyphicon.glyphicon-plus.expand-buys
+      .buy-info
+        .purchases
+          each buy in match.buyOrder
+            .purchase-group
+              each amount, itemId in buy
+                //- - var _class = blacklisted(itemId) ? 'blacklisted' : '';
+                if staticData.items.data[itemId]
+                  - var _class = staticData.items.data[itemId].gold.total < priceCutoff ? 'cut-off' : '';
+                  - var tooltip = '<b>' + staticData.items.data[itemId].name + '</b><br><br>' + staticData.items.data[itemId].description;
+                  div.item-buy(class=_class data-toggle='tooltip' data-placement='bottom' data-gold=staticData.items.data[itemId].gold.total title=tooltip)
+                    - var img = staticData.items.data[itemId].image
+                    //- .item-buy-icon(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                    img.item-buy-icon(src=ddragonCDN + 'img/item/' + img.full)
+                    = ' x' + amount
+                else
+                  div.error= itemId
+        span.glyphicon.glyphicon-plus.expand-buys
 
 
-      //- .build-info
-        each item in match.finalBuild
-          .row= staticData.items.data[item] ? staticData.items.data[item].name : item
+    //- .build-info
+      each item in match.finalBuild
+        .row= staticData.items.data[item] ? staticData.items.data[item].name : item

@@ -1,7 +1,5 @@
 extends skeleton_base
 
-include includes/matchEntries.jade
-
 block page-title
   = champName
 
@@ -16,7 +14,6 @@ block header
     input(type='number' step='100' min='0' max='4000' value=priceCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
 block body
-
   //- .row
   //-   include includes/adsense_resp.html
 
@@ -24,7 +21,7 @@ block body
     block overview
 
   if gamesData
-    +matchEntries(ddragonCDN)
+    include includes/matchEntries.jade
     
   else
     #no-games No games yet!
