@@ -327,23 +327,27 @@ footer {
   }
 }
 
-.match-row {
-  // position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+#match-entries-container {
+  min-height: 50vh;
+  
+  .match-row {
+    // position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-  padding-top: 5px;
-  margin: 5px;
+    padding-top: 5px;
+    margin: 5px;
 
-  min-height: 40px;
+    min-height: 40px;
 
-  &.win {
-    // background-color: rgba(0, 128, 0, 0.2);
-    background-color: fade(@win-color, 15%);
-  }
-  &.loss {
-    // background-color: rgba(128, 0, 0, 0.2);
-    background-color: fade(@loss-color, 15%);
+    &.win {
+      // background-color: rgba(0, 128, 0, 0.2);
+      background-color: fade(@win-color, 15%);
+    }
+    &.loss {
+      // background-color: rgba(128, 0, 0, 0.2);
+      background-color: fade(@loss-color, 15%);
+    }
   }
 }
 
