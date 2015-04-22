@@ -494,15 +494,7 @@ img.summ-spell {
   .cf;
 
   @media (min-width: @screen-lg) {
-    .mastery-info {
-      width: 70px;
-      margin: 0 25px;
-    }
-
     .rune-info {
-      .rune-type {
-        padding: 0 5px;
-      }
     }
   }
 
@@ -524,6 +516,19 @@ img.summ-spell {
   .mastery-info {
     float: left;
     position: relative;
+
+    @media (min-width: @screen-lg) {
+      width: 70px;
+      margin: 0 25px;
+    }
+    @media (min-width: @screen-md) and (max-width: @screen-lg) {
+      width: 70px;
+      margin: 0 25px;
+    }
+    @media (min-width: @screen-sm) and (max-width: @screen-md) {
+      width: 70px;
+      margin: 0 25px;
+    }
 
     .mastery-summary {
       cursor: default;
@@ -645,11 +650,29 @@ img.summ-spell {
   .rune-info {
     float: left;
 
+    @media (min-width: @screen-lg) {
+      .rune-type {
+        width: 150px;
+        padding: 0 5px;
+      }
+    }
+    @media (min-width: @screen-md) and (max-width: @screen-lg) {
+      .rune-type {
+        width: 100px;
+        padding: 0 5px;
+      }
+    }
+    @media (min-width: @screen-sm) and (max-width: @screen-md) {
+      .rune-type {
+        width: 50px;
+        padding: 0 5px;
+      }
+    }
+
     .rune-type {
       cursor: default;
 
       display: inline-block;
-      width: 150px;
       vertical-align: top;
 
       white-space: nowrap;
@@ -694,11 +717,9 @@ img.summ-spell {
   @media (min-width: @screen-lg) {
     width: calc(~"100% - 357px");
   }
-
   @media (min-width: @screen-md) and (max-width: @screen-lg) {
     width: calc(~"100% - 357px");
   }
-
   @media (min-width: @screen-sm) and (max-width: @screen-md) {
     width: calc(~"100% - 357px");
   }
@@ -816,11 +837,9 @@ img.summ-spell {
     @media (min-width: @screen-lg) {
       width: calc(~"100% - 162px");
     }
-
     @media (min-width: @screen-md) and (max-width: @screen-lg) {
       width: calc(~"100% - 162px");
     }
-
     @media (min-width: @screen-sm) and (max-width: @screen-md) {
       width: calc(~"100% - 162px");
     }
