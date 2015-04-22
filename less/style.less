@@ -387,6 +387,16 @@ footer {
     width: 10px;
   }
 
+  @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    height: 30px;
+    width: 10px;
+  }
+
+  @media (min-width: @screen-sm) and (max-width: @screen-md) {
+    height: 30px;
+    width: 10px;
+  }
+
   &.win {
     background-color: @win-color;
   }
@@ -679,18 +689,18 @@ img.summ-spell {
 .in-game-info {
   .cf;
 
+  float: left;
+  
   @media (min-width: @screen-lg) {
-    float: left;
     width: calc(~"100% - 357px");
+  }
 
-    .skill-info {
-      width: 142px;
-      margin: 0 10px;
-    }
+  @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    width: calc(~"100% - 357px");
+  }
 
-    .buy-info {
-      width: calc(~"100% - 162px");
-    }
+  @media (min-width: @screen-sm) and (max-width: @screen-md) {
+    width: calc(~"100% - 357px");
   }
 
   // ----------------------------------- Skill Styling -------------------------------------
@@ -701,6 +711,19 @@ img.summ-spell {
 
   .skill-info {
     float: left;
+
+    @media (min-width: @screen-lg) {
+      width: 142px;
+      margin: 0 10px;
+    }
+    @media (min-width: @screen-md) and (max-width: @screen-lg) {
+      width: 142px;
+      margin: 0 10px;
+    }
+    @media (min-width: @screen-sm) and (max-width: @screen-md) {
+      width: 142px;
+      margin: 0 10px;
+    }
 
     cursor: default;
 
@@ -790,8 +813,17 @@ img.summ-spell {
     //   white-space: normal;
     // }
 
-      @media (min-width: @screen-md) and (max-width: @screen-lg) {
-      }
+    @media (min-width: @screen-lg) {
+      width: calc(~"100% - 162px");
+    }
+
+    @media (min-width: @screen-md) and (max-width: @screen-lg) {
+      width: calc(~"100% - 162px");
+    }
+
+    @media (min-width: @screen-sm) and (max-width: @screen-md) {
+      width: calc(~"100% - 162px");
+    }
 
     .purchases {
       display: inline-block;
@@ -817,12 +849,16 @@ img.summ-spell {
         margin: 3px;
         display: inline-block;
 
+        vertical-align: middle;
+        white-space: nowrap;
+
         height: 26px;
 
         border: 1px solid gray;
 
         .item-buy {
-          float: left;
+          // float: left;
+          display: inline-block;
 
           .item-buy-icon {
             @item-buy-icon-width: 24px;
