@@ -71,12 +71,13 @@
             div.rune-type(class=runeType.id)
               img.rune-type-img(src=ddragonCDN + 'img/rune/' + runeType.img + '.png')
               span.rune-type-label= runeType.label + ': '
-              each rank, id in match.runes[runeType.id]
-                - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
-                span.specific-rune(data-toggle='tooltip' title=tooltip)
-                  //- = staticData.runes[id].image.full
-                  //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
-                  = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Novelty')
+              if match.runes[runeType.id]
+                each rank, id in match.runes[runeType.id]
+                  - var tooltip = '<b>' + staticData.runes[id].name + '</b><br><br>' + rank + 'x ' + staticData.runes[id].description;
+                  span.specific-rune(data-toggle='tooltip' title=tooltip)
+                    //- = staticData.runes[id].image.full
+                    //- .rune-img(style='height: ' + img.h + 'px; width: ' + img.w + 'px; background: url(\'' + ddragonCDN + 'img/sprite/' + img.sprite + '\') -' + img.x + 'px -' + img.y + 'px no-repeat')
+                    = ' ' + rank + ' ' + (staticData.runes[id].shortName || 'Novelty')
 
 
       .in-game-info(style=displayMode === 'in-game' ? '' : 'display: none')
