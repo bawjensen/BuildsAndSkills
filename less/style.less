@@ -28,6 +28,17 @@
      2px 2px 0 #000;
 }
 
+.text-overflow-hidden {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle; // Override whatever wierdness is going on with overflow hidden
+
+  &:hover {
+    .pop-out-text;
+  }
+}
+
 @screen-xs: 480px;
 @screen-sm: 768px;
 @screen-md: 992px;
@@ -377,99 +388,107 @@ footer {
   }
 }
 
-// =================================== Win Status Styling ================================
+// =================================== Container Size Styling ============================
 
 .win-status-info {
-  float: left;
+}
 
-  @media (min-width: @screen-lg) {
-    height: 30px;
-    width: 10px;
-  }
+@summary-info-width: 313px; // Gotten empirically, adjust as needed
+.summary-info {
+  width: @summary-info-width;
+}
 
-  @media (min-width: @screen-md) and (max-width: @screen-lg) {
-    height: 30px;
-    width: 10px;
-  }
-
-  @media (min-width: @screen-sm) and (max-width: @screen-md) {
-    height: 30px;
-    width: 10px;
-  }
-
-  &.win {
-    background-color: @win-color;
-  }
-  &.loss {
-    background-color: @loss-color;
-  }
+.pre-game-info,
+.in-game-info {
+  width: calc(~"100% -" @summary-info-width);
 }
 
 // =================================== Summary Styling ===================================
 
 .summary-info {
-
   float: left;
-  // text-align: center;
 
-  padding: 0 10px;
   position: relative; // Allow for absolute position of date text
 
-  // Baseline widths
-  .lane-text {
-    width: 55px;
+  div {
+    display: inline-block;
+  }
+
+  .win-status-info {
+    float: left;
+
+    height: 30px;
+    width: 10px;
+    margin-right: 5px;
+
+    // @media (min-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-sm) and (max-width: @screen-md) {
+    // }
+    // @media (max-width: @screen-sm) {
+    // }
+
+    &.win {
+      background-color: @win-color;
+    }
+    &.loss {
+      background-color: @loss-color;
+    }
   }
 
   .matchhistory-link {
     width: 20px;
   }
 
-  .name-text {
-    width: 90px;
-  }
-
-  .kda-text {
-    width: 100px;
-    text-align: center;
-  }
-
-  .summ-imgs {
-    width: 48px;
-  }
-
   .date-text {
     text-align: left;
     font-size: 0.8em;
     position: absolute;
-    top: 18px;
-    left: 30px;
+    top: -15px;
+    left: -3px;
   }
 
-  div {
-    display: inline-block;
+  .lane-text {
+    width: 55px;
+    font-weight: 700;
+    margin-right: 10px;
+
+    .text-overflow-hidden;
   }
 
   .name-text {
-    font-size: 12px;
-    font-weight: 700;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: middle; // Override whatever wierdness is going on with overflow hidden
-
-
-    // position: relative; // Allows for z-index
-    // z-index: 1;
-
-    &:hover {
-      .pop-out-text;
+    width: 90px;
+    font-size: 16px;
+    // @media (min-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    // }
+    @media (min-width: @screen-sm) and (max-width: @screen-md) {
+      font-size: 12px;
     }
+    // @media (max-width: @screen-sm) {
+    // }
+
+    color: #C8C8C8;
+
+    .text-overflow-hidden;
   }
 
   .kda-text {
     font-size: 16px;
     color: rgba(255, 255, 255, 0.65); // Faded base color
+    text-align: center;
+
+    width: 75px;
+    @media (min-width: @screen-sm) and (max-width: @screen-md) {
+      width: 65px;
+    }
+
+    span {
+      padding: 1px;
+    }
 
     .kills {
       color: @win-color;
@@ -481,11 +500,26 @@ footer {
       color: #F0ED00;
     }
   }
-}
 
-img.summ-spell {
-  width: 24px;
-  height: auto;
+  .summ-imgs {
+    // width: 48px;
+
+    img.summ-spell {
+      height: auto;
+      width: 24px;
+
+
+      // @media (min-width: @screen-lg) {
+      // }
+      // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+      // }
+      @media (min-width: @screen-sm) and (max-width: @screen-md) {
+        width: 20px;
+      }
+      // @media (max-width: @screen-sm) {
+      // }
+    }
+  }
 }
 
 // =================================== Pre-Game Styling ==================================
@@ -493,12 +527,7 @@ img.summ-spell {
 .pre-game-info {
   .cf;
 
-  @media (min-width: @screen-lg) {
-    .rune-info {
-    }
-  }
-
-
+  float: left;
   // ----------------------------------- Mastery Styling -----------------------------------
 
   // Width calculations
@@ -517,43 +546,32 @@ img.summ-spell {
     float: left;
     position: relative;
 
-    @media (min-width: @screen-lg) {
-      width: 70px;
-      margin: 0 25px;
-    }
-    @media (min-width: @screen-md) and (max-width: @screen-lg) {
-      width: 70px;
-      margin: 0 25px;
-    }
+    width: 60px;
+    margin: 0 25px;
+
+    // @media (min-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    // }
     @media (min-width: @screen-sm) and (max-width: @screen-md) {
-      width: 70px;
-      margin: 0 25px;
+      margin: 0;
     }
+    // @media (max-width: @screen-sm) {
+    // }
 
     .mastery-summary {
       cursor: default;
       text-align: center;
 
-      // Center inside the parent
-      // display: table;
-      // margin: 0 auto;
-
-      .mastery-label {
-
-      }
-
-      .mastery-hint {
-        font-size: 0.7em;
-      }
+      line-height: 24px;
 
       .mastery-text {
-        font-size: 1.2em;
+        font-size: 16px;
+        @media (min-width: @screen-sm) and (max-width: @screen-md) {
+          font-size: 13px;
+        }
       }
     }
-
-    // &:hover > .mastery-detail {
-    //   display: block;
-    // }
 
     .mastery-detail {
       display: none;
@@ -650,38 +668,26 @@ img.summ-spell {
   .rune-info {
     float: left;
 
-    @media (min-width: @screen-lg) {
-      .rune-type {
-        width: 150px;
-        padding: 0 5px;
-      }
-    }
-    @media (min-width: @screen-md) and (max-width: @screen-lg) {
-      .rune-type {
-        width: 100px;
-        padding: 0 5px;
-      }
-    }
-    @media (min-width: @screen-sm) and (max-width: @screen-md) {
-      .rune-type {
-        width: 50px;
-        padding: 0 5px;
-      }
-    }
-
     .rune-type {
       cursor: default;
 
       display: inline-block;
       vertical-align: top;
 
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      .text-overflow-hidden;
 
-      &:hover {
-        // white-space: normal;
-        .pop-out-text;
+      padding: 0 5px;
+
+      @media (min-width: @screen-lg) {
+        width: 150px;
+      }
+      @media (min-width: @screen-md) and (max-width: @screen-lg) {
+        width: 100px;
+      }
+      @media (min-width: @screen-sm) and (max-width: @screen-md) {
+        width: 75px;
+      }
+      @media (max-width: @screen-sm) {
       }
 
       *.tooltip-inner {
@@ -714,15 +720,14 @@ img.summ-spell {
 
   float: left;
   
-  @media (min-width: @screen-lg) {
-    width: calc(~"100% - 357px");
-  }
-  @media (min-width: @screen-md) and (max-width: @screen-lg) {
-    width: calc(~"100% - 357px");
-  }
-  @media (min-width: @screen-sm) and (max-width: @screen-md) {
-    width: calc(~"100% - 357px");
-  }
+  // @media (min-width: @screen-lg) {
+  // }
+  // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+  // }
+  // @media (min-width: @screen-sm) and (max-width: @screen-md) {
+  // }
+  // @media (max-width: @screen-sm) {
+  // }
 
   // ----------------------------------- Skill Styling -------------------------------------
 
@@ -733,18 +738,17 @@ img.summ-spell {
   .skill-info {
     float: left;
 
-    @media (min-width: @screen-lg) {
-      width: 142px;
-      margin: 0 10px;
-    }
-    @media (min-width: @screen-md) and (max-width: @screen-lg) {
-      width: 142px;
-      margin: 0 10px;
-    }
-    @media (min-width: @screen-sm) and (max-width: @screen-md) {
-      width: 142px;
-      margin: 0 10px;
-    }
+    width: 150px;
+    margin-left: 10px;
+
+    // @media (min-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-sm) and (max-width: @screen-md) {
+    // }
+    // @media (max-width: @screen-sm) {
+    // }
 
     cursor: default;
 
@@ -827,6 +831,8 @@ img.summ-spell {
   .buy-info {
     float: left;
 
+    width: calc(~"100% -" 160px);
+
     // box-shadow: inset 2px 2px 5px 5px black;
     // border: 1px solid rgba(255, 255, 255, 0.15);
 
@@ -834,15 +840,14 @@ img.summ-spell {
     //   white-space: normal;
     // }
 
-    @media (min-width: @screen-lg) {
-      width: calc(~"100% - 162px");
-    }
-    @media (min-width: @screen-md) and (max-width: @screen-lg) {
-      width: calc(~"100% - 162px");
-    }
-    @media (min-width: @screen-sm) and (max-width: @screen-md) {
-      width: calc(~"100% - 162px");
-    }
+    // @media (min-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-md) and (max-width: @screen-lg) {
+    // }
+    // @media (min-width: @screen-sm) and (max-width: @screen-md) {
+    // }
+    // @media (max-width: @screen-sm) {
+    // }
 
     .purchases {
       display: inline-block;

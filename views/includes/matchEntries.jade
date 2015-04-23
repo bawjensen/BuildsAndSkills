@@ -2,10 +2,10 @@
   each match in gamesData
     - var winClass = match.winner ? 'win' : 'loss';
     .match-row.row(class=winClass)
-      .win-status-info(class=winClass)
 
 
       .summary-info
+        .win-status-info(class=winClass)
         a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/' + match.matchId + '?tab=overview' target='_blank')
         - var date = new Date(match.date);
         - var now = new Date;
@@ -16,7 +16,7 @@
         div.lane-text= match.role === 'adc' ? 'ADC' : titleCase(match.role)
         //- div.name-text: a(href='/' + match.summonerName)= match.summonerName
         div.name-text= match.summonerName
-        div.kda-text #[span.kills= match.kills] #[span /] #[span.deaths= match.deaths] #[span /] #[span.assists= match.assists]
+        div.kda-text #[span.kills= match.kills]#[span /]#[span.deaths= match.deaths]#[span /]#[span.assists= match.assists]
         div.summ-imgs
           each spell in match.summonerSpells.sort(sortSummonerSpells)
             - var tooltip = '<b>' + staticData.summSpells[spell].name + '</b><br><br>' + staticData.summSpells[spell].description;
