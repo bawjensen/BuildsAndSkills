@@ -120,13 +120,20 @@ nav {
     }
   }
 
+  @media (min-width: @screen-md) {
+    #short-site-title {
+      display: none;
+    }
+  }
+  @media (max-width: @screen-md) {
+    #site-title {
+      display: none;
+    }
+  }
+
   #nav-search {
     float: right;
     margin-top: 10px;
-  }
-
-  #short-site-title {
-    display: none;
   }
 }
 
@@ -241,9 +248,28 @@ footer {
 
 // =================================== General Champ Page Styling ========================
 
-#info-states {
-  float: left;
+.sm-toggler {
+  @media (min-width: @screen-md) {
+    display: none;
+  }
+}
+@media (max-width: @screen-md) {
+  .sm-hidden {
+    display: none;
 
+    background: black;
+
+    position: absolute;
+    top: @nav-height;
+    left: 0;
+  }
+}
+
+.sm-hidden {
+  float: left;
+}
+
+#info-states {
   @media (min-width: @screen-lg) {
     margin-left: 10px;
   }
@@ -266,8 +292,10 @@ footer {
 }
 
 #item-filtering {
-  float: left;
-
+  float: right;
+  background: #000;
+  padding: 10px;
+  
   &:not(.active) {
     display: none;
   }

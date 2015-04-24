@@ -4,14 +4,15 @@ block page-title
   = champName
 
 block header
-  #info-states
-    span.info-switcher#pre-game(class=(displayMode === 'pre-game' ? 'active' : '')) Pre-Game Info
-    span.info-switcher#in-game(class=(displayMode === 'in-game' ? 'active' : '')) In-Game Info
+  span.sm-toggler Advanced Info
+  .sm-hidden
+    #info-states
+      span.info-switcher#pre-game(class=(displayMode === 'pre-game' ? 'active' : '')) Pre-Game Info
+      span.info-switcher#in-game(class=(displayMode === 'in-game' ? 'active' : '')) In-Game Info
 
-
-  #item-filtering(class=(displayMode === 'in-game' ? 'active' : ''))
-    label#filtering-label(for='item-cutoff') Item Price Min.: 
-    input(type='number' step='100' min='0' max='4000' value=priceCutoff name='itemCutoff' id='item-cutoff' class='form-control')
+    #item-filtering(class=(displayMode === 'in-game' ? 'active' : ''))
+      label#filtering-label(for='item-cutoff') Item Price Min.: 
+      input(type='number' step='100' min='0' max='4000' value=priceCutoff name='itemCutoff' id='item-cutoff' class='form-control')
 
 block body
   //- .row

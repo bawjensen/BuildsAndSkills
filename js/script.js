@@ -109,6 +109,13 @@ function searchKeyUpHandler(evt) {
     }
 }
 
+// =========================== Advanced Info Toggling ===========================
+
+function toggleHeaderAdvancedInfo(evt) {
+    var $elem = $('.sm-hidden');
+    $elem.css('display', $elem.css('display') == 'none' ? 'inline' : 'none');
+}
+
 // =========================== Champion Info State ==============================
 
 function switchInfoState() {
@@ -224,6 +231,8 @@ $(function() {
     $('#item-cutoff').change(handleItemHiding).keyup(function() {
         $(this).change();
     });
+
+    $('span.sm-toggler').click(toggleHeaderAdvancedInfo);
 
     $('span.info-switcher').click(switchInfoState);
 
