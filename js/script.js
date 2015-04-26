@@ -143,14 +143,14 @@ function switchInfoState() {
 // =========================== Skill Order Toggling =============================
 
 function skillHoverIn() {
-    $(this).find('.skill-detail').addClass('shown');
+    $(this).siblings('.skill-detail').addClass('shown');
 }
 function skillHoverOut() {
-    $(this).find('.skill-detail').removeClass('shown');
+    $(this).siblings('.skill-detail').removeClass('shown');
 }
 function skillStickyOpenToggle(evt) {
     if (!($(evt.target).closest('.skill-detail').length)) { // If not clicking on the 'skill-detail'
-        var $this = $(this).find('.skill-detail');
+        var $this = $(this).siblings('.skill-detail');
 
         if ($this.hasClass('sticky-open')) {
             $this.removeClass('sticky-open').removeClass('shown');
@@ -237,8 +237,8 @@ $(function() {
     $('span.info-switcher').click(switchInfoState);
 
 
-    $('.skill-info').hover(skillHoverIn, skillHoverOut);
-    $('.skill-info').click(skillStickyOpenToggle);
+    $('.skill-summary').hover(skillHoverIn, skillHoverOut);
+    $('.skill-summary').click(skillStickyOpenToggle);
 
 
     $('.mastery-info').hover(masteryHoverIn, masteryHoverOut);

@@ -120,12 +120,12 @@ nav {
     }
   }
 
-  @media (min-width: @screen-md) {
+  @media (min-width: @screen-xs) {
     #short-site-title {
       display: none;
     }
   }
-  @media (max-width: @screen-md) {
+  @media (max-width: @screen-xs) {
     #site-title {
       display: none;
     }
@@ -570,11 +570,13 @@ footer {
                          (@mastery-slot-padding * 4 * 3 * 2) +
                          (@mastery-tree-border-width * 2);
 
+  @mastery-summary-width: 60px;
+
   .mastery-info {
     float: left;
     position: relative;
 
-    width: 60px;
+    width: @mastery-summary-width;
     margin: 0 25px;
 
     // @media (min-width: @screen-lg) {
@@ -606,8 +608,10 @@ footer {
 
       position: absolute;
       z-index: 1;
-      padding: @mastery-detail-padding;
+      left: @mastery-summary-width;
+      top: 0;
 
+      padding: @mastery-detail-padding;
       width: @mastery-detail-width;
 
       background-color: @pop-out-background-color;
