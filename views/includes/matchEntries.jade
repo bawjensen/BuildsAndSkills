@@ -13,7 +13,7 @@
         - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
         //- - var timeText = date.getHours() === 0 ? '12am' : date.getHours() === 12 ? '12pm' : date.getHours() % 12 + (date.getHours() > 12 ? 'pm' : 'am')
         //- div.date-text= dateText + ' - ' + timeText
-        div.date-text= dateText
+        div.date-text(id=match.date)= dateText
         div.lane-text= match.role === 'adc' ? 'ADC' : titleCase(match.role)
         //- div.name-text: a(href='/' + match.summonerName)= match.summonerName
         div.name-text= match.summonerName

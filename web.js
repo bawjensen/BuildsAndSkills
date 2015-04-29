@@ -263,37 +263,33 @@ function champPageHandler(req, res) {
                 };
             }
 
-            // req.db.collection('champData').count(criteria, function(err, count) {
-                // res.locals.numGames = count;
+            req.db.collection('champData')
+                .find(criteria)
+                .sort({ date: -1 })
+                .limit(MATCHES_PER_PAGE)
+                .toArray(function callback(err, games) {
+                    req.db.close();
 
-                req.db.collection('champData')
-                    .find(criteria)
-                    .sort({ date: -1 })
-                    .limit(MATCHES_PER_PAGE)
-                    .toArray(function callback(err, games) {
-                        req.db.close();
+                    if (!req.session.state)
+                        req.session.state = 'in-game';
+                    
+                    res.locals.displayMode = req.session.state;
+                    // Load and remember the price cutoff
+                    res.locals.priceCutoff = req.session.priceCutoff = req.session.priceCutoff ? req.session.priceCutoff : DEFAULT_PRICE_CUTOFF;
 
-                        if (!req.session.state)
-                            req.session.state = 'in-game';
-                        
-                        res.locals.displayMode = req.session.state;
-                        // Load and remember the price cutoff
-                        res.locals.priceCutoff = req.session.priceCutoff = req.session.priceCutoff ? req.session.priceCutoff : DEFAULT_PRICE_CUTOFF;
+                    var viewName = findBySummoner ? 'player.jade' : 'champion.jade';
 
-                        var viewName = findBySummoner ? 'player.jade' : 'champion.jade';
-
-                        if (err) {
-                            console.log(err.stack);
-                            res.status(503).render('503.jade');
-                        }
-                        else if (!games.length) {
-                            res.render(viewName, { staticData: staticData });
-                        }
-                        else {
-                            res.render(viewName, { gamesData: games, staticData: staticData });
-                        }
-                    });
-            // });
+                    if (err) {
+                        console.log(err.stack);
+                        res.status(503).render('503.jade');
+                    }
+                    else if (!games.length) {
+                        res.render(viewName, { staticData: staticData });
+                    }
+                    else {
+                        res.render(viewName, { gamesData: games, staticData: staticData });
+                    }
+                });
         });
 }
 
