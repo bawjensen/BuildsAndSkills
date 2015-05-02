@@ -6,8 +6,11 @@
 
       .summary-info
         .win-status-info(class=winClass)
-        - var regionTranslator = { 'oce': 'OC1', 'na': 'NA1', 'euw': 'EUW1', 'eune': 'EUW1' };
-        a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.' + match.region + '.leagueoflegends.com/en/#match-details/' + regionTranslator[match.region] + '/' + match.matchId + '?tab=overview' target='_blank')
+        - var regionTranslator = { 'na': 'NA1', 'euw': 'EUW1', 'br': 'NA', 'ru': 'RU', 'tr': 'TR1', 'oce': 'OC1' }; //, 'lan': 'NA1', 'eune': 'EUW1'
+        if regionTranslator[match.region]
+          a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.' + match.region + '.leagueoflegends.com/en/#match-details/' + regionTranslator[match.region] + '/' + match.matchId + '?tab=overview' target='_blank')
+        else
+          span.external-link-placeholder(class=match.region)
         - var date = new Date(match.date);
         - var now = new Date;
         - var dateText = now.getDate() === date.getDate() ? 'Today' : now.getDate() === (date.getDate() + 1 % 31) ? 'Yesterday' : [(date.getMonth() + 1), date.getUTCDate(), date.getUTCFullYear()].join('/')
