@@ -6,7 +6,7 @@
 
       .summary-info
         .win-status-info(class=winClass)
-        - var regionTranslator = { 'na': 'NA1', 'euw': 'EUW1', 'br': 'NA', 'ru': 'RU', 'tr': 'TR1', 'oce': 'OC1' }; //, 'lan': 'NA1', 'eune': 'EUW1'
+        - var regionTranslator = { 'na': 'NA1', 'euw': 'EUW1', 'br': 'BR1', 'ru': 'RU', 'tr': 'TR1', 'oce': 'OC1' }; //, 'lan': 'NA1', 'eune': 'EUW1'
         if regionTranslator[match.region]
           a.matchhistory-link.glyphicon.glyphicon-new-window(href='http://matchhistory.' + match.region + '.leagueoflegends.com/en/#match-details/' + regionTranslator[match.region] + '/' + match.matchId + '?tab=overview' target='_blank')
         else
