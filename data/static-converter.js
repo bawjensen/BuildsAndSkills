@@ -1,4 +1,5 @@
 var fs      = require('fs'),
+    path    = require('path'),
     promise = require('./helpers/promisedFunctions');
 
 var API_KEY = process.env.RIOT_KEY;
@@ -56,6 +57,9 @@ function convertRuneData() {
 
     fs.writeFile('data-compiled/runeData.json', JSON.stringify(data));
 }
+
+// Change the current working directory, making it the location of the script
+process.chdir(path.dirname(process.argv[1]));
 
 convertChamps();
 convertSummonerSpells();

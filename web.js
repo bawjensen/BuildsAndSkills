@@ -5,6 +5,7 @@ var argv        = require('optimist').argv,
     fs          = require('fs'),
     logfmt      = require('logfmt'),
     MongoClient = require('mongodb').MongoClient,
+    promise     = require('./data/helpers/promisedFunctions');
     querystring = require('querystring'),
     request     = require('request'),
     session     = require('express-session');
@@ -113,17 +114,37 @@ mainRouter.route('/')
 
 
 // FAQ middleware and routes
+mainRouter.route('/update-static')
+    .get(function(req, res) {
+        promise.exec('node data/static-updater.js')
+            .then(function() {
+                console.log('Updated data');
+                return promise.exec('node data/static-converter.js');
+            })
+            .then(function() {
+                console.log('Converted data');
+            });
+            
+        res.send(true);
+        // res.render('password.jade');
+    })/*
+    .post(function(req, res) {
+    })*/;  // TODO: Set up a password-protected system to allow for updating
+
+
+
+// FAQ middleware and routes
 mainRouter.route('/faq')
     .get(function(req, res) {
         res.render('faq.jade');
     });
 
+// State data updating middleware and routes
 mainRouter.route('/info-state')
     .post(function(req, res) {
         req.session.state = req.body.newState;
         res.send(true);
     });
-
 mainRouter.route('/price-cutoff')
     .post(function(req, res) {
         console.log('Saving', req.body.newCutoff);

@@ -4,10 +4,8 @@ var exec    = require('child_process').exec,
 
 function promiseCatchAndQuit(err) {
     console.log('Catching an error in a promise, and quitting');
-    console.log(err);
-    console.log(err.type)
     console.log(err.stack);
-    process.exit(1);
+    throw err;
 }
 
 function promiseSave(filePath, data) {
@@ -62,37 +60,118 @@ function promiseJsonGet(url) {
 function persistentCallback(url, resolve, reject, err, resp, body) {
     if (err) {
         console.log('Issue with: ' + url);
-        reject(Error(err));
+        reject(err);
     }
     else if (resp.statusCode === 429) {
         setTimeout(function() {
             request.get(url, persistentCallback.bind(null, url, resolve, reject));
         }, parseInt(resp.headers['retry-after']));
     }
-    else if (resp.statusCode === 503 || resp.statusCode === 504) {
+    else if (resp.statusCode === 503 || resp.statusCode === 500 || resp.statusCode === 504) {
         console.log('Got', resp.statusCode, 'code, retrying in 0.5 sec');
         setTimeout(function() {
             request.get(url, persistentCallback.bind(null, url, resolve, reject));
         }, 500);
     }
-    else if (resp.type === 'ECONNRESET') {
-        console.log('The request had a "socket hang up", retrying immediately');
-        request.get(url, persistentCallback.bind(null, url, resolve, reject));
+    else if (resp.statusCode === 404) {
+        reject(Error('Resp code was 404: ' + url));
+        // resolve(null); // Return nothing
     }
-    else if (resp.statusCode != 200) {
+    else if (resp.statusCode !== 200) {
         reject(Error('Resp status code not 200: ' + resp.statusCode + '(' + url + ')'));
     }
     else {
         resolve(body);
     }
 }
-function persistentPromiseGet(url) {
+function promisePersistentGet(url, identifier) {
+    // console.log('url:', url);
     return new Promise(function get(resolve, reject) {
             request.get(url, persistentCallback.bind(null, url, resolve, reject));
         })
         .then(JSON.parse)
-        .catch(promiseCatchAndQuit);
+        .then(function returnWithIdentifier(data) {
+            return data ? (identifier ? { data: data, id: identifier } : data) : null;
+        })
+        .catch(function(err) {
+            if (err.code === 'ECONNRESET')
+                promisePersistentGet(url, identifier);
+            else
+                throw err;
+        });
 }
+
+function promiseGroupedGet(list, groupSize, promiseMapper, matchHandler) {
+    var listSize = list.length;
+
+    var groupedList = [];
+    for (var i = 0; i < list.length; i += groupSize) {
+        groupedList.push(list.slice(i, i+groupSize));
+    }
+
+    return groupedList.reduce(function chainPromiseAlls(chainSoFar, matchesGroup, i) {
+        return chainSoFar.then(function mapAllToPromises() {
+            return Promise.all(matchesGroup.map(promiseMapper))
+                .then(function assignData(matchesArray) {
+                    matchesArray.forEach(matchHandler); // This is where the data magic happens - extracted *outside* of promises, likely using closures
+                    console.log('Finished batch ending with', (i + 1) * groupSize, 'sending out the next set of requests');
+                })
+            });
+        }, Promise.resolve());
+}
+
+function promiseRateLimitedGet(list, limitSize, promiseMapper, matchHandler) {
+    return new Promise(function wrapper(resolve, reject) {
+        var numTotal = list.length;
+        var numActive = 0;
+        var currentPosition = 0;
+
+        var handleResponseAndSendNext = function() {
+            --numActive;
+
+            if (currentPosition >= numTotal) {
+                if (numActive === 0)
+                    resolve();
+                return;
+            }
+
+            while (numActive < limitSize && currentPosition < numTotal) {
+                promiseMapper(list[currentPosition]).then(matchHandler).then(handleResponseAndSendNext).catch(promiseCatchAndQuit);
+                ++numActive;
+                ++currentPosition;
+
+                if (currentPosition % limitSize === 0) {
+                    console.log('Reached', currentPosition, 'requests, continuing');
+                }
+            }
+        }
+
+        while (numActive < limitSize && currentPosition < numTotal) {
+            promiseMapper(list[currentPosition]).then(matchHandler).then(handleResponseAndSendNext).catch(promiseCatchAndQuit);
+
+            ++numActive;
+            ++currentPosition;
+        }
+    }).catch(promiseCatchAndQuit);
+
+    // var listSize = list.length;
+
+    // var groupedList = [];
+    // for (var i = 0; i < list.length; i += limitSize) {
+    //     groupedList.push(list.slice(i, i+limitSize));
+    // }
+
+    // return groupedList.reduce(function chainPromiseAlls(chainSoFar, matchesGroup, i) {
+    //     return chainSoFar.then(function() {
+    //         return Promise.all(matchesGroup.map(promiseMapper))
+    //             .then(function assignData(matchesArray) {
+    //                 matchesArray.forEach(matchHandler); // This is where the handler magic happens - data extracted *outside* of promises
+    //                 console.log('Finished batch ending with', (i + 1) * limitSize, 'sending out the next set of requests');
+    //             })
+    //         });
+    //     }, Promise.resolve());
+}
+
 
 function promiseExec(command, options) {
     return new Promise(function execute(resolve, reject) {
@@ -150,10 +229,12 @@ module.exports = {
     getJson:            promiseJsonGet,
     read:               promiseReadFile,
     readJson:           promiseReadJsonFile,
-    persistentGet:      persistentPromiseGet,
-    getAndPipe:         promisePipeFile,
+    persistentGet:      promisePersistentGet,
+    getPipe:            promisePipeFile,
     exec:               promiseExec,
     wait:               promiseWait,
+    groupedGet:         promiseGroupedGet,
+    rateLimitedGet:     promiseRateLimitedGet,
     mongoInsert:        promiseMongoInsert,
     mongoSave:          promiseMongoSave,
     mongoClear:         promiseMongoClear
