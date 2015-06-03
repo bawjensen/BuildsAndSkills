@@ -5,7 +5,7 @@
   "main": "web.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --harmony --use_strict --harmony_generators web.js"
+    "start": "node web.js --be_ip localhost:27017"
   },
   "author": "bawjensen",
   "repository": {
@@ -25,6 +25,6 @@
     "request": "^2.51.0"
   },
   "engines": {
-    "node": "0.11.x"
+    "node": "0.12.x"
   }
 }
