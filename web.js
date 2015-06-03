@@ -5,7 +5,7 @@ var argv        = require('optimist').argv,
     fs          = require('fs'),
     logfmt      = require('logfmt'),
     MongoClient = require('mongodb').MongoClient,
-    promise     = require('./data/helpers/promisedFunctions');
+    promise     = require('./data/helpers/promisedFunctions'),
     querystring = require('querystring'),
     request     = require('request'),
     session     = require('express-session');
@@ -124,7 +124,7 @@ mainRouter.route('/update-static')
             .then(function() {
                 console.log('Converted data');
             });
-            
+
         res.send(true);
         // res.render('password.jade');
     })/*
