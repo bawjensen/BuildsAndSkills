@@ -5,7 +5,7 @@
   "main": "web.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node web.js --be_ip localhost:27017"
+    "start": "node web.js --be_ip ds031531.mongolab.com:31531"
   },
   "author": "bawjensen",
   "repository": {
