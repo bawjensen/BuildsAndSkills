@@ -92,26 +92,7 @@ function loadFrontPageData() {
 
 var mainRouter = express.Router();
 
-
-// Site-wide middleware
-mainRouter
-    .use('*', function(req, res, next) {
-        var siteWideData = loadSiteWideData();
-        res.locals.simpleChamps = siteWideData.champs;
-        res.locals.version = siteWideData.version;
-        res.locals.ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + siteWideData.version + '/';
-        res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
-        res.locals.sortSummonerSpells = function(a,b) { return (a === 4) ? 1 : (b === 4) ? -1 : a < b ? 1 : a > b ? -1 : 0 };
-        next();
-    });
-
-
-// Main page middleware and routes
-mainRouter.route('/')
-    .get(function(req, res) {
-        res.render('index.jade', { data: loadFrontPageData() });
-    });
-
+// --------------------------------  Special Use Routes -------------------------------
 
 // FAQ middleware and routes
 mainRouter.route('/update-static')
@@ -131,8 +112,6 @@ mainRouter.route('/update-static')
     .post(function(req, res) {
     })*/;  // TODO: Set up a password-protected system to allow for updating
 
-
-
 // FAQ middleware and routes
 mainRouter.route('/faq')
     .get(function(req, res) {
@@ -150,6 +129,27 @@ mainRouter.route('/price-cutoff')
         console.log('Saving', req.body.newCutoff);
         req.session.priceCutoff = req.body.newCutoff;
         res.send(true);
+    });
+
+// --------------------------------  Champion Routes ----------------------------------
+
+// Site-wide middleware
+mainRouter
+    .use('*', function(req, res, next) {
+        var siteWideData = loadSiteWideData();
+        res.locals.simpleChamps = siteWideData.champs;
+        res.locals.version = siteWideData.version;
+        res.locals.ddragonCDN = '//ddragon.leagueoflegends.com/cdn/' + siteWideData.version + '/';
+        res.locals.titleCase = function(str) { return str[0].toUpperCase() + str.slice(1, Infinity).toLowerCase(); };
+        res.locals.sortSummonerSpells = function(a,b) { return (a === 4) ? 1 : (b === 4) ? -1 : a < b ? 1 : a > b ? -1 : 0 };
+        next();
+    });
+
+
+// Main page middleware and routes
+mainRouter.route('/')
+    .get(function(req, res) {
+        res.render('index.jade', { data: loadFrontPageData() });
     });
 
 // ================================= Champ Page functions =============================
