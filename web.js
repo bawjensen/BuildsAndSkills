@@ -110,7 +110,7 @@ mainRouter.route('/update-data/')
             })
             .then(function updateDatabase() {
                 console.log('Updating database');
-                return promise.fork('./compile-database', ['--db_ip', argv.db_ip], { cwd: './data/' });
+                return promise.fork('./compile-database', ['--db_ip', (argv.db_ip ? argv.db_ip : 'localhost')], { cwd: './data/' });
             })
             .catch(function(err) {
                 console.log('Whoops');

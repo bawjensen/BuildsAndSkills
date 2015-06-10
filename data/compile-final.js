@@ -167,13 +167,13 @@ var SUPPORT_ROLE_START_ITEMS = [
 function checkIsSupport(participant) {
     var flag = false;
 
-    if (participant.buys) {
-        flag = Object.keys(participant.buys[0]).some(function(initialItemId) {
-            return SUPPORT_ROLE_START_ITEMS.indexOf(initialItemId) !== -1;
+    if (participant.buys && participant.buys[0]) {
+        flag = Object.keys(participant.buys[0]).some(function(initialPurchaseItemId) {
+            return SUPPORT_ROLE_START_ITEMS.indexOf(initialPurchaseItemId) !== -1;
         });
     }
     else
-        console.log('Failed finding buys to classify', participant.participantId);
+        console.log('Failed finding buys to classify as a support:', participant.participantId);
 
     return flag;
 }
