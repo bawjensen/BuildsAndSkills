@@ -105,7 +105,7 @@ mainRouter.route('/update-data/')
             })
             .then(function updateData() {
                 console.log('Updating data');
-                return promise.fork('./compile-final', ['100'], { cwd: './data/' });
+                return promise.fork('./compile-final', [], { cwd: './data/' });
             })
             .then(function updateDatabase() {
                 console.log('Updating database');
