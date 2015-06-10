@@ -1,4 +1,5 @@
 var exec    = require('child_process').exec,
+    fork    = require('child_process').fork,
     fs      = require('fs'),
     request = require('request');
 
@@ -153,23 +154,6 @@ function promiseRateLimitedGet(list, limitSize, promiseMapper, matchHandler) {
             ++currentPosition;
         }
     }).catch(promiseCatchAndQuit);
-
-    // var listSize = list.length;
-
-    // var groupedList = [];
-    // for (var i = 0; i < list.length; i += limitSize) {
-    //     groupedList.push(list.slice(i, i+limitSize));
-    // }
-
-    // return groupedList.reduce(function chainPromiseAlls(chainSoFar, matchesGroup, i) {
-    //     return chainSoFar.then(function() {
-    //         return Promise.all(matchesGroup.map(promiseMapper))
-    //             .then(function assignData(matchesArray) {
-    //                 matchesArray.forEach(matchHandler); // This is where the handler magic happens - data extracted *outside* of promises
-    //                 console.log('Finished batch ending with', (i + 1) * limitSize, 'sending out the next set of requests');
-    //             })
-    //         });
-    //     }, Promise.resolve());
 }
 
 
@@ -182,6 +166,19 @@ function promiseExec(command, options) {
                 resolve();
         });
     });
+}
+
+function promiseFork(subModulePath, args, options) {
+    return new Promise(function forkIt(resolve, reject) {
+        var subModule = fork(subModulePath, args, options);
+
+        subModule.on('exit', function onExit(code, signal) {
+            if (code !== null)
+                resolve(code);
+            else
+                reject(Error(signal));
+        })
+    })
 }
 
 function promiseWait(milliseconds, data) {
@@ -232,6 +229,7 @@ module.exports = {
     persistentGet:      promisePersistentGet,
     getPipe:            promisePipeFile,
     exec:               promiseExec,
+    fork:               promiseFork,
     wait:               promiseWait,
     groupedGet:         promiseGroupedGet,
     rateLimitedGet:     promiseRateLimitedGet,

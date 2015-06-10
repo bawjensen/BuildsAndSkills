@@ -11,7 +11,7 @@ var argv        = require('optimist').argv,
     session     = require('express-session');
 
 // Global constants
-var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.be_ip + process.env.MONGO_URL_DB;
+var MONGO_URL = process.env.MONGO_URL_PREFIX + argv.db_ip + process.env.MONGO_URL_DB;
 var MATCHES_PER_PAGE = 30;
 var DEFAULT_PRICE_CUTOFF = 700;
 
@@ -93,6 +93,32 @@ function loadFrontPageData() {
 var mainRouter = express.Router();
 
 // --------------------------------  Special Use Routes -------------------------------
+
+mainRouter.route('/update-data/')
+    .get(function(req, res) {
+
+        console.log('Updating players');
+        promise.fork('./compile-players', [], { cwd: './data/' })
+            .then(function updateMatches() {
+                console.log('Updating matches');
+                return promise.fork('./compile-matches', [], { cwd: './data/' });
+            })
+            .then(function updateData() {
+                console.log('Updating data');
+                return promise.fork('./compile-final', ['100'], { cwd: './data/' });
+            })
+            .then(function updateDatabase() {
+                console.log('Updating database');
+                return promise.fork('./compile-database', ['--db_ip', argv.db_ip], { cwd: './data/' });
+            })
+            .catch(function(err) {
+                console.log('Whoops');
+                console.log(err.stack);
+                throw err;
+            });
+
+        res.send(true);
+    });
 
 // FAQ middleware and routes
 mainRouter.route('/faq')

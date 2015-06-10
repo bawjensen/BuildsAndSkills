@@ -33,6 +33,18 @@ function convertSummonerSpells() {
     fs.writeFile('data-compiled/spellData.json', JSON.stringify(newObj));
 }
 
+function convertRunes() {
+    var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/rune.json')).data;
+
+    var newObj = {};
+
+    for (var runeId in data) {
+        newObj[runeId] = { type: data[runeId].rune.type };
+    }
+
+    fs.writeFile('data-compiled/runes.json', JSON.stringify(newObj));
+}
+
 function convertRuneData() {
     var data = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/rune.json')).data;
 
@@ -58,9 +70,30 @@ function convertRuneData() {
     fs.writeFile('data-compiled/runeData.json', JSON.stringify(data));
 }
 
+function convertMasteryData() {
+    var masteryTree = JSON.parse(fs.readFileSync('dragontail/current/data/en_US/mastery.json')).tree;
+
+    var map = {};
+
+    Object.keys(masteryTree).forEach(function handleBranch(branchName) { // Offense, Defense, Utility
+        var branch = masteryTree[branchName];
+        branch.forEach(function handleTier(tier) { // 0-5
+            tier.forEach(function handleSlot(slot) {
+                if (slot) // Checks for 'null' paddings
+                    map[slot.masteryId] = branchName;
+            });
+        });
+    });
+
+    fs.writeFile('data-compiled/masteryTreeData.json', JSON.stringify(map));
+}
+
 // Change the current working directory, making it the location of the script
 process.chdir(path.dirname(process.argv[1]));
 
+// Call everything
 convertChamps();
 convertSummonerSpells();
+convertRunes();
 convertRuneData();
+convertMasteryData();
