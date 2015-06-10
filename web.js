@@ -29,6 +29,7 @@ app.use(session({
 // app.use(cookieParser());
 
 // Static serving files from specific folders
+app.use('/favicon.ico', express.static(__dirname + '/images/favicon.png'));
 app.use('/css',         express.static(__dirname + '/css'));
 app.use('/js',          express.static(__dirname + '/js'));
 app.use('/images',      express.static(__dirname + '/images'));
