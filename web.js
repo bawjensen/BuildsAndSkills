@@ -95,24 +95,6 @@ var mainRouter = express.Router();
 // --------------------------------  Special Use Routes -------------------------------
 
 // FAQ middleware and routes
-mainRouter.route('/update-static')
-    .get(function(req, res) {
-        promise.exec('node data/static-updater.js')
-            .then(function() {
-                console.log('Updated data');
-                return promise.exec('node data/static-converter.js');
-            })
-            .then(function() {
-                console.log('Converted data');
-            });
-
-        res.send(true);
-        // res.render('password.jade');
-    })/*
-    .post(function(req, res) {
-    })*/;  // TODO: Set up a password-protected system to allow for updating
-
-// FAQ middleware and routes
 mainRouter.route('/faq')
     .get(function(req, res) {
         res.render('faq.jade');
